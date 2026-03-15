@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+
 *{box-sizing:border-box;}
 
 body{
@@ -24,7 +25,36 @@ margin-bottom:5px;
 
 .subtitle{
 opacity:.8;
-margin-bottom:25px;
+margin-bottom:20px;
+}
+
+.waitlist{
+max-width:600px;
+margin:20px auto 40px;
+background:#162038;
+padding:25px;
+border-radius:12px;
+}
+
+.waitlist input{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:none;
+margin-top:10px;
+font-size:16px;
+}
+
+.waitlist button{
+margin-top:12px;
+width:100%;
+padding:12px;
+background:#00ff9c;
+border:none;
+border-radius:6px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
 
 .statusbar{
@@ -117,10 +147,31 @@ font-size:13px;
 opacity:.7;
 margin-top:4px;
 }
+
 </style>
 </head>
 
 <body>
+
+<h1>EZTrader</h1>
+<p class="subtitle">AI Trading Command Center</p>
+
+<div class="waitlist">
+
+<h2>Early Access — EZTrader App</h2>
+
+<p style="opacity:.8;">
+The EZTrader mobile app is launching soon.  
+Join the early access list for priority access and launch pricing.
+</p>
+
+<input id="waitlist_email" type="email" placeholder="Enter your email">
+
+<button onclick="joinWaitlist()">Join Waitlist</button>
+
+<div id="waitlist_msg" style="margin-top:10px;"></div>
+
+</div>
 
 <div class="statusbar">
 
@@ -145,9 +196,6 @@ margin-top:4px;
 </div>
 
 </div>
-
-<h1>EZTrader</h1>
-<p class="subtitle">AI Trading Command Center</p>
 
 <div class="grid">
 
@@ -248,10 +296,13 @@ else el.classList.add("hold")
 }
 
 async function price(){
+
 const r=await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
 const d=await r.json()
+
 document.getElementById("price").innerText="$"+Number(d.data.amount).toLocaleString()
 document.getElementById("btcprice").innerText="$"+Number(d.data.amount).toLocaleString()
+
 }
 
 async function signal(){
@@ -331,6 +382,33 @@ box.appendChild(div)
 })
 
 }catch(e){}
+
+}
+
+async function joinWaitlist(){
+
+const email=document.getElementById("waitlist_email").value
+
+if(!email){
+document.getElementById("waitlist_msg").innerText="Please enter an email."
+return
+}
+
+try{
+
+await fetch("/api/waitlist",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email:email})
+})
+
+document.getElementById("waitlist_msg").innerText="You're on the list!"
+
+}catch(e){
+
+document.getElementById("waitlist_msg").innerText="Signup failed."
+
+}
 
 }
 
