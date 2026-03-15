@@ -151,6 +151,21 @@ document.getElementById("unrealized_pl").innerText = "$"+data.unrealized_pl.toLo
 }
 
 updatePortfolio()
+setInterval(updatePortfolio,5000)async function updatePortfolio(){
+
+const r = await fetch("portfolio.json")
+const data = await r.json()
+
+document.getElementById("portfolio_value").innerText = "$"+data.portfolio_value.toLocaleString()
+document.getElementById("cash_usd").innerText = "$"+data.cash_usd.toLocaleString()
+document.getElementById("btc_qty").innerText = data.btc_qty.toFixed(6)
+document.getElementById("avg_price").innerText = "$"+data.avg_price.toLocaleString()
+document.getElementById("current_price").innerText = "$"+data.current_price.toLocaleString()
+document.getElementById("unrealized_pl").innerText = "$"+data.unrealized_pl.toLocaleString()
+
+}
+
+updatePortfolio()
 setInterval(updatePortfolio,5000)
 </script>
 
