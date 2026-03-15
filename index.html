@@ -5,35 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+*{
+box-sizing:border-box;
+}
+
 body{
+margin:0;
 background:#0b1220;
 color:white;
-font-family:Arial;
+font-family:Arial, sans-serif;
 text-align:center;
-padding:40px;
+padding:20px 12px 40px;
+overflow-x:hidden;
 }
 
 h1{
 font-size:42px;
+margin:18px 0 8px;
+}
+
+.subtitle{
+margin:0 0 22px;
+opacity:.85;
+font-size:18px;
+}
+
+.statusbar{
+max-width:1100px;
+margin:0 auto 20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+}
+
+.statuspill{
+background:#162038;
+border-radius:12px;
+padding:14px 12px;
+text-align:center;
+box-shadow:0 0 0 1px rgba(255,255,255,.04);
+}
+
+.statuslabel{
+font-size:12px;
+opacity:.7;
+letter-spacing:.8px;
+text-transform:uppercase;
+margin-bottom:6px;
+}
+
+.statusvalue{
+font-size:18px;
+font-weight:bold;
+}
+
+.grid{
+max-width:1100px;
+margin:0 auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:16px;
+align-items:start;
 }
 
 .card{
 background:#162038;
 padding:20px;
-margin:15px;
-border-radius:10px;
-display:inline-block;
-width:250px;
-vertical-align:top;
+border-radius:14px;
+min-height:132px;
+box-shadow:0 0 0 1px rgba(255,255,255,.04);
 }
 
-.chart{
-width:520px;
+.card h3{
+margin-top:0;
+margin-bottom:18px;
+font-size:18px;
+}
+
+.value{
+font-size:20px;
+line-height:1.45;
+word-break:break-word;
 }
 
 .price{
 font-size:28px;
 color:#00ff9c;
+font-weight:bold;
 }
 
 .signal{
@@ -44,152 +102,310 @@ font-weight:bold;
 .buy{color:#00ff9c;}
 .sell{color:#ff4d4d;}
 .hold{color:#ffd24d;}
+
+.chart-card{
+grid-column:1 / -1;
+}
+
+.chart-wrap{
+width:100%;
+max-width:100%;
+overflow:hidden;
+border-radius:10px;
+}
+
+.chart-wrap iframe{
+display:block;
+width:100%;
+height:320px;
+border:0;
+}
+
+.trades-card{
+grid-column:1 / -1;
+text-align:left;
+}
+
+.trades-list{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.trade-row{
+background:#0f172a;
+border-radius:10px;
+padding:12px 14px;
+display:grid;
+grid-template-columns:1fr auto;
+gap:8px;
+align-items:center;
+}
+
+.trade-main{
+font-weight:bold;
+}
+
+.trade-sub{
+font-size:13px;
+opacity:.75;
+margin-top:4px;
+}
+
+.trade-buy{color:#00ff9c;}
+.trade-sell{color:#ff4d4d;}
+.trade-none{color:#ffd24d;}
+
+.empty{
+opacity:.7;
+font-size:16px;
+}
+
+@media (max-width:600px){
+h1{
+font-size:34px;
+}
+.price{
+font-size:24px;
+}
+.signal{
+font-size:28px;
+}
+.chart-wrap iframe{
+height:280px;
+}
+}
 </style>
 </head>
 
 <body>
 
+<div class="statusbar">
+  <div class="statuspill">
+    <div class="statuslabel">Engine</div>
+    <div class="statusvalue" id="engine_bar">RUNNING</div>
+  </div>
+  <div class="statuspill">
+    <div class="statuslabel">Last Signal Age</div>
+    <div class="statusvalue" id="signal_age">--</div>
+  </div>
+  <div class="statuspill">
+    <div class="statuslabel">Market Mode</div>
+    <div class="statusvalue" id="market_mode">--</div>
+  </div>
+  <div class="statuspill">
+    <div class="statuslabel">Bot Mode</div>
+    <div class="statusvalue" id="bot_mode">SIGNAL ONLY</div>
+  </div>
+</div>
+
 <h1>EZTrader</h1>
-<p>AI Trading Command Center</p>
+<p class="subtitle">AI Trading Command Center</p>
 
-<div class="card">
-<h3>BTC Price</h3>
-<div class="price" id="price">Loading...</div>
-</div>
+<div class="grid">
 
-<div class="card">
-<h3>Market Signal</h3>
-<div class="signal hold" id="signal">HOLD</div>
-</div>
+  <div class="card">
+    <h3>BTC Price</h3>
+    <div class="price" id="price">Loading...</div>
+  </div>
 
-<div class="card">
-<h3>Bot Status</h3>
-<div id="status">Engine Online</div>
-</div>
+  <div class="card">
+    <h3>Market Signal</h3>
+    <div class="signal hold" id="signal">HOLD</div>
+  </div>
 
-<div class="card">
-<h3>Confidence</h3>
-<div id="confidence">--</div>
-</div>
+  <div class="card">
+    <h3>Bot Status</h3>
+    <div class="value" id="status">Engine Online</div>
+  </div>
 
-<div class="card">
-<h3>Strategy</h3>
-<div id="strategy">--</div>
-</div>
+  <div class="card">
+    <h3>Confidence</h3>
+    <div class="value" id="confidence">--</div>
+  </div>
 
-<div class="card">
-<h3>Market Regime</h3>
-<div id="regime">--</div>
-</div>
+  <div class="card">
+    <h3>Strategy</h3>
+    <div class="value" id="strategy">--</div>
+  </div>
 
-<div class="card">
-<h3>Trend</h3>
-<div id="trend">--</div>
-</div>
+  <div class="card">
+    <h3>Market Regime</h3>
+    <div class="value" id="regime">--</div>
+  </div>
 
-<div class="card">
-<h3>Portfolio Value</h3>
-<div id="portfolio_value">--</div>
-</div>
+  <div class="card">
+    <h3>Trend</h3>
+    <div class="value" id="trend">--</div>
+  </div>
 
-<div class="card">
-<h3>Cash Balance</h3>
-<div id="cash_usd">--</div>
-</div>
+  <div class="card">
+    <h3>Portfolio Value</h3>
+    <div class="value" id="portfolio_value">--</div>
+  </div>
 
-<div class="card">
-<h3>BTC Holdings</h3>
-<div id="btc_qty">--</div>
-</div>
+  <div class="card">
+    <h3>Cash Balance</h3>
+    <div class="value" id="cash_usd">--</div>
+  </div>
 
-<div class="card">
-<h3>Average Entry</h3>
-<div id="avg_price">--</div>
-</div>
+  <div class="card">
+    <h3>BTC Holdings</h3>
+    <div class="value" id="btc_qty">--</div>
+  </div>
 
-<div class="card">
-<h3>Current BTC Price</h3>
-<div id="current_price">--</div>
-</div>
+  <div class="card">
+    <h3>Average Entry</h3>
+    <div class="value" id="avg_price">--</div>
+  </div>
 
-<div class="card">
-<h3>Unrealized P/L</h3>
-<div id="unrealized_pl">--</div>
-</div>
+  <div class="card">
+    <h3>Current BTC Price</h3>
+    <div class="value" id="current_price">--</div>
+  </div>
 
-<div class="card chart">
-<h3>BTC Price Chart</h3>
+  <div class="card">
+    <h3>Unrealized P/L</h3>
+    <div class="value" id="unrealized_pl">--</div>
+  </div>
 
-<iframe
-src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"
-width="500"
-height="300"
-frameborder="0"
-allowtransparency="true"
-scrolling="no">
-</iframe>
+  <div class="card chart-card">
+    <h3>BTC Price Chart</h3>
+    <div class="chart-wrap">
+      <iframe
+        src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"
+        allowtransparency="true"
+        scrolling="no">
+      </iframe>
+    </div>
+  </div>
+
+  <div class="card trades-card">
+    <h3>Recent Trades</h3>
+    <div id="trades_list" class="trades-list">
+      <div class="empty">Loading trades...</div>
+    </div>
+  </div>
 
 </div>
 
 <script>
-
-async function updatePrice(){
-
-const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
-const data = await r.json()
-
-document.getElementById("price").innerText =
-"$"+parseFloat(data.data.amount).toLocaleString()
-
+function fmtMoney(n, digits = 2) {
+  const num = Number(n || 0);
+  const abs = Math.abs(num).toLocaleString(undefined, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits
+  });
+  return num < 0 ? "-$" + abs : "$" + abs;
 }
 
-async function updateSignal(){
-
-const r = await fetch("signal.json")
-const data = await r.json()
-
-document.getElementById("signal").innerText = data.action
-document.getElementById("status").innerText = data.status
-document.getElementById("confidence").innerText = data.confidence + "%"
-document.getElementById("strategy").innerText = data.strategy
-document.getElementById("regime").innerText = data.regime
-document.getElementById("trend").innerText = data.trend
-
+function fmtPrice(n) {
+  return "$" + Number(n || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 3
+  });
 }
 
-async function updatePortfolio(){
+function setSignalStyle(action) {
+  const el = document.getElementById("signal");
+  el.classList.remove("buy", "sell", "hold");
 
-const r = await fetch("portfolio.json")
-const data = await r.json()
-
-document.getElementById("portfolio_value").innerText =
-"$"+data.portfolio_value.toLocaleString()
-
-document.getElementById("cash_usd").innerText =
-"$"+data.cash_usd.toLocaleString()
-
-document.getElementById("btc_qty").innerText =
-data.btc_qty.toFixed(6)
-
-document.getElementById("avg_price").innerText =
-"$"+data.avg_price.toLocaleString()
-
-document.getElementById("current_price").innerText =
-"$"+data.current_price.toLocaleString()
-
-document.getElementById("unrealized_pl").innerText =
-"$"+data.unrealized_pl.toLocaleString()
-
+  if (action === "BUY") {
+    el.classList.add("buy");
+  } else if (action === "SELL") {
+    el.classList.add("sell");
+  } else {
+    el.classList.add("hold");
+  }
 }
 
-updatePrice()
-updateSignal()
-updatePortfolio()
+async function updatePrice() {
+  const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
+  const data = await r.json();
+  document.getElementById("price").innerText =
+    fmtPrice(parseFloat(data.data.amount));
+}
 
-setInterval(updatePrice,5000)
-setInterval(updateSignal,5000)
-setInterval(updatePortfolio,5000)
+async function updateSignal() {
+  const r = await fetch("signal.json");
+  const data = await r.json();
 
+  const action = data.action || "HOLD";
+  document.getElementById("signal").innerText = action;
+  document.getElementById("status").innerText = data.status || "Engine Online";
+  document.getElementById("confidence").innerText = (data.confidence ?? "--") + "%";
+  document.getElementById("strategy").innerText = data.strategy || "--";
+  document.getElementById("regime").innerText = data.regime || "--";
+  document.getElementById("trend").innerText = data.trend || "--";
+
+  document.getElementById("engine_bar").innerText =
+    (data.status || "").toLowerCase().includes("online") ? "RUNNING" : "CHECK";
+  document.getElementById("market_mode").innerText = data.regime || "--";
+
+  if (data.timestamp) {
+    const age = Math.max(0, Math.floor(Date.now() / 1000 - Number(data.timestamp)));
+    document.getElementById("signal_age").innerText = age + "s ago";
+  } else {
+    document.getElementById("signal_age").innerText = "--";
+  }
+
+  setSignalStyle(action);
+}
+
+async function updatePortfolio() {
+  const r = await fetch("portfolio.json");
+  const data = await r.json();
+
+  document.getElementById("portfolio_value").innerText = fmtMoney(data.portfolio_value);
+  document.getElementById("cash_usd").innerText = fmtMoney(data.cash_usd);
+  document.getElementById("btc_qty").innerText = Number(data.btc_qty || 0).toFixed(6);
+  document.getElementById("avg_price").innerText = fmtMoney(data.avg_price);
+  document.getElementById("current_price").innerText = fmtMoney(data.current_price);
+  document.getElementById("unrealized_pl").innerText = fmtMoney(data.unrealized_pl);
+}
+
+async function updateTrades() {
+  const box = document.getElementById("trades_list");
+
+  try {
+    const r = await fetch("trades.json");
+    if (!r.ok) throw new Error("missing");
+    const trades = await r.json();
+
+    if (!Array.isArray(trades) || trades.length === 0) {
+      box.innerHTML = '<div class="empty">No recent trades yet</div>';
+      return;
+    }
+
+    box.innerHTML = trades.map(t => {
+      const action = (t.action || "").toUpperCase();
+      const actionClass = action === "BUY" ? "trade-buy" : action === "SELL" ? "trade-sell" : "trade-none";
+      return `
+        <div class="trade-row">
+          <div>
+            <div class="trade-main ${actionClass}">${action} ${t.symbol || "BTC-USD"}</div>
+            <div class="trade-sub">
+              Price: ${fmtMoney(t.price)} · Size: ${fmtMoney(t.size_usd)} · Qty: ${Number(t.filled_qty || 0).toFixed(6)}
+            </div>
+          </div>
+          <div class="trade-sub">${t.time || ""}</div>
+        </div>
+      `;
+    }).join("");
+  } catch (e) {
+    box.innerHTML = '<div class="empty">No recent trades yet</div>';
+  }
+}
+
+updatePrice();
+updateSignal();
+updatePortfolio();
+updateTrades();
+
+setInterval(updatePrice, 5000);
+setInterval(updateSignal, 5000);
+setInterval(updatePortfolio, 5000);
+setInterval(updateTrades, 15000);
 </script>
 
 </body>
