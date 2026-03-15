@@ -110,7 +110,7 @@ font-weight:bold;
 </div>
 <script>
 
-async function updatePrice(){
+async function updatePrice() {
 
 const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
 const data = await r.json()
@@ -120,8 +120,6 @@ document.getElementById("price").innerText =
 
 }
 
-updatePrice()
-setInterval(updatePrice,5000)
 async function updateSignal(){
 
 const r = await fetch("signal.json")
@@ -129,43 +127,44 @@ const data = await r.json()
 
 document.getElementById("signal").innerText = data.action
 document.getElementById("status").innerText = data.status
-document.getElementById("confidence").innerText = data.confidence + "%";
-document.getElementById("strategy").innerText = data.strategy;
-document.getElementById("regime").innerText = data.regime;
-document.getElementById("trend").innerText = data.trend;
+document.getElementById("confidence").innerText = data.confidence + "%"
+document.getElementById("strategy").innerText = data.strategy
+document.getElementById("regime").innerText = data.regime
+document.getElementById("trend").innerText = data.trend
+
 }
 
+async function updatePortfolio(){
+
+const r = await fetch("portfolio.json")
+const data = await r.json()
+
+document.getElementById("portfolio_value").innerText =
+"$"+data.portfolio_value.toLocaleString()
+
+document.getElementById("cash_usd").innerText =
+"$"+data.cash_usd.toLocaleString()
+
+document.getElementById("btc_qty").innerText =
+data.btc_qty.toFixed(6)
+
+document.getElementById("avg_price").innerText =
+"$"+data.avg_price.toLocaleString()
+
+document.getElementById("current_price").innerText =
+"$"+data.current_price.toLocaleString()
+
+document.getElementById("unrealized_pl").innerText =
+"$"+data.unrealized_pl.toLocaleString()
+
+}
+
+updatePrice()
 updateSignal()
-setInterval(updateSignal,5000)async function updatePortfolio(){
-
-const r = await fetch("portfolio.json")
-const data = await r.json()
-
-document.getElementById("portfolio_value").innerText = "$"+data.portfolio_value.toLocaleString()
-document.getElementById("cash_usd").innerText = "$"+data.cash_usd.toLocaleString()
-document.getElementById("btc_qty").innerText = data.btc_qty.toFixed(6)
-document.getElementById("avg_price").innerText = "$"+data.avg_price.toLocaleString()
-document.getElementById("current_price").innerText = "$"+data.current_price.toLocaleString()
-document.getElementById("unrealized_pl").innerText = "$"+data.unrealized_pl.toLocaleString()
-
-}
-
 updatePortfolio()
-setInterval(updatePortfolio,5000)async function updatePortfolio(){
 
-const r = await fetch("portfolio.json")
-const data = await r.json()
-
-document.getElementById("portfolio_value").innerText = "$"+data.portfolio_value.toLocaleString()
-document.getElementById("cash_usd").innerText = "$"+data.cash_usd.toLocaleString()
-document.getElementById("btc_qty").innerText = data.btc_qty.toFixed(6)
-document.getElementById("avg_price").innerText = "$"+data.avg_price.toLocaleString()
-document.getElementById("current_price").innerText = "$"+data.current_price.toLocaleString()
-document.getElementById("unrealized_pl").innerText = "$"+data.unrealized_pl.toLocaleString()
-
-}
-
-updatePortfolio()
+setInterval(updatePrice,5000)
+setInterval(updateSignal,5000)
 setInterval(updatePortfolio,5000)
 </script>
 
