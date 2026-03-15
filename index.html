@@ -5,53 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
 margin:0;
 background:#0b1220;
 color:white;
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 text-align:center;
-padding:20px 12px 40px;
+padding:20px;
 overflow-x:hidden;
 }
 
 h1{
 font-size:42px;
-margin:18px 0 8px;
+margin-bottom:5px;
 }
 
 .subtitle{
-margin:0 0 22px;
-opacity:.85;
-font-size:18px;
+opacity:.8;
+margin-bottom:25px;
 }
 
 .statusbar{
-max-width:1100px;
-margin:0 auto 20px;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:12px;
+max-width:1100px;
+margin:auto;
+margin-bottom:20px;
 }
 
 .statuspill{
 background:#162038;
-border-radius:12px;
-padding:14px 12px;
-text-align:center;
-box-shadow:0 0 0 1px rgba(255,255,255,.04);
+padding:14px;
+border-radius:10px;
 }
 
 .statuslabel{
 font-size:12px;
-opacity:.7;
-letter-spacing:.8px;
-text-transform:uppercase;
-margin-bottom:6px;
+opacity:.6;
 }
 
 .statusvalue{
@@ -60,32 +53,21 @@ font-weight:bold;
 }
 
 .grid{
-max-width:1100px;
-margin:0 auto;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:16px;
-align-items:start;
+max-width:1100px;
+margin:auto;
 }
 
 .card{
 background:#162038;
 padding:20px;
-border-radius:14px;
-min-height:132px;
-box-shadow:0 0 0 1px rgba(255,255,255,.04);
+border-radius:12px;
 }
 
 .card h3{
 margin-top:0;
-margin-bottom:18px;
-font-size:18px;
-}
-
-.value{
-font-size:20px;
-line-height:1.45;
-word-break:break-word;
 }
 
 .price{
@@ -107,18 +89,11 @@ font-weight:bold;
 grid-column:1 / -1;
 }
 
-.chart-wrap{
-width:100%;
-max-width:100%;
-overflow:hidden;
-border-radius:10px;
-}
-
-.chart-wrap iframe{
-display:block;
+.chart iframe{
 width:100%;
 height:320px;
 border:0;
+border-radius:8px;
 }
 
 .trades-card{
@@ -126,20 +101,11 @@ grid-column:1 / -1;
 text-align:left;
 }
 
-.trades-list{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.trade-row{
+.trade{
 background:#0f172a;
-border-radius:10px;
-padding:12px 14px;
-display:grid;
-grid-template-columns:1fr auto;
-gap:8px;
-align-items:center;
+padding:12px;
+border-radius:8px;
+margin-bottom:10px;
 }
 
 .trade-main{
@@ -148,32 +114,8 @@ font-weight:bold;
 
 .trade-sub{
 font-size:13px;
-opacity:.75;
-margin-top:4px;
-}
-
-.trade-buy{color:#00ff9c;}
-.trade-sell{color:#ff4d4d;}
-.trade-none{color:#ffd24d;}
-
-.empty{
 opacity:.7;
-font-size:16px;
-}
-
-@media (max-width:600px){
-h1{
-font-size:34px;
-}
-.price{
-font-size:24px;
-}
-.signal{
-font-size:28px;
-}
-.chart-wrap iframe{
-height:280px;
-}
+margin-top:4px;
 }
 </style>
 </head>
@@ -181,22 +123,27 @@ height:280px;
 <body>
 
 <div class="statusbar">
-  <div class="statuspill">
-    <div class="statuslabel">Engine</div>
-    <div class="statusvalue" id="engine_bar">RUNNING</div>
-  </div>
-  <div class="statuspill">
-    <div class="statuslabel">Last Signal Age</div>
-    <div class="statusvalue" id="signal_age">--</div>
-  </div>
-  <div class="statuspill">
-    <div class="statuslabel">Market Mode</div>
-    <div class="statusvalue" id="market_mode">--</div>
-  </div>
-  <div class="statuspill">
-    <div class="statuslabel">Bot Mode</div>
-    <div class="statusvalue" id="bot_mode">SIGNAL ONLY</div>
-  </div>
+
+<div class="statuspill">
+<div class="statuslabel">Engine</div>
+<div class="statusvalue" id="engine">RUNNING</div>
+</div>
+
+<div class="statuspill">
+<div class="statuslabel">Last Signal Age</div>
+<div class="statusvalue" id="age">--</div>
+</div>
+
+<div class="statuspill">
+<div class="statuslabel">Market Mode</div>
+<div class="statusvalue" id="mode">--</div>
+</div>
+
+<div class="statuspill">
+<div class="statuslabel">Bot Mode</div>
+<div class="statusvalue">SIGNAL ONLY</div>
+</div>
+
 </div>
 
 <h1>EZTrader</h1>
@@ -204,208 +151,199 @@ height:280px;
 
 <div class="grid">
 
-  <div class="card">
-    <h3>BTC Price</h3>
-    <div class="price" id="price">Loading...</div>
-  </div>
+<div class="card">
+<h3>BTC Price</h3>
+<div class="price" id="price">Loading...</div>
+</div>
 
-  <div class="card">
-    <h3>Market Signal</h3>
-    <div class="signal hold" id="signal">HOLD</div>
-  </div>
+<div class="card">
+<h3>Market Signal</h3>
+<div class="signal hold" id="signal">HOLD</div>
+</div>
 
-  <div class="card">
-    <h3>Bot Status</h3>
-    <div class="value" id="status">Engine Online</div>
-  </div>
+<div class="card">
+<h3>Bot Status</h3>
+<div id="status">Engine Online</div>
+</div>
 
-  <div class="card">
-    <h3>Confidence</h3>
-    <div class="value" id="confidence">--</div>
-  </div>
+<div class="card">
+<h3>Confidence</h3>
+<div id="confidence">--</div>
+</div>
 
-  <div class="card">
-    <h3>Strategy</h3>
-    <div class="value" id="strategy">--</div>
-  </div>
+<div class="card">
+<h3>Strategy</h3>
+<div id="strategy">--</div>
+</div>
 
-  <div class="card">
-    <h3>Market Regime</h3>
-    <div class="value" id="regime">--</div>
-  </div>
+<div class="card">
+<h3>Market Regime</h3>
+<div id="regime">--</div>
+</div>
 
-  <div class="card">
-    <h3>Trend</h3>
-    <div class="value" id="trend">--</div>
-  </div>
+<div class="card">
+<h3>Trend</h3>
+<div id="trend">--</div>
+</div>
 
-  <div class="card">
-    <h3>Portfolio Value</h3>
-    <div class="value" id="portfolio_value">--</div>
-  </div>
+<div class="card">
+<h3>Portfolio Value</h3>
+<div id="portfolio">--</div>
+</div>
 
-  <div class="card">
-    <h3>Cash Balance</h3>
-    <div class="value" id="cash_usd">--</div>
-  </div>
+<div class="card">
+<h3>Cash Balance</h3>
+<div id="cash">--</div>
+</div>
 
-  <div class="card">
-    <h3>BTC Holdings</h3>
-    <div class="value" id="btc_qty">--</div>
-  </div>
+<div class="card">
+<h3>BTC Holdings</h3>
+<div id="btc">--</div>
+</div>
 
-  <div class="card">
-    <h3>Average Entry</h3>
-    <div class="value" id="avg_price">--</div>
-  </div>
+<div class="card">
+<h3>Average Entry</h3>
+<div id="entry">--</div>
+</div>
 
-  <div class="card">
-    <h3>Current BTC Price</h3>
-    <div class="value" id="current_price">--</div>
-  </div>
+<div class="card">
+<h3>Current BTC Price</h3>
+<div id="btcprice">--</div>
+</div>
 
-  <div class="card">
-    <h3>Unrealized P/L</h3>
-    <div class="value" id="unrealized_pl">--</div>
-  </div>
+<div class="card">
+<h3>Unrealized P/L</h3>
+<div id="pl">--</div>
+</div>
 
-  <div class="card chart-card">
-    <h3>BTC Price Chart</h3>
-    <div class="chart-wrap">
-      <iframe
-        src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"
-        allowtransparency="true"
-        scrolling="no">
-      </iframe>
-    </div>
-  </div>
+<div class="card chart-card">
+<h3>BTC Price Chart</h3>
+<div class="chart">
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"></iframe>
+</div>
+</div>
 
-  <div class="card trades-card">
-    <h3>Recent Trades</h3>
-    <div id="trades_list" class="trades-list">
-      <div class="empty">Loading trades...</div>
-    </div>
-  </div>
+<div class="card trades-card">
+<h3>Recent Trades</h3>
+<div id="trades"></div>
+</div>
 
 </div>
 
 <script>
-function fmtMoney(n, digits = 2) {
-  const num = Number(n || 0);
-  const abs = Math.abs(num).toLocaleString(undefined, {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits
-  });
-  return num < 0 ? "-$" + abs : "$" + abs;
+
+function money(v){
+const n=Number(v||0)
+const abs=Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2})
+return n<0?"-$"+abs:"$"+abs
 }
 
-function fmtPrice(n) {
-  return "$" + Number(n || 0).toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 3
-  });
+function setSignal(action){
+const el=document.getElementById("signal")
+el.classList.remove("buy","sell","hold")
+
+if(action==="BUY") el.classList.add("buy")
+else if(action==="SELL") el.classList.add("sell")
+else el.classList.add("hold")
 }
 
-function setSignalStyle(action) {
-  const el = document.getElementById("signal");
-  el.classList.remove("buy", "sell", "hold");
-
-  if (action === "BUY") {
-    el.classList.add("buy");
-  } else if (action === "SELL") {
-    el.classList.add("sell");
-  } else {
-    el.classList.add("hold");
-  }
+async function price(){
+const r=await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
+const d=await r.json()
+document.getElementById("price").innerText="$"+Number(d.data.amount).toLocaleString()
+document.getElementById("btcprice").innerText="$"+Number(d.data.amount).toLocaleString()
 }
 
-async function updatePrice() {
-  const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
-  const data = await r.json();
-  document.getElementById("price").innerText =
-    fmtPrice(parseFloat(data.data.amount));
+async function signal(){
+
+const r=await fetch("signal.json")
+const d=await r.json()
+
+let act=d.action||"HOLD"
+
+if(act==="NONE") act="HOLD"
+
+document.getElementById("signal").innerText=act
+setSignal(act)
+
+document.getElementById("status").innerText=d.status
+document.getElementById("confidence").innerText=d.confidence+"%"
+
+let strat=d.strategy||""
+
+if(strat==="NO_SIGNAL") strat="No Trade"
+
+document.getElementById("strategy").innerText=strat
+
+document.getElementById("regime").innerText=d.regime
+document.getElementById("trend").innerText=d.trend
+document.getElementById("mode").innerText=d.regime
+
+if(d.timestamp){
+const age=Math.floor(Date.now()/1000-d.timestamp)
+document.getElementById("age").innerText=age+"s ago"
 }
 
-async function updateSignal() {
-  const r = await fetch("signal.json");
-  const data = await r.json();
-
-  const action = data.action || "HOLD";
-  document.getElementById("signal").innerText = action;
-  document.getElementById("status").innerText = data.status || "Engine Online";
-  document.getElementById("confidence").innerText = (data.confidence ?? "--") + "%";
-  document.getElementById("strategy").innerText = data.strategy || "--";
-  document.getElementById("regime").innerText = data.regime || "--";
-  document.getElementById("trend").innerText = data.trend || "--";
-
-  document.getElementById("engine_bar").innerText =
-    (data.status || "").toLowerCase().includes("online") ? "RUNNING" : "CHECK";
-  document.getElementById("market_mode").innerText = data.regime || "--";
-
-  if (data.timestamp) {
-    const age = Math.max(0, Math.floor(Date.now() / 1000 - Number(data.timestamp)));
-    document.getElementById("signal_age").innerText = age + "s ago";
-  } else {
-    document.getElementById("signal_age").innerText = "--";
-  }
-
-  setSignalStyle(action);
 }
 
-async function updatePortfolio() {
-  const r = await fetch("portfolio.json");
-  const data = await r.json();
+async function portfolio(){
 
-  document.getElementById("portfolio_value").innerText = fmtMoney(data.portfolio_value);
-  document.getElementById("cash_usd").innerText = fmtMoney(data.cash_usd);
-  document.getElementById("btc_qty").innerText = Number(data.btc_qty || 0).toFixed(6);
-  document.getElementById("avg_price").innerText = fmtMoney(data.avg_price);
-  document.getElementById("current_price").innerText = fmtMoney(data.current_price);
-  document.getElementById("unrealized_pl").innerText = fmtMoney(data.unrealized_pl);
+const r=await fetch("portfolio.json")
+const d=await r.json()
+
+document.getElementById("portfolio").innerText=money(d.portfolio_value)
+document.getElementById("cash").innerText=money(d.cash_usd)
+document.getElementById("btc").innerText=Number(d.btc_qty).toFixed(6)
+document.getElementById("entry").innerText=money(d.avg_price)
+document.getElementById("pl").innerText=money(d.unrealized_pl)
+
 }
 
-async function updateTrades() {
-  const box = document.getElementById("trades_list");
+async function trades(){
 
-  try {
-    const r = await fetch("trades.json");
-    if (!r.ok) throw new Error("missing");
-    const trades = await r.json();
+try{
 
-    if (!Array.isArray(trades) || trades.length === 0) {
-      box.innerHTML = '<div class="empty">No recent trades yet</div>';
-      return;
-    }
+const r=await fetch("trades.json")
 
-    box.innerHTML = trades.map(t => {
-      const action = (t.action || "").toUpperCase();
-      const actionClass = action === "BUY" ? "trade-buy" : action === "SELL" ? "trade-sell" : "trade-none";
-      return `
-        <div class="trade-row">
-          <div>
-            <div class="trade-main ${actionClass}">${action} ${t.symbol || "BTC-USD"}</div>
-            <div class="trade-sub">
-              Price: ${fmtMoney(t.price)} · Size: ${fmtMoney(t.size_usd)} · Qty: ${Number(t.filled_qty || 0).toFixed(6)}
-            </div>
-          </div>
-          <div class="trade-sub">${t.time || ""}</div>
-        </div>
-      `;
-    }).join("");
-  } catch (e) {
-    box.innerHTML = '<div class="empty">No recent trades yet</div>';
-  }
+if(!r.ok) return
+
+const list=await r.json()
+
+const box=document.getElementById("trades")
+
+box.innerHTML=""
+
+list.forEach(t=>{
+
+const div=document.createElement("div")
+div.className="trade"
+
+div.innerHTML=
+'<div class="trade-main">'+t.action+' '+t.symbol+'</div>'+
+'<div class="trade-sub">Price: $'+Number(t.price).toLocaleString()+
+' · Size: $'+Number(t.size_usd).toLocaleString()+
+' · Qty: '+Number(t.filled_qty).toFixed(6)+
+'</div>'+
+'<div class="trade-sub">'+t.time+'</div>'
+
+box.appendChild(div)
+
+})
+
+}catch(e){}
+
 }
 
-updatePrice();
-updateSignal();
-updatePortfolio();
-updateTrades();
+price()
+signal()
+portfolio()
+trades()
 
-setInterval(updatePrice, 5000);
-setInterval(updateSignal, 5000);
-setInterval(updatePortfolio, 5000);
-setInterval(updateTrades, 15000);
+setInterval(price,5000)
+setInterval(signal,5000)
+setInterval(portfolio,5000)
+setInterval(trades,15000)
+
 </script>
 
 </body>
