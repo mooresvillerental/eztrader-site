@@ -76,7 +76,18 @@ document.getElementById("price").innerText =
 
 updatePrice()
 setInterval(updatePrice,5000)
+async function updateSignal(){
 
+const r = await fetch("signal.json")
+const data = await r.json()
+
+document.getElementById("signal").innerText = data.action
+document.getElementById("status").innerText = data.status
+
+}
+
+updateSignal()
+setInterval(updateSignal,5000)
 </script>
 
 </body>
