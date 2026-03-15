@@ -1,17 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>EZTrader</title>
+<title>EZTrader Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+background:#0b1220;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:40px;
+}
+
+h1{
+font-size:42px;
+}
+
+.card{
+background:#162038;
+padding:20px;
+margin:15px;
+border-radius:10px;
+display:inline-block;
+width:250px;
+}
+
+.price{
+font-size:28px;
+color:#00ff9c;
+}
+
+.signal{
+font-size:32px;
+font-weight:bold;
+}
+
+.buy{color:#00ff9c;}
+.sell{color:#ff4d4d;}
+.hold{color:#ffd24d;}
+</style>
 </head>
 
-<body style="background:#0f172a;color:white;font-family:Arial;text-align:center;padding-top:80px;">
+<body>
 
 <h1>EZTrader</h1>
-<p>AI-assisted trading intelligence</p>
+<p>AI Trading Command Center</p>
 
-<p>Live engine readings, transparent signals, and disciplined trade logic.</p>
+<div class="card">
+<h3>BTC Price</h3>
+<div class="price" id="price">Loading...</div>
+</div>
 
-<p>Launching soon.</p>
+<div class="card">
+<h3>Market Signal</h3>
+<div class="signal hold" id="signal">HOLD</div>
+</div>
+
+<div class="card">
+<h3>Bot Status</h3>
+<div id="status">Engine Online</div>
+</div>
+
+<script>
+
+async function updatePrice(){
+
+const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
+const data = await r.json()
+
+document.getElementById("price").innerText =
+"$"+parseFloat(data.data.amount).toLocaleString()
+
+}
+
+updatePrice()
+setInterval(updatePrice,5000)
+
+</script>
 
 </body>
 </html>
