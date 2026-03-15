@@ -19,65 +19,12 @@ overflow-x:hidden;
 
 h1{
 font-size:42px;
-margin-bottom:5px;
+margin:0 0 5px;
 }
 
 .subtitle{
 opacity:.8;
-margin-bottom:20px;
-}
-
-.waitlist{
-max-width:700px;
-margin:20px auto 24px;
-background:#162038;
-padding:25px;
-border-radius:12px;
-}
-
-.waitlist h2{
-margin-top:0;
-}
-
-.waitlist p{
-opacity:.85;
-line-height:1.5;
-}
-
-.waitlist input,
-.waitlist textarea{
-width:100%;
-padding:12px;
-border-radius:6px;
-border:none;
-margin-top:10px;
-font-size:16px;
-font-family:Arial,sans-serif;
-}
-
-.waitlist textarea{
-height:110px;
-resize:none;
-}
-
-.waitlist button{
-margin-top:12px;
-width:100%;
-padding:12px;
-background:#00ff9c;
-border:none;
-border-radius:6px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.note-list{
-text-align:left;
-max-width:520px;
-margin:14px auto 0;
-opacity:.9;
-line-height:1.6;
+margin:0 0 20px;
 }
 
 .statusbar{
@@ -147,6 +94,7 @@ width:100%;
 height:320px;
 border:0;
 border-radius:8px;
+display:block;
 }
 
 .trades-card{
@@ -171,10 +119,64 @@ opacity:.7;
 margin-top:4px;
 }
 
-.msg{
+.section-box{
+max-width:700px;
+margin:24px auto 0;
+background:#162038;
+padding:25px;
+border-radius:12px;
+}
+
+.section-box h2{
+margin-top:0;
+}
+
+.section-box p{
+opacity:.85;
+line-height:1.5;
+}
+
+.note-list{
+text-align:left;
+max-width:520px;
+margin:14px auto 0;
+opacity:.9;
+line-height:1.6;
+}
+
+.section-box input,
+.section-box textarea{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:none;
 margin-top:10px;
-font-size:14px;
-min-height:18px;
+font-size:16px;
+font-family:Arial,sans-serif;
+}
+
+.section-box textarea{
+height:110px;
+resize:none;
+}
+
+.section-box button{
+margin-top:12px;
+width:100%;
+padding:12px;
+background:#00ff9c;
+border:none;
+border-radius:6px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+color:#000;
+}
+
+.small-note{
+margin-top:12px;
+font-size:13px;
+opacity:.7;
 }
 
 @media (max-width:600px){
@@ -192,37 +194,6 @@ height:280px;
 
 <h1>EZTrader</h1>
 <p class="subtitle">AI Trading Command Center</p>
-
-<div class="waitlist">
-<h2>Early Access — EZTrader App</h2>
-
-<p>
-The EZTrader mobile app is launching soon. Join the early access list for priority access and launch pricing.
-</p>
-
-<div class="note-list">
-• Founding users get early access<br>
-• Launch pricing will be offered to early signups<br>
-• The live dashboard below shows the engine running in real time
-</div>
-
-<input id="waitlist_email" type="email" placeholder="Enter your email">
-<button onclick="joinWaitlist()">Join Waitlist</button>
-<div id="waitlist_msg" class="msg"></div>
-</div>
-
-<div class="waitlist">
-<h2>Help Improve EZTrader</h2>
-
-<p>
-Have an idea, feature request, or recommendation? Send it here. We’re building this for real traders.
-</p>
-
-<input id="feedback_email" type="email" placeholder="Your email (optional)">
-<textarea id="feedback_text" placeholder="Share your feedback, ideas, or recommendations..."></textarea>
-<button onclick="sendFeedback()">Send Feedback</button>
-<div id="feedback_msg" class="msg"></div>
-</div>
 
 <div class="statusbar">
 
@@ -329,13 +300,64 @@ Have an idea, feature request, or recommendation? Send it here. We’re building
 
 </div>
 
-<script>
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/mnjgbkbj";
+<div class="section-box">
+<h2>Get Early Access</h2>
 
+<p>
+The EZTrader mobile app is launching soon. Join the early access list for priority access and launch pricing.
+</p>
+
+<div class="note-list">
+• Founding users get early access<br>
+• Launch pricing will be offered to early signups<br>
+• The live dashboard above shows the engine running in real time
+</div>
+
+<form action="https://formspree.io/f/mnjgbkbj" method="POST">
+<input type="hidden" name="form_type" value="waitlist">
+<input type="email" name="email" placeholder="Enter your email" required>
+<button type="submit">Get Early Access</button>
+</form>
+
+<div class="small-note">
+You’ll be notified when early access opens.
+</div>
+</div>
+
+<div class="section-box">
+<h2>Help Improve EZTrader</h2>
+
+<p>
+Have an idea, feature request, or recommendation? Send it here. We’re building this for real traders.
+</p>
+
+<form action="https://formspree.io/f/mnjgbkbj" method="POST">
+<input type="hidden" name="form_type" value="feedback">
+<input type="email" name="email" placeholder="Your email (optional)">
+<textarea name="feedback" placeholder="Share your feedback, ideas, or recommendations..." required></textarea>
+<button type="submit">Send Feedback</button>
+</form>
+
+<div class="small-note">
+Your comments help shape the app before launch.
+</div>
+</div>
+
+<script>
 function money(v){
   const n = Number(v || 0);
-  const abs = Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+  const abs = Math.abs(n).toLocaleString(undefined,{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
   return n < 0 ? "-$" + abs : "$" + abs;
+}
+
+function livePrice(v){
+  return "$" + Number(v || 0).toLocaleString(undefined,{
+    minimumFractionDigits:0,
+    maximumFractionDigits:3
+  });
 }
 
 function setSignal(action){
@@ -351,7 +373,7 @@ async function price(){
   const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
   const d = await r.json();
 
-  const live = "$" + Number(d.data.amount).toLocaleString();
+  const live = livePrice(d.data.amount);
   document.getElementById("price").innerText = live;
   document.getElementById("btcprice").innerText = live;
 }
@@ -378,7 +400,7 @@ async function signal(){
   document.getElementById("mode").innerText = d.regime || "--";
 
   if(d.timestamp){
-    const age = Math.floor(Date.now()/1000 - d.timestamp);
+    const age = Math.floor(Date.now()/1000 - Number(d.timestamp));
     document.getElementById("age").innerText = age + "s ago";
   } else {
     document.getElementById("age").innerText = "--";
@@ -405,6 +427,11 @@ async function trades(){
     const box = document.getElementById("trades");
     box.innerHTML = "";
 
+    if(!Array.isArray(list) || list.length === 0){
+      box.innerHTML = '<div class="trade"><div class="trade-main">No recent trades yet</div></div>';
+      return;
+    }
+
     list.forEach(t => {
       const div = document.createElement("div");
       div.className = "trade";
@@ -419,68 +446,9 @@ async function trades(){
 
       box.appendChild(div);
     });
-  } catch(e){}
-}
-
-async function postFormspree(payload){
-  const r = await fetch(FORMSPREE_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
-
-  if(!r.ok){
-    throw new Error("Form submission failed");
-  }
-}
-
-async function joinWaitlist(){
-  const email = document.getElementById("waitlist_email").value.trim();
-  const msg = document.getElementById("waitlist_msg");
-
-  if(!email){
-    msg.innerText = "Please enter an email.";
-    return;
-  }
-
-  try{
-    await postFormspree({
-      form_type: "waitlist",
-      email: email
-    });
-
-    msg.innerText = "You're on the list!";
-    document.getElementById("waitlist_email").value = "";
   } catch(e){
-    msg.innerText = "Signup failed. Please try again.";
-  }
-}
-
-async function sendFeedback(){
-  const email = document.getElementById("feedback_email").value.trim();
-  const feedback = document.getElementById("feedback_text").value.trim();
-  const msg = document.getElementById("feedback_msg");
-
-  if(!feedback){
-    msg.innerText = "Please enter feedback.";
-    return;
-  }
-
-  try{
-    await postFormspree({
-      form_type: "feedback",
-      email: email || "not_provided",
-      feedback: feedback
-    });
-
-    msg.innerText = "Thanks for your feedback!";
-    document.getElementById("feedback_email").value = "";
-    document.getElementById("feedback_text").value = "";
-  } catch(e){
-    msg.innerText = "Submission failed. Please try again.";
+    document.getElementById("trades").innerHTML =
+      '<div class="trade"><div class="trade-main">No recent trades yet</div></div>';
   }
 }
 
