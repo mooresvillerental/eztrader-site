@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-
 *{box-sizing:border-box;}
 
 body{
@@ -29,20 +28,36 @@ margin-bottom:20px;
 }
 
 .waitlist{
-max-width:600px;
-margin:20px auto 40px;
+max-width:700px;
+margin:20px auto 24px;
 background:#162038;
 padding:25px;
 border-radius:12px;
 }
 
-.waitlist input{
+.waitlist h2{
+margin-top:0;
+}
+
+.waitlist p{
+opacity:.85;
+line-height:1.5;
+}
+
+.waitlist input,
+.waitlist textarea{
 width:100%;
 padding:12px;
 border-radius:6px;
 border:none;
 margin-top:10px;
 font-size:16px;
+font-family:Arial,sans-serif;
+}
+
+.waitlist textarea{
+height:110px;
+resize:none;
 }
 
 .waitlist button{
@@ -55,6 +70,14 @@ border-radius:6px;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
+}
+
+.note-list{
+text-align:left;
+max-width:520px;
+margin:14px auto 0;
+opacity:.9;
+line-height:1.6;
 }
 
 .statusbar{
@@ -148,6 +171,20 @@ opacity:.7;
 margin-top:4px;
 }
 
+.msg{
+margin-top:10px;
+font-size:14px;
+min-height:18px;
+}
+
+@media (max-width:600px){
+h1{
+font-size:34px;
+}
+.chart iframe{
+height:280px;
+}
+}
 </style>
 </head>
 
@@ -157,20 +194,34 @@ margin-top:4px;
 <p class="subtitle">AI Trading Command Center</p>
 
 <div class="waitlist">
-
 <h2>Early Access — EZTrader App</h2>
 
-<p style="opacity:.8;">
-The EZTrader mobile app is launching soon.  
-Join the early access list for priority access and launch pricing.
+<p>
+The EZTrader mobile app is launching soon. Join the early access list for priority access and launch pricing.
 </p>
 
+<div class="note-list">
+• Founding users get early access<br>
+• Launch pricing will be offered to early signups<br>
+• The live dashboard below shows the engine running in real time
+</div>
+
 <input id="waitlist_email" type="email" placeholder="Enter your email">
-
 <button onclick="joinWaitlist()">Join Waitlist</button>
+<div id="waitlist_msg" class="msg"></div>
+</div>
 
-<div id="waitlist_msg" style="margin-top:10px;"></div>
+<div class="waitlist">
+<h2>Help Improve EZTrader</h2>
 
+<p>
+Have an idea, feature request, or recommendation? Send it here. We’re building this for real traders.
+</p>
+
+<input id="feedback_email" type="email" placeholder="Your email (optional)">
+<textarea id="feedback_text" placeholder="Share your feedback, ideas, or recommendations..."></textarea>
+<button onclick="sendFeedback()">Send Feedback</button>
+<div id="feedback_msg" class="msg"></div>
 </div>
 
 <div class="statusbar">
@@ -279,149 +330,169 @@ Join the early access list for priority access and launch pricing.
 </div>
 
 <script>
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mnjgbkbj";
 
 function money(v){
-const n=Number(v||0)
-const abs=Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2})
-return n<0?"-$"+abs:"$"+abs
+  const n = Number(v || 0);
+  const abs = Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+  return n < 0 ? "-$" + abs : "$" + abs;
 }
 
 function setSignal(action){
-const el=document.getElementById("signal")
-el.classList.remove("buy","sell","hold")
+  const el = document.getElementById("signal");
+  el.classList.remove("buy","sell","hold");
 
-if(action==="BUY") el.classList.add("buy")
-else if(action==="SELL") el.classList.add("sell")
-else el.classList.add("hold")
+  if(action === "BUY") el.classList.add("buy");
+  else if(action === "SELL") el.classList.add("sell");
+  else el.classList.add("hold");
 }
 
 async function price(){
+  const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
+  const d = await r.json();
 
-const r=await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
-const d=await r.json()
-
-document.getElementById("price").innerText="$"+Number(d.data.amount).toLocaleString()
-document.getElementById("btcprice").innerText="$"+Number(d.data.amount).toLocaleString()
-
+  const live = "$" + Number(d.data.amount).toLocaleString();
+  document.getElementById("price").innerText = live;
+  document.getElementById("btcprice").innerText = live;
 }
 
 async function signal(){
+  const r = await fetch("signal.json");
+  const d = await r.json();
 
-const r=await fetch("signal.json")
-const d=await r.json()
+  let act = d.action || "HOLD";
+  if(act === "NONE") act = "HOLD";
 
-let act=d.action||"HOLD"
+  document.getElementById("signal").innerText = act;
+  setSignal(act);
 
-if(act==="NONE") act="HOLD"
+  document.getElementById("status").innerText = d.status || "Engine Online";
+  document.getElementById("confidence").innerText = (d.confidence ?? "--") + "%";
 
-document.getElementById("signal").innerText=act
-setSignal(act)
+  let strat = d.strategy || "";
+  if(strat === "NO_SIGNAL") strat = "No Trade";
 
-document.getElementById("status").innerText=d.status
-document.getElementById("confidence").innerText=d.confidence+"%"
+  document.getElementById("strategy").innerText = strat || "--";
+  document.getElementById("regime").innerText = d.regime || "--";
+  document.getElementById("trend").innerText = d.trend || "--";
+  document.getElementById("mode").innerText = d.regime || "--";
 
-let strat=d.strategy||""
-
-if(strat==="NO_SIGNAL") strat="No Trade"
-
-document.getElementById("strategy").innerText=strat
-
-document.getElementById("regime").innerText=d.regime
-document.getElementById("trend").innerText=d.trend
-document.getElementById("mode").innerText=d.regime
-
-if(d.timestamp){
-const age=Math.floor(Date.now()/1000-d.timestamp)
-document.getElementById("age").innerText=age+"s ago"
-}
-
+  if(d.timestamp){
+    const age = Math.floor(Date.now()/1000 - d.timestamp);
+    document.getElementById("age").innerText = age + "s ago";
+  } else {
+    document.getElementById("age").innerText = "--";
+  }
 }
 
 async function portfolio(){
+  const r = await fetch("portfolio.json");
+  const d = await r.json();
 
-const r=await fetch("portfolio.json")
-const d=await r.json()
-
-document.getElementById("portfolio").innerText=money(d.portfolio_value)
-document.getElementById("cash").innerText=money(d.cash_usd)
-document.getElementById("btc").innerText=Number(d.btc_qty).toFixed(6)
-document.getElementById("entry").innerText=money(d.avg_price)
-document.getElementById("pl").innerText=money(d.unrealized_pl)
-
+  document.getElementById("portfolio").innerText = money(d.portfolio_value);
+  document.getElementById("cash").innerText = money(d.cash_usd);
+  document.getElementById("btc").innerText = Number(d.btc_qty || 0).toFixed(6);
+  document.getElementById("entry").innerText = money(d.avg_price);
+  document.getElementById("pl").innerText = money(d.unrealized_pl);
 }
 
 async function trades(){
+  try{
+    const r = await fetch("trades.json");
+    if(!r.ok) return;
 
-try{
+    const list = await r.json();
+    const box = document.getElementById("trades");
+    box.innerHTML = "";
 
-const r=await fetch("trades.json")
+    list.forEach(t => {
+      const div = document.createElement("div");
+      div.className = "trade";
 
-if(!r.ok) return
+      div.innerHTML =
+        '<div class="trade-main">' + t.action + ' ' + t.symbol + '</div>' +
+        '<div class="trade-sub">Price: $' + Number(t.price).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
+        ' · Size: $' + Number(t.size_usd).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
+        ' · Qty: ' + Number(t.filled_qty).toFixed(6) +
+        '</div>' +
+        '<div class="trade-sub">' + t.time + '</div>';
 
-const list=await r.json()
+      box.appendChild(div);
+    });
+  } catch(e){}
+}
 
-const box=document.getElementById("trades")
+async function postFormspree(payload){
+  const r = await fetch(FORMSPREE_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
 
-box.innerHTML=""
-
-list.forEach(t=>{
-
-const div=document.createElement("div")
-div.className="trade"
-
-div.innerHTML=
-'<div class="trade-main">'+t.action+' '+t.symbol+'</div>'+
-'<div class="trade-sub">Price: $'+Number(t.price).toLocaleString()+
-' · Size: $'+Number(t.size_usd).toLocaleString()+
-' · Qty: '+Number(t.filled_qty).toFixed(6)+
-'</div>'+
-'<div class="trade-sub">'+t.time+'</div>'
-
-box.appendChild(div)
-
-})
-
-}catch(e){}
-
+  if(!r.ok){
+    throw new Error("Form submission failed");
+  }
 }
 
 async function joinWaitlist(){
+  const email = document.getElementById("waitlist_email").value.trim();
+  const msg = document.getElementById("waitlist_msg");
 
-const email=document.getElementById("waitlist_email").value
+  if(!email){
+    msg.innerText = "Please enter an email.";
+    return;
+  }
 
-if(!email){
-document.getElementById("waitlist_msg").innerText="Please enter an email."
-return
+  try{
+    await postFormspree({
+      form_type: "waitlist",
+      email: email
+    });
+
+    msg.innerText = "You're on the list!";
+    document.getElementById("waitlist_email").value = "";
+  } catch(e){
+    msg.innerText = "Signup failed. Please try again.";
+  }
 }
 
-try{
+async function sendFeedback(){
+  const email = document.getElementById("feedback_email").value.trim();
+  const feedback = document.getElementById("feedback_text").value.trim();
+  const msg = document.getElementById("feedback_msg");
 
-await fetch("/api/waitlist",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({email:email})
-})
+  if(!feedback){
+    msg.innerText = "Please enter feedback.";
+    return;
+  }
 
-document.getElementById("waitlist_msg").innerText="You're on the list!"
+  try{
+    await postFormspree({
+      form_type: "feedback",
+      email: email || "not_provided",
+      feedback: feedback
+    });
 
-}catch(e){
-
-document.getElementById("waitlist_msg").innerText="Signup failed."
-
+    msg.innerText = "Thanks for your feedback!";
+    document.getElementById("feedback_email").value = "";
+    document.getElementById("feedback_text").value = "";
+  } catch(e){
+    msg.innerText = "Submission failed. Please try again.";
+  }
 }
 
-}
+price();
+signal();
+portfolio();
+trades();
 
-price()
-signal()
-portfolio()
-trades()
-
-setInterval(price,5000)
-setInterval(signal,5000)
-setInterval(portfolio,5000)
-setInterval(trades,15000)
-
+setInterval(price,5000);
+setInterval(signal,5000);
+setInterval(portfolio,5000);
+setInterval(trades,15000);
 </script>
 
 </body>
