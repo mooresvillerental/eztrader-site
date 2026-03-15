@@ -24,6 +24,11 @@ margin:15px;
 border-radius:10px;
 display:inline-block;
 width:250px;
+vertical-align:top;
+}
+
+.chart{
+width:520px;
 }
 
 .price{
@@ -61,6 +66,7 @@ font-weight:bold;
 <h3>Bot Status</h3>
 <div id="status">Engine Online</div>
 </div>
+
 <div class="card">
 <h3>Confidence</h3>
 <div id="confidence">--</div>
@@ -79,7 +85,9 @@ font-weight:bold;
 <div class="card">
 <h3>Trend</h3>
 <div id="trend">--</div>
-</div><div class="card">
+</div>
+
+<div class="card">
 <h3>Portfolio Value</h3>
 <div id="portfolio_value">--</div>
 </div>
@@ -108,9 +116,24 @@ font-weight:bold;
 <h3>Unrealized P/L</h3>
 <div id="unrealized_pl">--</div>
 </div>
+
+<div class="card chart">
+<h3>BTC Price Chart</h3>
+
+<iframe
+src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"
+width="500"
+height="300"
+frameborder="0"
+allowtransparency="true"
+scrolling="no">
+</iframe>
+
+</div>
+
 <script>
 
-async function updatePrice() {
+async function updatePrice(){
 
 const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
 const data = await r.json()
@@ -166,6 +189,7 @@ updatePortfolio()
 setInterval(updatePrice,5000)
 setInterval(updateSignal,5000)
 setInterval(updatePortfolio,5000)
+
 </script>
 
 </body>
