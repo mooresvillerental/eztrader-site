@@ -24,11 +24,9 @@ margin:0 0 5px;
 
 .subtitle{
 opacity:.86;
-margin:0 0 18px;
+margin:0 auto 18px;
 line-height:1.55;
 max-width:900px;
-margin-left:auto;
-margin-right:auto;
 }
 
 .banner{
@@ -207,6 +205,25 @@ font-size:18px;
 .mini-list{
 line-height:1.75;
 opacity:.92;
+}
+
+.feed-list{
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-top:10px;
+}
+
+.feed-item{
+background:#0f172a;
+padding:12px;
+border-radius:8px;
+line-height:1.5;
+}
+
+.feed-title{
+font-weight:bold;
+margin-bottom:4px;
 }
 
 .waitlist{
@@ -453,34 +470,59 @@ Live AI trading engine currently monitoring Bitcoin and waiting for the next hig
     <div id="trades"></div>
   </div>
 
-  <div class="card">
-    <h3>AI Decision Engine</h3>
-    <div class="value-small" id="decision_text">
-      The engine is evaluating market structure and waiting for a valid setup.
-    </div>
-  </div>
+</div>
 
-  <div class="card">
-    <h3>AI Strategy Intelligence</h3>
-    <div class="value-small" id="strategy_text">
-      Strategy intelligence is active and adapting to current market conditions.
-    </div>
-  </div>
+<div class="section-box">
+  <h2>AI Decision Feed</h2>
+  <p>
+    EZTrader tracks a larger internal decision stream during development. To keep the public site clean, the homepage shows a compact summary of the current decision state while the full decision history continues to be monitored internally.
+  </p>
 
-  <div class="card">
-    <h3>Learning Progress</h3>
-    <div class="value-small" id="learning_text">
-      Live strategy learning is active while the development engine collects more samples.
-    </div>
-  </div>
+  <div class="feed-list">
 
-  <div class="card">
-    <h3>Last Trade Result</h3>
-    <div class="value-small" id="last_trade_text">
-      Most recent executed trade will appear here.
+    <div class="feed-item">
+      <div class="feed-title">Current Decision</div>
+      <div id="decision_current">Monitoring market and waiting for a valid setup.</div>
     </div>
-  </div>
 
+    <div class="feed-item">
+      <div class="feed-title">Execution Pipeline</div>
+      <div id="decision_execution">Suggested sizes are shown publicly, but execution remains manual in the current development setup.</div>
+    </div>
+
+    <div class="feed-item">
+      <div class="feed-title">Risk Discipline</div>
+      <div id="decision_risk">Blocked and rejected decisions are tracked internally as part of the live testing environment and will surface publicly as the decision feed expands.</div>
+    </div>
+
+    <div class="feed-item">
+      <div class="feed-title">Latest Trade Snapshot</div>
+      <div id="last_trade_text">Most recent executed trade will appear here.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section-box">
+  <h2>AI Strategy Intelligence</h2>
+
+  <div class="split">
+
+    <div class="mini-card">
+      <h3>Current Strategy Focus</h3>
+      <div class="mini-list" id="strategy_text">
+        Strategy intelligence is active and adapting to current market conditions.
+      </div>
+    </div>
+
+    <div class="mini-card">
+      <h3>Learning Progress</h3>
+      <div class="mini-list" id="learning_text">
+        Live strategy learning is active while the development engine continues validating BTC as the controlled test market before broader market expansion.
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <div class="section-box">
@@ -719,10 +761,15 @@ async function signal(){
   document.getElementById("execution_status").innerText =
     suggested > 0 ? "Manual confirmation required" : "No setup detected";
 
-  document.getElementById("decision_text").innerText =
+  document.getElementById("decision_current").innerText =
     displayAction === "Monitoring Market"
-      ? "The engine is monitoring " + (d.symbol || "BTC-USD") + " for a valid setup under " + (d.regime || "current") + " market conditions."
+      ? "The engine is monitoring " + (d.symbol || "BTC-USD") + " and waiting for a high-probability setup under " + (d.regime || "current") + " market conditions."
       : "The engine detected a " + displayAction + " setup and calculated a suggested position size based on current market conditions.";
+
+  document.getElementById("decision_execution").innerText =
+    suggested > 0
+      ? "A suggested position is available, but execution remains manual during the current public development phase."
+      : "No position is currently suggested because a valid setup has not fully passed the engine filters.";
 
   document.getElementById("strategy_text").innerText =
     "Current strategy focus: " + strat + ". Regime: " + (d.regime || "--") + ". Trend: " + (d.trend || "--") + ".";
