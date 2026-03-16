@@ -5,125 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-*{box-sizing:border-box;}
-
 body{
-margin:0;
 background:#0b1220;
 color:white;
-font-family:Arial,sans-serif;
+font-family:Arial;
 text-align:center;
 padding:20px;
-overflow-x:hidden;
 }
 
 h1{
 font-size:42px;
-margin:0 0 5px;
+margin-bottom:10px;
 }
 
 .subtitle{
-opacity:.86;
-margin:0 auto 18px;
-line-height:1.55;
+opacity:.85;
 max-width:900px;
-}
-
-.banner{
-max-width:1100px;
-margin:0 auto 18px;
-background:linear-gradient(90deg,#1b2845,#162038);
-border-radius:14px;
-padding:18px;
-box-shadow:0 0 0 1px rgba(255,255,255,.04);
-}
-
-.banner-title{
-font-size:14px;
-opacity:.75;
-letter-spacing:1px;
-text-transform:uppercase;
-margin-bottom:8px;
-}
-
-.banner-main{
-font-size:26px;
-font-weight:bold;
-margin-bottom:8px;
-}
-
-.banner-sub{
-font-size:15px;
-opacity:.9;
-line-height:1.5;
-}
-
-.statusbar{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:12px;
-max-width:1100px;
 margin:auto;
 margin-bottom:20px;
-}
-
-.statuspill{
-background:#162038;
-padding:14px;
-border-radius:10px;
-}
-
-.statuslabel{
-font-size:12px;
-opacity:.6;
-}
-
-.statusvalue{
-font-size:18px;
-font-weight:bold;
-margin-top:4px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:16px;
-max-width:1100px;
-margin:auto;
+line-height:1.5;
 }
 
 .card{
 background:#162038;
 padding:20px;
-border-radius:12px;
-text-align:center;
-}
-
-.card h3{
-margin-top:0;
-margin-bottom:14px;
-}
-
-.value{
-font-size:20px;
-line-height:1.45;
-word-break:break-word;
-}
-
-.value-small{
-font-size:16px;
-line-height:1.65;
-word-break:break-word;
+margin:12px;
+border-radius:10px;
+display:inline-block;
+width:250px;
+vertical-align:top;
 }
 
 .price{
 font-size:28px;
 color:#00ff9c;
-font-weight:bold;
 }
 
 .signal{
-font-size:32px;
+font-size:30px;
 font-weight:bold;
 }
 
@@ -131,717 +50,350 @@ font-weight:bold;
 .sell{color:#ff4d4d;}
 .hold{color:#ffd24d;}
 
-.chart-card{
-grid-column:1 / -1;
+.section{
+max-width:1000px;
+margin:auto;
+margin-top:30px;
+text-align:left;
+background:#162038;
+padding:25px;
+border-radius:10px;
+}
+
+.section h2{
+text-align:center;
+margin-top:0;
+}
+
+.waitlist{
+max-width:600px;
+margin:auto;
+margin-top:25px;
+background:#162038;
+padding:25px;
+border-radius:10px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:5px;
+border:none;
+font-size:16px;
+}
+
+button{
+margin-top:10px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:5px;
+background:#00ff9c;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.chart{
+max-width:1000px;
+margin:auto;
+margin-top:20px;
 }
 
 .chart iframe{
 width:100%;
 height:320px;
-border:0;
-border-radius:8px;
-display:block;
-}
-
-.trades-card{
-grid-column:1 / -1;
-text-align:left;
+border:none;
 }
 
 .trade{
 background:#0f172a;
-padding:12px;
-border-radius:8px;
-margin-bottom:10px;
-}
-
-.trade-main{
-font-weight:bold;
-}
-
-.trade-sub{
-font-size:13px;
-opacity:.74;
-margin-top:4px;
-}
-
-.section-box{
-max-width:1100px;
-margin:24px auto 0;
-background:#162038;
-padding:24px;
-border-radius:12px;
-text-align:left;
-}
-
-.section-box h2{
-margin-top:0;
-text-align:center;
-}
-
-.section-box p{
-opacity:.92;
-line-height:1.65;
-}
-
-.split{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:16px;
-margin-top:16px;
-}
-
-.mini-card{
-background:#0f172a;
-padding:16px;
-border-radius:10px;
-}
-
-.mini-card h3{
-margin-top:0;
-font-size:18px;
-}
-
-.mini-list{
-line-height:1.75;
-opacity:.92;
-}
-
-.feed-list{
-display:flex;
-flex-direction:column;
-gap:10px;
-margin-top:10px;
-}
-
-.feed-item{
-background:#0f172a;
-padding:12px;
-border-radius:8px;
-line-height:1.5;
-}
-
-.feed-title{
-font-weight:bold;
-margin-bottom:4px;
-}
-
-.waitlist{
-max-width:700px;
-margin:24px auto 0;
-background:#162038;
-padding:25px;
-border-radius:12px;
-}
-
-.waitlist h2{
-margin-top:0;
-}
-
-.waitlist p{
-opacity:.88;
-line-height:1.55;
-}
-
-.waitlist input,
-.waitlist textarea{
-width:100%;
-padding:12px;
+padding:10px;
 border-radius:6px;
-border:none;
-margin-top:10px;
-font-size:16px;
-font-family:Arial,sans-serif;
+margin-top:8px;
 }
 
-.waitlist textarea{
-height:110px;
-resize:none;
-}
-
-.waitlist button{
-margin-top:12px;
-width:100%;
-padding:12px;
-background:#00ff9c;
-border:none;
-border-radius:6px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-color:#000;
-}
-
-.note-list{
-text-align:left;
-max-width:560px;
-margin:14px auto 0;
-opacity:.92;
-line-height:1.65;
-}
-
-.small-note{
-margin-top:12px;
-font-size:13px;
-opacity:.72;
-}
-
-.badge{
-display:inline-block;
-padding:6px 12px;
-border-radius:999px;
-background:#0f172a;
-font-size:12px;
-font-weight:bold;
-letter-spacing:.6px;
-opacity:.9;
-margin-bottom:12px;
-}
-
-.disclaimer-box{
-max-width:1100px;
-margin:24px auto 0;
+.disclaimer{
+max-width:1000px;
+margin:auto;
+margin-top:25px;
 background:#111826;
 padding:20px;
-border-radius:12px;
+border-radius:10px;
+font-size:14px;
+line-height:1.5;
 text-align:left;
-border:1px solid rgba(255,255,255,.05);
 }
 
-.disclaimer-box h2{
-margin-top:0;
-text-align:center;
-font-size:22px;
-}
-
-.disclaimer-item{
-margin-bottom:14px;
-line-height:1.6;
-opacity:.9;
-}
-
-.footer-note{
-max-width:1100px;
-margin:18px auto 10px;
-font-size:12px;
-opacity:.55;
-text-align:center;
-}
-
-@media (max-width:600px){
-h1{
-font-size:34px;
-}
-.banner-main{
-font-size:22px;
-}
-.chart iframe{
-height:280px;
-}
-}
 </style>
 </head>
 
 <body>
 
 <h1>EZTrader</h1>
+
 <p class="subtitle">
-Live AI trading engine currently monitoring Bitcoin and waiting for the next high-probability setup. The public dashboard below is proof of the upcoming EZTrader mobile app, not the full product experience.
+Live AI trading engine currently monitoring Bitcoin and waiting for the next high-probability setup.  
+The public dashboard below demonstrates the upcoming EZTrader mobile app while the engine is tested in a transparent development environment.
 </p>
 
-<div class="banner">
-  <div class="banner-title">Live AI Signal</div>
-  <div class="banner-main" id="banner_main">BTC-USD • Monitoring Market</div>
-  <div class="banner-sub" id="banner_sub">
-    Confidence: -- • Strategy: -- • Regime: --
-  </div>
+<div class="card">
+<h3>BTC Price</h3>
+<div class="price" id="price">Loading...</div>
 </div>
 
-<div class="statusbar">
-
-  <div class="statuspill">
-    <div class="statuslabel">Engine</div>
-    <div class="statusvalue" id="engine">RUNNING</div>
-  </div>
-
-  <div class="statuspill">
-    <div class="statuslabel">Last Signal Age</div>
-    <div class="statusvalue" id="age">--</div>
-  </div>
-
-  <div class="statuspill">
-    <div class="statuslabel">Market Mode</div>
-    <div class="statusvalue" id="mode">--</div>
-  </div>
-
-  <div class="statuspill">
-    <div class="statuslabel">Bot Mode</div>
-    <div class="statusvalue">SIGNAL ONLY</div>
-  </div>
-
+<div class="card">
+<h3>Market Signal</h3>
+<div class="signal hold" id="signal">Monitoring Market</div>
 </div>
 
-<div class="grid">
+<div class="card">
+<h3>Bot Status</h3>
+<div id="status">Engine Online</div>
+</div>
 
-  <div class="card">
-    <h3>BTC Price</h3>
-    <div class="price" id="price">Loading...</div>
-  </div>
+<div class="card">
+<h3>Confidence</h3>
+<div id="confidence">--</div>
+</div>
 
-  <div class="card">
-    <h3>Market Signal</h3>
-    <div class="signal hold" id="signal">Monitoring Market</div>
-  </div>
+<div class="card">
+<h3>Strategy Focus</h3>
+<div id="strategy">Waiting for Setup</div>
+</div>
 
-  <div class="card">
-    <h3>Bot Status</h3>
-    <div class="value" id="status">Engine Online</div>
-  </div>
+<div class="card">
+<h3>Market Regime</h3>
+<div id="regime">--</div>
+</div>
 
-  <div class="card">
-    <h3>Confidence</h3>
-    <div class="value" id="confidence">--</div>
-  </div>
+<div class="card">
+<h3>Trend</h3>
+<div id="trend">--</div>
+</div>
 
-  <div class="card">
-    <h3>Strategy</h3>
-    <div class="value" id="strategy">--</div>
-  </div>
+<div class="card">
+<h3>Suggested Trade Size</h3>
+<div id="suggested">No position suggested</div>
+</div>
 
-  <div class="card">
-    <h3>Market Regime</h3>
-    <div class="value" id="regime">--</div>
-  </div>
+<div class="card">
+<h3>Execution Status</h3>
+<div id="execution">
+Waiting for a high-probability setup to pass confidence, regime, and risk checks.
+</div>
+</div>
 
-  <div class="card">
-    <h3>Trend</h3>
-    <div class="value" id="trend">--</div>
-  </div>
+<div class="card">
+<h3>Portfolio Value</h3>
+<div id="portfolio">--</div>
+</div>
 
-  <div class="card">
-    <h3>Suggested Trade Size</h3>
-    <div class="value" id="suggested_size">No position suggested</div>
-  </div>
+<div class="card">
+<h3>Cash Balance</h3>
+<div id="cash">--</div>
+</div>
 
-  <div class="card">
-    <h3>Execution Status</h3>
-    <div class="value" id="execution_status">Awaiting manual confirmation</div>
-  </div>
+<div class="card">
+<h3>BTC Holdings</h3>
+<div id="btc">--</div>
+</div>
 
-  <div class="card">
-    <h3>Portfolio Value</h3>
-    <div class="value" id="portfolio">--</div>
-  </div>
+<div class="card">
+<h3>Average Entry</h3>
+<div id="entry">--</div>
+</div>
 
-  <div class="card">
-    <h3>Cash Balance</h3>
-    <div class="value" id="cash">--</div>
-  </div>
+<div class="card">
+<h3>Current BTC Price</h3>
+<div id="btcprice">--</div>
+</div>
 
-  <div class="card">
-    <h3>BTC Holdings</h3>
-    <div class="value" id="btc">--</div>
-  </div>
+<div class="card">
+<h3>Public Development Account P/L</h3>
+<div id="pl">--</div>
+</div>
 
-  <div class="card">
-    <h3>Average Entry</h3>
-    <div class="value" id="entry">--</div>
-  </div>
+<div class="chart">
+<h3>BTC Price Chart</h3>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"></iframe>
+</div>
 
-  <div class="card">
-    <h3>Current BTC Price</h3>
-    <div class="value" id="btcprice">--</div>
-  </div>
+<div class="section">
+<h2>Recent Trades</h2>
+<div id="trades"></div>
+</div>
 
-  <div class="card">
-    <h3>Live Development P/L</h3>
-    <div class="value" id="pl">--</div>
-  </div>
+<div class="section">
+<h2>AI Decision Feed</h2>
 
-  <div class="card chart-card">
-    <h3>BTC Price Chart</h3>
-    <div class="chart">
-      <iframe src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"></iframe>
-    </div>
-  </div>
+<p>
+EZTrader continuously scans market conditions and evaluates multiple trading strategies.  
+A trade is only suggested when a setup passes confidence thresholds, market regime filters, and risk controls.
+</p>
 
-  <div class="card trades-card">
-    <h3>Recent Trades</h3>
-    <div id="trades"></div>
-  </div>
+<p id="decision">
+The engine is currently monitoring BTC-USD and waiting for a valid setup under current market conditions.
+</p>
 
 </div>
 
-<div class="section-box">
-  <h2>AI Decision Feed</h2>
-  <p>
-    EZTrader tracks a larger internal decision stream during development. To keep the public site clean, the homepage shows a compact summary of the current decision state while the full decision history continues to be monitored internally.
-  </p>
+<div class="section">
 
-  <div class="feed-list">
+<h2>Public Development Account</h2>
 
-    <div class="feed-item">
-      <div class="feed-title">Current Decision</div>
-      <div id="decision_current">Monitoring market and waiting for a valid setup.</div>
-    </div>
+<p>
+EZTrader is currently running in a public development account.  
+The account intentionally started from a negative position to demonstrate the AI engine’s ability to recover and improve transparently over time.
+</p>
 
-    <div class="feed-item">
-      <div class="feed-title">Execution Pipeline</div>
-      <div id="decision_execution">Suggested sizes are shown publicly, but execution remains manual in the current development setup.</div>
-    </div>
+<p>
+All signals, trades, and portfolio changes shown here are part of that live development process.  
+The goal is not hype — it is transparent proof that the engine is running and evolving in real time.
+</p>
 
-    <div class="feed-item">
-      <div class="feed-title">Risk Discipline</div>
-      <div id="decision_risk">Blocked and rejected decisions are tracked internally as part of the live testing environment and will surface publicly as the decision feed expands.</div>
-    </div>
-
-    <div class="feed-item">
-      <div class="feed-title">Latest Trade Snapshot</div>
-      <div id="last_trade_text">Most recent executed trade will appear here.</div>
-    </div>
-
-  </div>
-</div>
-
-<div class="section-box">
-  <h2>AI Strategy Intelligence</h2>
-
-  <div class="split">
-
-    <div class="mini-card">
-      <h3>Current Strategy Focus</h3>
-      <div class="mini-list" id="strategy_text">
-        Strategy intelligence is active and adapting to current market conditions.
-      </div>
-    </div>
-
-    <div class="mini-card">
-      <h3>Learning Progress</h3>
-      <div class="mini-list" id="learning_text">
-        Live strategy learning is active while the development engine continues validating BTC as the controlled test market before broader market expansion.
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div class="section-box">
-  <div class="badge">Live Development Build</div>
-  <h2>Public Development Account</h2>
-  <p>
-    EZTrader is currently running in a public development account. The account started from a negative position to demonstrate the AI engine’s ability to recover and improve transparently over time.
-  </p>
-  <p>
-    All signals, trades, and portfolio changes shown here are part of that live development process. The goal is not hype — it is transparent proof that the engine is running, learning, and working its way forward in public.
-  </p>
-</div>
-
-<div class="section-box">
-  <h2>How EZTrader Finds the Best Trades</h2>
-
-  <div class="split">
-
-    <div class="mini-card">
-      <h3>AI Strategy Intelligence</h3>
-      <div class="mini-list">
-        • The engine evaluates multiple trading strategies in real time<br>
-        • It adapts to market regime, trend, and momentum<br>
-        • Public dashboard shows the live test environment, not the full app<br>
-        • Full app experience will expand strategy visibility and automation
-      </div>
-    </div>
-
-    <div class="mini-card">
-      <h3>Current Test Environment</h3>
-      <div class="mini-list">
-        • BTC is the active live test market<br>
-        • This controlled phase validates strategy logic and risk controls<br>
-        • Suggested trade amounts are shown even before execution<br>
-        • Execution remains manual in the current public development setup
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div class="section-box">
-  <h2>Markets Scanned by EZTrader AI</h2>
-  <p>
-    EZTrader is designed to scan multiple markets and identify the highest-probability opportunity. During this public testing phase, Bitcoin is used as the primary live test market while the engine continues validating its strategy framework and risk systems.
-  </p>
-
-  <div class="split">
-
-    <div class="mini-card">
-      <h3>Active Test Market</h3>
-      <div class="mini-list">
-        BTC — live test environment
-      </div>
-    </div>
-
-    <div class="mini-card">
-      <h3>Crypto Markets</h3>
-      <div class="mini-list">
-        ETH — expansion roadmap<br>
-        SOL — expansion roadmap<br>
-        AVAX — expansion roadmap<br>
-        LINK — expansion roadmap
-      </div>
-    </div>
-
-    <div class="mini-card">
-      <h3>Stocks & ETFs (Full Launch)</h3>
-      <div class="mini-list">
-        AAPL — coming with full launch<br>
-        NVDA — coming with full launch<br>
-        TSLA — coming with full launch<br>
-        MSFT — coming with full launch<br>
-        SPY — coming with full launch
-      </div>
-    </div>
-
-  </div>
 </div>
 
 <div class="waitlist">
-  <h2>Get Early Access</h2>
 
-  <p>
-    The EZTrader mobile app is launching soon. Join the early access list for priority access and launch pricing.
-  </p>
+<h2>Get Early Access</h2>
 
-  <div class="note-list">
-    • Founding users get early access<br>
-    • Launch pricing will be offered to early signups<br>
-    • The live dashboard above shows the engine running in real time
-  </div>
+<p>
+The EZTrader mobile app is launching soon. Join the early access list for priority access and launch pricing.
+</p>
 
-  <form action="https://formspree.io/f/mnjgbkbj" method="POST">
-    <input type="hidden" name="form_type" value="waitlist">
-    <input type="email" name="email" placeholder="Enter your email" required>
-    <button type="submit">Get Early Access</button>
-  </form>
+<form action="https://formspree.io/f/mnjgbkbj" method="POST">
+<input type="email" name="email" placeholder="Enter your email" required>
+<button type="submit">Get Early Access</button>
+</form>
 
-  <div class="small-note">
-    You’ll be notified when early access opens.
-  </div>
 </div>
 
 <div class="waitlist">
-  <h2>Help Improve EZTrader</h2>
 
-  <p>
-    Have an idea, feature request, or recommendation? Send it here. We’re building this for real traders.
-  </p>
+<h2>Help Improve EZTrader</h2>
 
-  <form action="https://formspree.io/f/mnjgbkbj" method="POST">
-    <input type="hidden" name="form_type" value="feedback">
-    <input type="email" name="email" placeholder="Your email (optional)">
-    <textarea name="feedback" placeholder="Share your feedback, ideas, or recommendations..." required></textarea>
-    <button type="submit">Send Feedback</button>
-  </form>
+<p>
+Have an idea, feature request, or recommendation? Send it here.
+</p>
 
-  <div class="small-note">
-    Your comments help shape the app before launch.
-  </div>
+<form action="https://formspree.io/f/mnjgbkbj" method="POST">
+<input type="email" name="email" placeholder="Your email (optional)">
+<textarea name="feedback" placeholder="Share feedback or ideas..." required></textarea>
+<button type="submit">Send Feedback</button>
+</form>
+
 </div>
 
-<div class="disclaimer-box">
-  <h2>Important Disclosures</h2>
+<div class="disclaimer">
 
-  <div class="disclaimer-item">
-    <strong>Educational & Informational Use:</strong>
-    EZTrader provides market signals, analytics, and development updates for informational purposes only. Nothing shown on this website or in the application should be considered financial, investment, or trading advice.
-  </div>
+<h2>Important Disclosures</h2>
 
-  <div class="disclaimer-item">
-    <strong>Risk Disclosure:</strong>
-    Trading cryptocurrency, stocks, ETFs, and other financial markets carries significant risk and may result in loss of capital. Users are responsible for their own trading decisions and risk management.
-  </div>
+<p>
+EZTrader provides market signals, analytics, and development updates for informational purposes only.  
+Nothing shown on this website or within the application should be considered financial or investment advice.
+</p>
 
-  <div class="disclaimer-item">
-    <strong>Development Environment:</strong>
-    This dashboard reflects a public development environment used to demonstrate the EZTrader engine while testing is in progress. Metrics, signals, strategies, and displayed results may change during development.
-  </div>
+<p>
+Trading cryptocurrency, stocks, ETFs, and other financial markets involves significant risk and may result in loss of capital.  
+Users are responsible for their own trading decisions and risk management.
+</p>
 
-  <div class="disclaimer-item">
-    <strong>Performance Transparency:</strong>
-    Past performance, sample results, and development-account results shown here do not guarantee future outcomes. The public account is displayed to provide transparency while the system is being tested and refined.
-  </div>
-</div>
+<p>
+This dashboard reflects a public development environment used to demonstrate the EZTrader engine while testing is in progress.
+</p>
 
-<div class="footer-note">
-  EZTrader public dashboard • live development build • mobile app launching soon
 </div>
 
 <script>
+
 function money(v){
-  const n = Number(v || 0);
-  const abs = Math.abs(n).toLocaleString(undefined,{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
-  return n < 0 ? "-$" + abs : "$" + abs;
+return "$"+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
 }
 
-function livePrice(v){
-  return "$" + Number(v || 0).toLocaleString(undefined,{
-    minimumFractionDigits:0,
-    maximumFractionDigits:3
-  });
+async function updatePrice(){
+
+const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
+const data = await r.json()
+
+document.getElementById("price").innerText =
+"$"+parseFloat(data.data.amount).toLocaleString()
+
+document.getElementById("btcprice").innerText =
+"$"+parseFloat(data.data.amount).toLocaleString()
+
 }
 
-function prettyAction(action){
-  const a = String(action || "").toUpperCase();
-  if(a === "NONE" || a === "HOLD") return "Monitoring Market";
-  return a;
+async function updateSignal(){
+
+const r = await fetch("signal.json")
+const data = await r.json()
+
+let action=data.action
+
+if(action==="NONE"||action==="HOLD"){
+action="Monitoring Market"
 }
 
-function prettyStrategy(strat){
-  const s = String(strat || "").toUpperCase();
-  if(s === "NO_SIGNAL") return "No Trade";
-  if(s === "B_VOL_BREAKOUT") return "Volatility Breakout";
-  if(s === "A_TREND_PULLBACK") return "Trend Pullback";
-  return strat || "--";
+document.getElementById("signal").innerText=action
+
+document.getElementById("confidence").innerText=data.confidence+"%"
+document.getElementById("strategy").innerText="Waiting for Setup"
+document.getElementById("regime").innerText=data.regime
+document.getElementById("trend").innerText=data.trend
+
 }
 
-function setSignal(action){
-  const el = document.getElementById("signal");
-  el.classList.remove("buy","sell","hold");
+async function updatePortfolio(){
 
-  if(action === "BUY") el.classList.add("buy");
-  else if(action === "SELL") el.classList.add("sell");
-  else el.classList.add("hold");
+const r = await fetch("portfolio.json")
+const data = await r.json()
+
+document.getElementById("portfolio").innerText=money(data.portfolio_value)
+document.getElementById("cash").innerText=money(data.cash_usd)
+document.getElementById("btc").innerText=data.btc_qty.toFixed(6)
+document.getElementById("entry").innerText=money(data.avg_price)
+document.getElementById("pl").innerText=money(data.unrealized_pl)
+
 }
 
-async function price(){
-  const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot");
-  const d = await r.json();
+async function updateTrades(){
 
-  const live = livePrice(d.data.amount);
-  document.getElementById("price").innerText = live;
-  document.getElementById("btcprice").innerText = live;
+const r = await fetch("trades.json")
+
+if(!r.ok) return
+
+const data = await r.json()
+
+let html=""
+
+data.forEach(t=>{
+html+=`
+<div class="trade">
+<strong>${t.action} ${t.symbol}</strong><br>
+Price: $${Number(t.price).toLocaleString()} ·
+Size: $${Number(t.size_usd).toLocaleString()} ·
+Qty: ${Number(t.filled_qty).toFixed(6)}<br>
+${t.time}
+</div>
+`
+})
+
+document.getElementById("trades").innerHTML=html
+
 }
 
-async function signal(){
-  const r = await fetch("signal.json");
-  const d = await r.json();
+updatePrice()
+updateSignal()
+updatePortfolio()
+updateTrades()
 
-  const rawAction = d.action || "NONE";
-  const displayAction = prettyAction(rawAction);
-  const strat = prettyStrategy(d.strategy);
+setInterval(updatePrice,5000)
+setInterval(updateSignal,5000)
+setInterval(updatePortfolio,5000)
+setInterval(updateTrades,15000)
 
-  document.getElementById("signal").innerText = displayAction;
-  setSignal(rawAction);
-
-  document.getElementById("status").innerText = d.status || "Engine Online";
-  document.getElementById("confidence").innerText = (d.confidence ?? "--") + "%";
-  document.getElementById("strategy").innerText = strat;
-  document.getElementById("regime").innerText = d.regime || "--";
-  document.getElementById("trend").innerText = d.trend || "--";
-  document.getElementById("mode").innerText = d.regime || "--";
-
-  document.getElementById("banner_main").innerText = (d.symbol || "BTC-USD") + " • " + displayAction;
-  document.getElementById("banner_sub").innerText =
-    "Confidence: " + ((d.confidence ?? "--") + "%") +
-    " • Strategy: " + strat +
-    " • Regime: " + (d.regime || "--");
-
-  if(d.timestamp){
-    const age = Math.floor(Date.now()/1000 - Number(d.timestamp));
-    document.getElementById("age").innerText = age + "s ago";
-  } else {
-    document.getElementById("age").innerText = "--";
-  }
-
-  const suggested = Number(d.suggested_trade_usd || 0);
-  document.getElementById("suggested_size").innerText =
-    suggested > 0 ? money(suggested) : "No position suggested";
-
-  document.getElementById("execution_status").innerText =
-    suggested > 0 ? "Manual confirmation required" : "No setup detected";
-
-  document.getElementById("decision_current").innerText =
-    displayAction === "Monitoring Market"
-      ? "The engine is monitoring " + (d.symbol || "BTC-USD") + " and waiting for a high-probability setup under " + (d.regime || "current") + " market conditions."
-      : "The engine detected a " + displayAction + " setup and calculated a suggested position size based on current market conditions.";
-
-  document.getElementById("decision_execution").innerText =
-    suggested > 0
-      ? "A suggested position is available, but execution remains manual during the current public development phase."
-      : "No position is currently suggested because a valid setup has not fully passed the engine filters.";
-
-  document.getElementById("strategy_text").innerText =
-    "Current strategy focus: " + strat + ". Regime: " + (d.regime || "--") + ". Trend: " + (d.trend || "--") + ".";
-
-  document.getElementById("learning_text").innerText =
-    "Live learning is active while the development engine continues validating BTC as the controlled test market before broader market expansion.";
-}
-
-async function portfolio(){
-  const r = await fetch("portfolio.json");
-  const d = await r.json();
-
-  document.getElementById("portfolio").innerText = money(d.portfolio_value);
-  document.getElementById("cash").innerText = money(d.cash_usd);
-  document.getElementById("btc").innerText = Number(d.btc_qty || 0).toFixed(6);
-  document.getElementById("entry").innerText = money(d.avg_price);
-  document.getElementById("pl").innerText = money(d.unrealized_pl);
-}
-
-async function trades(){
-  try{
-    const r = await fetch("trades.json");
-    if(!r.ok) return;
-
-    const list = await r.json();
-    const box = document.getElementById("trades");
-    box.innerHTML = "";
-
-    if(!Array.isArray(list) || list.length === 0){
-      box.innerHTML = '<div class="trade"><div class="trade-main">No recent trades yet</div></div>';
-      document.getElementById("last_trade_text").innerText = "No completed public trade has been recorded yet.";
-      return;
-    }
-
-    list.forEach((t, idx) => {
-      const div = document.createElement("div");
-      div.className = "trade";
-
-      div.innerHTML =
-        '<div class="trade-main">' + t.action + ' ' + t.symbol + '</div>' +
-        '<div class="trade-sub">Price: $' + Number(t.price).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
-        ' · Size: $' + Number(t.size_usd).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
-        ' · Qty: ' + Number(t.filled_qty).toFixed(6) +
-        '</div>' +
-        '<div class="trade-sub">' + t.time + '</div>';
-
-      box.appendChild(div);
-
-      if(idx === 0){
-        document.getElementById("last_trade_text").innerText =
-          t.action + " " + t.symbol + " at $" +
-          Number(t.price).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
-          " for $" + Number(t.size_usd).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
-          " on " + t.time + ".";
-      }
-    });
-  } catch(e){
-    document.getElementById("trades").innerHTML =
-      '<div class="trade"><div class="trade-main">No recent trades yet</div></div>';
-    document.getElementById("last_trade_text").innerText = "No completed public trade has been recorded yet.";
-  }
-}
-
-price();
-signal();
-portfolio();
-trades();
-
-setInterval(price,5000);
-setInterval(signal,5000);
-setInterval(portfolio,5000);
-setInterval(trades,15000);
 </script>
 
 </body>
