@@ -23,8 +23,12 @@ margin:0 0 5px;
 }
 
 .subtitle{
-opacity:.82;
+opacity:.86;
 margin:0 0 18px;
+line-height:1.55;
+max-width:900px;
+margin-left:auto;
+margin-right:auto;
 }
 
 .banner{
@@ -52,7 +56,7 @@ margin-bottom:8px;
 
 .banner-sub{
 font-size:15px;
-opacity:.88;
+opacity:.9;
 line-height:1.5;
 }
 
@@ -105,6 +109,12 @@ margin-bottom:14px;
 .value{
 font-size:20px;
 line-height:1.45;
+word-break:break-word;
+}
+
+.value-small{
+font-size:16px;
+line-height:1.65;
 word-break:break-word;
 }
 
@@ -172,7 +182,7 @@ text-align:center;
 }
 
 .section-box p{
-opacity:.9;
+opacity:.92;
 line-height:1.65;
 }
 
@@ -318,11 +328,13 @@ height:280px;
 <body>
 
 <h1>EZTrader</h1>
-<p class="subtitle">AI Trading Command Center</p>
+<p class="subtitle">
+Live AI trading engine currently monitoring Bitcoin and waiting for the next high-probability setup. The public dashboard below is proof of the upcoming EZTrader mobile app, not the full product experience.
+</p>
 
 <div class="banner">
   <div class="banner-title">Live AI Signal</div>
-  <div class="banner-main" id="banner_main">BTC-USD • HOLD</div>
+  <div class="banner-main" id="banner_main">BTC-USD • Monitoring Market</div>
   <div class="banner-sub" id="banner_sub">
     Confidence: -- • Strategy: -- • Regime: --
   </div>
@@ -361,7 +373,7 @@ height:280px;
 
   <div class="card">
     <h3>Market Signal</h3>
-    <div class="signal hold" id="signal">HOLD</div>
+    <div class="signal hold" id="signal">Monitoring Market</div>
   </div>
 
   <div class="card">
@@ -391,7 +403,7 @@ height:280px;
 
   <div class="card">
     <h3>Suggested Trade Size</h3>
-    <div class="value" id="suggested_size">Manual mode</div>
+    <div class="value" id="suggested_size">No position suggested</div>
   </div>
 
   <div class="card">
@@ -441,6 +453,34 @@ height:280px;
     <div id="trades"></div>
   </div>
 
+  <div class="card">
+    <h3>AI Decision Engine</h3>
+    <div class="value-small" id="decision_text">
+      The engine is evaluating market structure and waiting for a valid setup.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>AI Strategy Intelligence</h3>
+    <div class="value-small" id="strategy_text">
+      Strategy intelligence is active and adapting to current market conditions.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Learning Progress</h3>
+    <div class="value-small" id="learning_text">
+      Live strategy learning is active while the development engine collects more samples.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Last Trade Result</h3>
+    <div class="value-small" id="last_trade_text">
+      Most recent executed trade will appear here.
+    </div>
+  </div>
+
 </div>
 
 <div class="section-box">
@@ -464,7 +504,7 @@ height:280px;
       <div class="mini-list">
         • The engine evaluates multiple trading strategies in real time<br>
         • It adapts to market regime, trend, and momentum<br>
-        • Public dashboard currently shows the live test environment<br>
+        • Public dashboard shows the live test environment, not the full app<br>
         • Full app experience will expand strategy visibility and automation
       </div>
     </div>
@@ -473,7 +513,7 @@ height:280px;
       <h3>Current Test Environment</h3>
       <div class="mini-list">
         • BTC is the active live test market<br>
-        • This controlled phase is used to validate strategy logic and risk controls<br>
+        • This controlled phase validates strategy logic and risk controls<br>
         • Suggested trade amounts are shown even before execution<br>
         • Execution remains manual in the current public development setup
       </div>
@@ -500,10 +540,10 @@ height:280px;
     <div class="mini-card">
       <h3>Crypto Markets</h3>
       <div class="mini-list">
-        ETH — scanning roadmap<br>
-        SOL — scanning roadmap<br>
-        AVAX — scanning roadmap<br>
-        LINK — scanning roadmap
+        ETH — expansion roadmap<br>
+        SOL — expansion roadmap<br>
+        AVAX — expansion roadmap<br>
+        LINK — expansion roadmap
       </div>
     </div>
 
@@ -609,6 +649,20 @@ function livePrice(v){
   });
 }
 
+function prettyAction(action){
+  const a = String(action || "").toUpperCase();
+  if(a === "NONE" || a === "HOLD") return "Monitoring Market";
+  return a;
+}
+
+function prettyStrategy(strat){
+  const s = String(strat || "").toUpperCase();
+  if(s === "NO_SIGNAL") return "No Trade";
+  if(s === "B_VOL_BREAKOUT") return "Volatility Breakout";
+  if(s === "A_TREND_PULLBACK") return "Trend Pullback";
+  return strat || "--";
+}
+
 function setSignal(action){
   const el = document.getElementById("signal");
   el.classList.remove("buy","sell","hold");
@@ -631,27 +685,24 @@ async function signal(){
   const r = await fetch("signal.json");
   const d = await r.json();
 
-  let act = d.action || "HOLD";
-  if(act === "NONE") act = "HOLD";
+  const rawAction = d.action || "NONE";
+  const displayAction = prettyAction(rawAction);
+  const strat = prettyStrategy(d.strategy);
 
-  document.getElementById("signal").innerText = act;
-  setSignal(act);
+  document.getElementById("signal").innerText = displayAction;
+  setSignal(rawAction);
 
   document.getElementById("status").innerText = d.status || "Engine Online";
   document.getElementById("confidence").innerText = (d.confidence ?? "--") + "%";
-
-  let strat = d.strategy || "";
-  if(strat === "NO_SIGNAL") strat = "No Trade";
-
-  document.getElementById("strategy").innerText = strat || "--";
+  document.getElementById("strategy").innerText = strat;
   document.getElementById("regime").innerText = d.regime || "--";
   document.getElementById("trend").innerText = d.trend || "--";
   document.getElementById("mode").innerText = d.regime || "--";
 
-  document.getElementById("banner_main").innerText = (d.symbol || "BTC-USD") + " • " + act;
+  document.getElementById("banner_main").innerText = (d.symbol || "BTC-USD") + " • " + displayAction;
   document.getElementById("banner_sub").innerText =
     "Confidence: " + ((d.confidence ?? "--") + "%") +
-    " • Strategy: " + (strat || "--") +
+    " • Strategy: " + strat +
     " • Regime: " + (d.regime || "--");
 
   if(d.timestamp){
@@ -663,10 +714,21 @@ async function signal(){
 
   const suggested = Number(d.suggested_trade_usd || 0);
   document.getElementById("suggested_size").innerText =
-    suggested > 0 ? money(suggested) : "No suggested trade";
+    suggested > 0 ? money(suggested) : "No position suggested";
 
   document.getElementById("execution_status").innerText =
-    suggested > 0 ? "Manual confirmation required" : "No trade signal";
+    suggested > 0 ? "Manual confirmation required" : "No setup detected";
+
+  document.getElementById("decision_text").innerText =
+    displayAction === "Monitoring Market"
+      ? "The engine is monitoring " + (d.symbol || "BTC-USD") + " for a valid setup under " + (d.regime || "current") + " market conditions."
+      : "The engine detected a " + displayAction + " setup and calculated a suggested position size based on current market conditions.";
+
+  document.getElementById("strategy_text").innerText =
+    "Current strategy focus: " + strat + ". Regime: " + (d.regime || "--") + ". Trend: " + (d.trend || "--") + ".";
+
+  document.getElementById("learning_text").innerText =
+    "Live learning is active while the development engine continues validating BTC as the controlled test market before broader market expansion.";
 }
 
 async function portfolio(){
@@ -691,10 +753,11 @@ async function trades(){
 
     if(!Array.isArray(list) || list.length === 0){
       box.innerHTML = '<div class="trade"><div class="trade-main">No recent trades yet</div></div>';
+      document.getElementById("last_trade_text").innerText = "No completed public trade has been recorded yet.";
       return;
     }
 
-    list.forEach(t => {
+    list.forEach((t, idx) => {
       const div = document.createElement("div");
       div.className = "trade";
 
@@ -707,10 +770,19 @@ async function trades(){
         '<div class="trade-sub">' + t.time + '</div>';
 
       box.appendChild(div);
+
+      if(idx === 0){
+        document.getElementById("last_trade_text").innerText =
+          t.action + " " + t.symbol + " at $" +
+          Number(t.price).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
+          " for $" + Number(t.size_usd).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2}) +
+          " on " + t.time + ".";
+      }
     });
   } catch(e){
     document.getElementById("trades").innerHTML =
       '<div class="trade"><div class="trade-main">No recent trades yet</div></div>';
+    document.getElementById("last_trade_text").innerText = "No completed public trade has been recorded yet.";
   }
 }
 
