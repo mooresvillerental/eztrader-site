@@ -1,400 +1,212 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>EZTrader Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-body{
-background:#0b1220;
-color:white;
-font-family:Arial;
-text-align:center;
-padding:20px;
-}
-
-h1{
-font-size:42px;
-margin-bottom:10px;
-}
-
-.subtitle{
-opacity:.85;
-max-width:900px;
-margin:auto;
-margin-bottom:20px;
-line-height:1.5;
-}
-
-.card{
-background:#162038;
-padding:20px;
-margin:12px;
-border-radius:10px;
-display:inline-block;
-width:250px;
-vertical-align:top;
-}
-
-.price{
-font-size:28px;
-color:#00ff9c;
-}
-
-.signal{
-font-size:30px;
-font-weight:bold;
-}
-
-.buy{color:#00ff9c;}
-.sell{color:#ff4d4d;}
-.hold{color:#ffd24d;}
-
-.section{
-max-width:1000px;
-margin:auto;
-margin-top:30px;
-text-align:left;
-background:#162038;
-padding:25px;
-border-radius:10px;
-}
-
-.section h2{
-text-align:center;
-margin-top:0;
-}
-
-.waitlist{
-max-width:600px;
-margin:auto;
-margin-top:25px;
-background:#162038;
-padding:25px;
-border-radius:10px;
-}
-
-input,textarea{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:5px;
-border:none;
-font-size:16px;
-}
-
-button{
-margin-top:10px;
-width:100%;
-padding:12px;
-border:none;
-border-radius:5px;
-background:#00ff9c;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.chart{
-max-width:1000px;
-margin:auto;
-margin-top:20px;
-}
-
-.chart iframe{
-width:100%;
-height:320px;
-border:none;
-}
-
-.trade{
-background:#0f172a;
-padding:10px;
-border-radius:6px;
-margin-top:8px;
-}
-
-.disclaimer{
-max-width:1000px;
-margin:auto;
-margin-top:25px;
-background:#111826;
-padding:20px;
-border-radius:10px;
-font-size:14px;
-line-height:1.5;
-text-align:left;
-}
-
-</style>
-</head>
-
-<body>
-
-<h1>EZTrader</h1>
-
-<p class="subtitle">
-Live AI trading engine currently monitoring Bitcoin and waiting for the next high-probability setup.  
-The public dashboard below demonstrates the upcoming EZTrader mobile app while the engine is tested in a transparent development environment.
-</p>
-
-<div class="card">
-<h3>BTC Price</h3>
-<div class="price" id="price">Loading...</div>
-</div>
-
-<div class="card">
-<h3>Market Signal</h3>
-<div class="signal hold" id="signal">Monitoring Market</div>
-</div>
-
-<div class="card">
-<h3>Bot Status</h3>
-<div id="status">Engine Online</div>
-</div>
-
-<div class="card">
-<h3>Confidence</h3>
-<div id="confidence">--</div>
-</div>
-
-<div class="card">
-<h3>Strategy Focus</h3>
-<div id="strategy">Waiting for Setup</div>
-</div>
-
-<div class="card">
-<h3>Market Regime</h3>
-<div id="regime">--</div>
-</div>
-
-<div class="card">
-<h3>Trend</h3>
-<div id="trend">--</div>
-</div>
-
-<div class="card">
-<h3>Suggested Trade Size</h3>
-<div id="suggested">No position suggested</div>
-</div>
-
-<div class="card">
-<h3>Execution Status</h3>
-<div id="execution">
-Waiting for a high-probability setup to pass confidence, regime, and risk checks.
-</div>
-</div>
-
-<div class="card">
-<h3>Portfolio Value</h3>
-<div id="portfolio">--</div>
-</div>
-
-<div class="card">
-<h3>Cash Balance</h3>
-<div id="cash">--</div>
-</div>
-
-<div class="card">
-<h3>BTC Holdings</h3>
-<div id="btc">--</div>
-</div>
-
-<div class="card">
-<h3>Average Entry</h3>
-<div id="entry">--</div>
-</div>
-
-<div class="card">
-<h3>Current BTC Price</h3>
-<div id="btcprice">--</div>
-</div>
-
-<div class="card">
-<h3>Public Development Account P/L</h3>
-<div id="pl">--</div>
-</div>
-
-<div class="chart">
-<h3>BTC Price Chart</h3>
-<iframe src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&interval=60&theme=dark"></iframe>
-</div>
-
-<div class="section">
-<h2>Recent Trades</h2>
-<div id="trades"></div>
-</div>
-
-<div class="section">
-<h2>AI Decision Feed</h2>
+import json
+import time
+import os
+import urllib.request
+import urllib.parse
+from pathlib import Path
+
+TOKEN = "PASTE_YOUR_REAL_TOKEN_HERE"
+CHANNEL_ID = "-1003818142639"
+SITE_URL = "https://geteztrader.com"
+
+SIGNAL_FILE = "signals/latest_signal.json"
+TRADE_FILE = "signals/assistant_trade_history.json"
+STATE_FILE = "ez_autopost_state.json"
+
+POLL_SECONDS = 30
 
-<p>
-EZTrader continuously scans market conditions and evaluates multiple trading strategies.  
-A trade is only suggested when a setup passes confidence thresholds, market regime filters, and risk controls.
-</p>
 
-<p id="decision">
-The engine is currently monitoring BTC-USD and waiting for a valid setup under current market conditions.
-</p>
-
-</div>
-
-<div class="section">
-
-<h2>Public Development Account</h2>
-
-<p>
-EZTrader is currently running in a public development account.  
-The account intentionally started from a negative position to demonstrate the AI engine’s ability to recover and improve transparently over time.
-</p>
-
-<p>
-All signals, trades, and portfolio changes shown here are part of that live development process.  
-The goal is not hype — it is transparent proof that the engine is running and evolving in real time.
-</p>
-
-</div>
-
-<div class="waitlist">
-
-<h2>Get Early Access</h2>
-
-<p>
-The EZTrader mobile app is launching soon. Join the early access list for priority access and launch pricing.
-</p>
-
-<form action="https://formspree.io/f/mnjgbkbj" method="POST">
-<input type="email" name="email" placeholder="Enter your email" required>
-<button type="submit">Get Early Access</button>
-</form>
-
-</div>
-
-<div class="waitlist">
-
-<h2>Help Improve EZTrader</h2>
-
-<p>
-Have an idea, feature request, or recommendation? Send it here.
-</p>
-
-<form action="https://formspree.io/f/mnjgbkbj" method="POST">
-<input type="email" name="email" placeholder="Your email (optional)">
-<textarea name="feedback" placeholder="Share feedback or ideas..." required></textarea>
-<button type="submit">Send Feedback</button>
-</form>
-
-</div>
-
-<div class="disclaimer">
-
-<h2>Important Disclosures</h2>
-
-<p>
-EZTrader provides market signals, analytics, and development updates for informational purposes only.  
-Nothing shown on this website or within the application should be considered financial or investment advice.
-</p>
-
-<p>
-Trading cryptocurrency, stocks, ETFs, and other financial markets involves significant risk and may result in loss of capital.  
-Users are responsible for their own trading decisions and risk management.
-</p>
-
-<p>
-This dashboard reflects a public development environment used to demonstrate the EZTrader engine while testing is in progress.
-</p>
-
-</div>
-
-<script>
-
-function money(v){
-return "$"+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})
-}
-
-async function updatePrice(){
-
-const r = await fetch("https://api.coinbase.com/v2/prices/BTC-USD/spot")
-const data = await r.json()
-
-document.getElementById("price").innerText =
-"$"+parseFloat(data.data.amount).toLocaleString()
-
-document.getElementById("btcprice").innerText =
-"$"+parseFloat(data.data.amount).toLocaleString()
-
-}
-
-async function updateSignal(){
-
-const r = await fetch("signal.json")
-const data = await r.json()
-
-let action=data.action
-
-if(action==="NONE"||action==="HOLD"){
-action="Monitoring Market"
-}
-
-document.getElementById("signal").innerText=action
-
-document.getElementById("confidence").innerText=data.confidence+"%"
-document.getElementById("strategy").innerText="Waiting for Setup"
-document.getElementById("regime").innerText=data.regime
-document.getElementById("trend").innerText=data.trend
-
-}
-
-async function updatePortfolio(){
-
-const r = await fetch("portfolio.json")
-const data = await r.json()
-
-document.getElementById("portfolio").innerText=money(data.portfolio_value)
-document.getElementById("cash").innerText=money(data.cash_usd)
-document.getElementById("btc").innerText=data.btc_qty.toFixed(6)
-document.getElementById("entry").innerText=money(data.avg_price)
-document.getElementById("pl").innerText=money(data.unrealized_pl)
-
-}
-
-async function updateTrades(){
-
-const r = await fetch("trades.json")
-
-if(!r.ok) return
-
-const data = await r.json()
-
-let html=""
-
-data.forEach(t=>{
-html+=`
-<div class="trade">
-<strong>${t.action} ${t.symbol}</strong><br>
-Price: $${Number(t.price).toLocaleString()} ·
-Size: $${Number(t.size_usd).toLocaleString()} ·
-Qty: ${Number(t.filled_qty).toFixed(6)}<br>
-${t.time}
-</div>
-`
-})
-
-document.getElementById("trades").innerHTML=html
-
-}
-
-updatePrice()
-updateSignal()
-updatePortfolio()
-updateTrades()
-
-setInterval(updatePrice,5000)
-setInterval(updateSignal,5000)
-setInterval(updatePortfolio,5000)
-setInterval(updateTrades,15000)
-
-</script>
-
-</body>
-</html>
+def load_json(path):
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_json(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+
+def load_state():
+    if not os.path.exists(STATE_FILE):
+        return {
+            "last_signal_key": None,
+            "last_trade_key": None
+        }
+    try:
+        return load_json(STATE_FILE)
+    except Exception:
+        return {
+            "last_signal_key": None,
+            "last_trade_key": None
+        }
+
+
+def save_state(state):
+    save_json(STATE_FILE, state)
+
+
+def pretty_strategy(raw):
+    s = str(raw or "").upper()
+    if s == "NO_SIGNAL":
+        return "Waiting for Setup"
+    if s == "A_ONLY":
+        return "Strategy A Only"
+    if s == "B_VOL_BREAKOUT":
+        return "Volatility Breakout"
+    if s == "A_TREND_PULLBACK":
+        return "Trend Pullback"
+    if s == "NONE" or s == "":
+        return "Standby"
+    return str(raw)
+
+
+def money(v):
+    try:
+        return "$" + format(float(v), ",.2f")
+    except Exception:
+        return "$0.00"
+
+
+def telegram_post(text):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    data = urllib.parse.urlencode({
+        "chat_id": CHANNEL_ID,
+        "text": text
+    }).encode()
+
+    req = urllib.request.Request(url, data=data)
+
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            _ = resp.read()
+        print("Posted to Telegram")
+        return True
+    except Exception as e:
+        print("Telegram post failed:", e)
+        return False
+
+
+def should_post_signal(signal):
+    action = str(signal.get("action") or "").upper()
+    final_action = str(signal.get("final_action") or "").upper()
+
+    # Only public-alert actionable signals
+    actionable = {"BUY", "SELL"}
+
+    if final_action in actionable:
+        return final_action
+    if action in actionable:
+        return action
+
+    return None
+
+
+def signal_key(signal, action_to_post):
+    ts = signal.get("timestamp")
+    symbol = signal.get("symbol")
+    confidence = signal.get("confidence")
+    strategy = signal.get("strategy")
+    return f"{symbol}|{action_to_post}|{confidence}|{strategy}|{ts}"
+
+
+def trade_key(trade):
+    return f"{trade.get('symbol')}|{trade.get('action')}|{trade.get('price')}|{trade.get('size_usd')}|{trade.get('timestamp')}"
+
+
+def build_signal_message(signal, action_to_post):
+    symbol = signal.get("symbol", "BTC-USD")
+    confidence = signal.get("confidence", "--")
+    strategy = pretty_strategy(signal.get("strategy"))
+    regime = signal.get("regime", "--")
+    trend = signal.get("trend", "--")
+    suggested = float(signal.get("suggested_trade_usd") or 0)
+
+    parts = [
+        f"EZTrader {action_to_post} Signal",
+        "",
+        f"Market: {symbol}",
+        f"Action: {action_to_post}",
+        f"Confidence: {confidence}%",
+        f"Strategy: {strategy}",
+        f"Regime: {regime}",
+        f"Trend: {trend}",
+    ]
+
+    if suggested > 0:
+        parts.append(f"Suggested Size: {money(suggested)}")
+
+    parts.extend([
+        "",
+        "Live dashboard:",
+        SITE_URL
+    ])
+
+    return "\n".join(parts)
+
+
+def build_trade_message(trade):
+    symbol = trade.get("symbol", "BTC-USD")
+    action = trade.get("action", "TRADE")
+    price = money(trade.get("price", 0))
+    size = money(trade.get("size_usd", 0))
+    qty = trade.get("filled_qty", 0)
+
+    return "\n".join([
+        "EZTrader Trade Executed",
+        "",
+        f"{action} {symbol}",
+        f"Price: {price}",
+        f"Size: {size}",
+        f"Qty: {qty}",
+        "",
+        "Live dashboard:",
+        SITE_URL
+    ])
+
+
+def get_latest_trade(trades):
+    if not isinstance(trades, list) or len(trades) == 0:
+        return None
+    return trades[-1]
+
+
+def main():
+    print("EZTrader auto-marketing started")
+    state = load_state()
+
+    while True:
+        try:
+            signal = load_json(SIGNAL_FILE)
+            trades = load_json(TRADE_FILE)
+
+            # Actionable BUY/SELL signal alerts only
+            if signal:
+                action_to_post = should_post_signal(signal)
+                if action_to_post:
+                    skey = signal_key(signal, action_to_post)
+                    if skey != state.get("last_signal_key"):
+                        msg = build_signal_message(signal, action_to_post)
+                        if telegram_post(msg):
+                            state["last_signal_key"] = skey
+                            save_state(state)
+
+            # Executed trade alerts
+            latest_trade = get_latest_trade(trades)
+            if latest_trade:
+                tkey = trade_key(latest_trade)
+                if tkey != state.get("last_trade_key"):
+                    msg = build_trade_message(latest_trade)
+                    if telegram_post(msg):
+                        state["last_trade_key"] = tkey
+                        save_state(state)
+
+        except Exception as e:
+            print("Loop error:", e)
+
+        time.sleep(POLL_SECONDS)
+
+
+if __name__ == "__main__":
+    main()
