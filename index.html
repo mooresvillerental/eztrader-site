@@ -681,7 +681,7 @@ async function loadProofChart(){
     if (!Array.isArray(rows) || !rows.length) return;
 
     const data = rows.map(x => ({
-      time: new Date(x.t).getTime() / 1000,
+      time: new Date(x.t),
       value: Number(x.p)
     })).filter(x => x.value > 0);
 
