@@ -549,7 +549,7 @@ async function loadSignal() {
       document.getElementById("pf_value").textContent = money(p.total_usd);
       document.getElementById("pf_cash").textContent = money(p.cash_usd);
       document.getElementById("pf_qty").textContent = btcQty.toFixed(6);
-      document.getElementById("pf_avg").textContent = money(p.avg_price);
+      document.getElementById("pf_avg").textContent = money(p.avg_price); // live avg sync
       document.getElementById("pf_price").textContent = btcPrice > 0 ? money(btcPrice) : "—";
 
       const uplEl = document.getElementById("pf_upl");

@@ -10,6 +10,7 @@ cd "$HOME/eztrader-site"
 cp "$SRC" "$DST"
 python "$HOME/eztrader-site/sync_trades.py"
 python "$HOME/eztrader-site/build_performance.py"
+curl -s http://127.0.0.1:18093/portfolio > "$HOME/eztrader-site/portfolio.json"
 
 changed=0
 
@@ -28,6 +29,9 @@ fi
 if ! git diff --quiet -- performance.json; then
   changed=1
 fi
+if ! git diff --quiet -- portfolio.json; then
+  changed=1
+fi
 
 if [ "$changed" -eq 0 ]; then
   echo "No public data changes to publish."
@@ -38,5 +42,6 @@ git add signal.json
 [ -f "$HIST" ] && git add price_history.json || true
 git add trades.json
 git add performance.json
+git add portfolio.json
 git commit -m "Auto-update public signal data"
 git push
