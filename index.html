@@ -543,16 +543,18 @@ async function loadSignal() {
       const p = await r.json();
 
       const money = v => "$" + Number(v).toLocaleString(undefined, {maximumFractionDigits: 2});
-      document.getElementById("pf_value").textContent = money(p.portfolio_value);
-      document.getElementById("pf_cash").textContent = money(p.cash_usd);
-      document.getElementById("pf_qty").textContent = Number(p.btc_qty ?? p.qty ?? 0).toFixed(6);
-      document.getElementById("pf_avg").textContent = money(p.avg_price);
-      document.getElementById("pf_price").textContent = money(p.current_price);
+      const btcQty = Number((p.holdings_qty && p.holdings_qty["BTC-USD"]) || 0);
+      const btcPrice = Number((p.prices && p.prices["BTC-USD"]) || 0);
 
-      const upl = Number(p.unrealized_pl);
+      document.getElementById("pf_value").textContent = money(p.total_usd);
+      document.getElementById("pf_cash").textContent = money(p.cash_usd);
+      document.getElementById("pf_qty").textContent = btcQty.toFixed(6);
+      document.getElementById("pf_avg").textContent = "—";
+      document.getElementById("pf_price").textContent = btcPrice > 0 ? money(btcPrice) : "—";
+
       const uplEl = document.getElementById("pf_upl");
-      uplEl.textContent = (upl >= 0 ? "+" : "-") + money(Math.abs(upl));
-      uplEl.style.color = upl >= 0 ? "var(--green)" : "var(--red)";
+      uplEl.textContent = "—";
+      uplEl.style.color = "";
     }
 
     
