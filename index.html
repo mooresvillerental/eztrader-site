@@ -493,8 +493,8 @@ async function loadSignal() {
 
       setText(
         "action",
-        noTrade ? "No Trade" : (strength + " " + rawAction),
-        clsForAction(noTrade ? "NONE" : rawAction)
+        (rawAction === "NONE" || rawAction === "HOLD") ? "No Trade" : (strength + " " + rawAction),
+        clsForAction((rawAction === "NONE" || rawAction === "HOLD") ? "NONE" : rawAction)
       );
 
       document.getElementById("price").textContent = money(data.price);
@@ -524,7 +524,7 @@ async function loadSignal() {
       document.getElementById("ai_regime").textContent = data.regime || "--";
       document.getElementById("ai_trend").textContent = data.trend || "--";
       document.getElementById("ai_decision").textContent =
-        noTrade ? "No Trade" : (strength + " " + rawAction);
+        (rawAction === "NONE" || rawAction === "HOLD") ? "No Trade" : (strength + " " + rawAction);
 
       let reasonText = data.eligibility_reason || data.quality_reason || "";
       if (reasonText === "no_trade_signal") reasonText = "No valid setup detected.";
