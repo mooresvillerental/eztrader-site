@@ -485,6 +485,7 @@ async function loadSignal() {
 
       document.getElementById("symbol").textContent = data.symbol || "--";
       const rawAction = (data.final_action || data.action || "NONE");
+      const noTrade = (rawAction === "NONE" || rawAction === "HOLD");
       const confVal = Number(data.confidence ?? 0);
       let strength = "LIGHT";
       if (confVal >= 80) strength = "STRONG";
@@ -492,8 +493,8 @@ async function loadSignal() {
 
       setText(
         "action",
-        rawAction === "NONE" ? "No Trade" : (strength + " " + rawAction),
-        clsForAction(rawAction === "NONE" ? "NONE" : rawAction)
+        noTrade ? "No Trade" : (strength + " " + rawAction),
+        clsForAction(noTrade ? "NONE" : rawAction)
       );
 
       document.getElementById("price").textContent = money(data.price);
@@ -523,7 +524,7 @@ async function loadSignal() {
       document.getElementById("ai_regime").textContent = data.regime || "--";
       document.getElementById("ai_trend").textContent = data.trend || "--";
       document.getElementById("ai_decision").textContent =
-        rawAction === "NONE" ? "No Trade" : (strength + " " + rawAction);
+        noTrade ? "No Trade" : (strength + " " + rawAction);
 
       let reasonText = data.eligibility_reason || data.quality_reason || "";
       if (reasonText === "no_trade_signal") reasonText = "No valid setup detected.";
