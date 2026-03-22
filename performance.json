@@ -1,13 +1,13 @@
 {
   "start_equity": 1000.0,
   "closed_trades": 1,
-  "open_trades": 6,
+  "open_trades": 7,
   "wins": 1,
   "losses": 0,
   "win_rate": 100.0,
   "closed_pnl_pct": 3.1663,
-  "open_pnl_pct": -12.4269,
-  "combined_pnl_pct": -9.6541,
+  "open_pnl_pct": -12.4271,
+  "combined_pnl_pct": -9.6542,
   "final_equity": 903.46,
   "history": [
     {
