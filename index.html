@@ -211,7 +211,7 @@
         <div class="kicker">Latest Signal
     <div class="panel">
       <div class="kicker">Live Chart</div>
-      <canvas id="btc_chart" height="140"></canvas>
+      <div style="height:220px;margin-top:12px;"><canvas id="btc_chart"></canvas></div>
     </div>
 </div>
         <div id="symbol" class="main-value">--</div>
@@ -643,6 +643,68 @@ async function loadSignal() {
     boot();
     setInterval(loadSignal, 5000);
   </script>
+
+
+<script>
+let btcProofChart = null;
+let btcProofLabels = [];
+let btcProofData = [];
+
+async function loadProofChart(){
+  try{
+    const r = await fetch("signal.json", { cache: "no-store" });
+    const d = await r.json();
+    const price = Number(d.price || 0);
+    if (!price) return;
+
+    const now = new Date();
+    const label = now.toLocaleTimeString([], {hour:'numeric', minute:'2-digit', second:'2-digit'});
+
+    btcProofLabels.push(label);
+    btcProofData.push(price);
+
+    if (btcProofData.length > 20){
+      btcProofLabels.shift();
+      btcProofData.shift();
+    }
+
+    const btcChartCtx = document.getElementById("btc_chart");
+    if (!btcChartCtx) return;
+
+    if (!btcProofChart){
+      btcProofChart = new Chart(btcChartCtx, {
+        type: "line",
+        data: {
+          labels: btcProofLabels,
+          datasets: [{
+            data: btcProofData,
+            borderColor: "#D4A017",
+            borderWidth: 2,
+            tension: 0.25,
+            pointRadius: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: "rgba(242,244,248,.62)" }, grid: { color: "rgba(255,255,255,.05)" } },
+            y: { ticks: { color: "rgba(242,244,248,.62)" }, grid: { color: "rgba(255,255,255,.05)" } }
+          }
+        }
+      });
+    } else {
+      btcProofChart.data.labels = btcProofLabels;
+      btcProofChart.data.datasets[0].data = btcProofData;
+      btcProofChart.update();
+    }
+  } catch (e) {}
+}
+
+loadProofChart();
+setInterval(loadProofChart, 5000);
+</script>
 
 </body>
 </html>
