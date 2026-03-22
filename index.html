@@ -549,12 +549,13 @@ async function loadSignal() {
       document.getElementById("pf_value").textContent = money(p.total_usd);
       document.getElementById("pf_cash").textContent = money(p.cash_usd);
       document.getElementById("pf_qty").textContent = btcQty.toFixed(6);
-      document.getElementById("pf_avg").textContent = "—";
+      document.getElementById("pf_avg").textContent = money(p.avg_price);
       document.getElementById("pf_price").textContent = btcPrice > 0 ? money(btcPrice) : "—";
 
       const uplEl = document.getElementById("pf_upl");
-      uplEl.textContent = "—";
-      uplEl.style.color = "";
+      const upl = Number(p.unrealized_pl || 0);
+      uplEl.textContent = (upl >= 0 ? "+" : "-") + money(Math.abs(upl));
+      uplEl.style.color = upl >= 0 ? "var(--green)" : "var(--red)";
     }
 
     
