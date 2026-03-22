@@ -552,7 +552,7 @@ async function loadSignal() {
 
     
     async function loadLearning() {
-      const r = await fetch("/api/learning-stats");
+      return;
       const data = await r.json();
 
       const sig = typeof data.signals_observed === "number"
