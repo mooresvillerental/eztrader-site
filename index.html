@@ -730,18 +730,10 @@ openEl.className = "value " + (openVal > 0 ? "pos" : openVal < 0 ? "neg" : "neut
     }
 
     async function boot() {
-      try {
-        await Promise.all([
-          loadPortfolio(),
-          loadSignal(),
-          loadLearning(),
-          loadTrades(),
-          loadStrategies(),
-          loadPerformance()
-        ]);
-      } catch (e) {
-        console.log("Boot error:", e);
-      }
+      try { await loadPortfolio(); } catch (e) { console.log("Portfolio load error:", e); }
+      try { await loadSignal(); } catch (e) { console.log("Signal load error:", e); }
+      try { await loadTrades(); } catch (e) { console.log("Trades load error:", e); }
+      try { await loadPerformance(); } catch (e) { console.log("Performance load error:", e); }
     }
 
     boot();
