@@ -440,7 +440,7 @@ async function loadEngineStats() {
 }
 
 async function loadSignal() {
-      const r = await fetch("/api/latest-signal");
+      const r = await fetch("signal.json");
       const data = await r.json();
 
       document.getElementById("symbol").textContent = data.symbol || "--";
@@ -494,7 +494,7 @@ async function loadSignal() {
 
     
     async function loadPortfolio() {
-      const r = await fetch("/api/portfolio");
+      const r = await fetch("portfolio.json");
       const p = await r.json();
 
       const money = v => "$" + Number(v).toLocaleString(undefined, {maximumFractionDigits: 2});
@@ -546,7 +546,7 @@ async function loadSignal() {
     }
 
     async function loadTrades() {
-      const r = await fetch("/api/recent-trades");
+      const r = await fetch("trades.json");
       const trades = await r.json();
       const container = document.getElementById("trade_history");
       container.innerHTML = "";
