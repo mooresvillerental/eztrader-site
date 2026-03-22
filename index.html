@@ -494,14 +494,15 @@ async function loadSignal() {
       if (confVal >= 80) strength = "STRONG";
       else if (confVal >= 65) strength = "MODERATE";
 
-      document.getElementById("confidence").textContent = (data.confidence ?? "--") + "% (" + strength + ")";
-      document.getElementById("trade").textContent = Number(data.suggested_trade_usd || 0) > 0 ? money(data.suggested_trade_usd) : "—";
-      document.getElementById("strategy").textContent = (
-        data.strategy === "NO_SIGNAL" ? "No Trade" :
-        data.strategy === "A_TREND_PULLBACK" ? "Trend Pullback" :
-        data.strategy === "B_VOL_BREAKOUT" ? "Volatility Breakout" :
-        data.strategy || "--"
-      );
+      
+const confVal = Number(data.confidence ?? 0);
+let strength = "LIGHT";
+if (confVal >= 80) strength = "STRONG";
+else if (confVal >= 65) strength = "MODERATE";
+
+document.getElementById("confidence").textContent =
+  (data.confidence ?? "--") + "% (" + strength + ")";
+
       document.getElementById("preferred").textContent = (
         data.preferred_strategy === "A_TREND_PULLBACK" ? "Trend Pullback" :
         data.preferred_strategy === "B_VOL_BREAKOUT" ? "Volatility Breakout" :
