@@ -1,7 +1,7 @@
 {
   "symbol": "BTC-USD",
   "action": "BUY",
-  "confidence": 45,
+  "confidence": 50,
   "status": "Engine Online",
   "price": 69326.4,
   "strategy": "A_ONLY",
