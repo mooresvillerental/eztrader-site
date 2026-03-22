@@ -1,9 +1,9 @@
 {
   "symbol": "BTC-USD",
   "action": "HOLD",
-  "confidence": 55,
+  "confidence": 30,
   "status": "Engine Online",
-  "price": 68512.3,
+  "price": 68446.7,
   "strategy": "NO_SIGNAL",
   "regime": "RANGE",
   "trend": "Neutral"
