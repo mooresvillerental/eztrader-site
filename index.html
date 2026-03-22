@@ -252,7 +252,27 @@
       AI Strategy Performance (Live Learning Data)
     </div>
     <div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:12px;min-height:260px;">
-      <canvas id="performance_chart" height="220"></canvas>
+      
+<div class="mini-grid" style="margin-bottom:14px;">
+  <div class="card">
+    <div class="label">Shadow Final Equity</div>
+    <div class="value" id="perf_final_equity">--</div>
+  </div>
+  <div class="card">
+    <div class="label">Shadow Total P&L</div>
+    <div class="value" id="perf_pnl_pct">--</div>
+  </div>
+  <div class="card">
+    <div class="label">Shadow Win Rate</div>
+    <div class="value" id="perf_win_rate">--</div>
+  </div>
+  <div class="card">
+    <div class="label">Shadow Trade Count</div>
+    <div class="value" id="perf_trade_count">--</div>
+  </div>
+</div>
+<canvas id="performance_chart" height="220"></canvas>
+
     </div>
     <div class="muted" style="margin-top:8px;font-size:13px;">
       Shows how EZTrader AI strategies are performing across different timeframes based on real signals.
@@ -611,19 +631,70 @@ async function loadSignal() {
         container.appendChild(d);
       });
 
-      const labels = filtered.map(r => r.strategy + " " + r.timeframe);
-      const data = filtered.map(r => Number(r.win_pct));
-      const ctx = document.getElementById("performance_chart");
+    }
 
-      if (strategyChart) strategyChart.destroy();
-      strategyChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels,
-          datasets: [{ label: "Win Rate %", data }]
-        },
-        options: { responsive: true }
-      });
+    async function loadPerformance() {
+      try {
+        const r = await fetch("performance.json", { cache: "no-store" });
+        const perf = await r.json();
+
+        document.getElementById("perf_final_equity").textContent = money(perf.final_equity);
+        document.getElementById("perf_pnl_pct").textContent = Number(perf.combined_pnl_pct || 0).toFixed(2) + "%";
+        document.getElementById("perf_win_rate").textContent = Number(perf.win_rate || 0).toFixed(2) + "%";
+        document.getElementById("perf_trade_count").textContent = String((perf.closed_trades || 0) + (perf.open_trades || 0));
+
+        const labels = Array.isArray(perf.history)
+          ? perf.history.map(x => {
+              const t = Number(x.t || 0);
+              if (!t) return "";
+              const d = new Date(t * 1000);
+              return d.toLocaleDateString([], { month: "short", day: "numeric" });
+            })
+          : [];
+
+        const data = Array.isArray(perf.history)
+          ? perf.history.map(x => Number(x.equity || 0))
+          : [];
+
+        const ctx = document.getElementById("performance_chart");
+        if (!ctx) return;
+
+        if (strategyChart) strategyChart.destroy();
+        strategyChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [{
+              label: "Shadow Equity",
+              data,
+              borderColor: "#D4A017",
+              borderWidth: 2,
+              tension: 0.25,
+              pointRadius: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                ticks: { color: "rgba(242,244,248,.62)" },
+                grid: { color: "rgba(255,255,255,.05)" }
+              },
+              y: {
+                ticks: {
+                  color: "rgba(242,244,248,.62)",
+                  callback: v => "$" + Number(v).toLocaleString()
+                },
+                grid: { color: "rgba(255,255,255,.05)" }
+              }
+            }
+          }
+        });
+      } catch (e) {
+        console.log("Performance load error:", e);
+      }
     }
 
     async function boot() {
@@ -633,7 +704,8 @@ async function loadSignal() {
           loadSignal(),
           loadLearning(),
           loadTrades(),
-          loadStrategies()
+          loadStrategies(),
+          loadPerformance()
         ]);
       } catch (e) {
         console.log("Boot error:", e);
