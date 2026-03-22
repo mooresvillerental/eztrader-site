@@ -688,10 +688,18 @@ async function loadProofChart(){
           plugins: { legend: { display: false } },
           scales: {
             x: {
-              ticks: { color: "rgba(242,244,248,.62)", maxTicksLimit: 6 },
+              ticks: { color: "rgba(242,244,248,.62)", maxTicksLimit: 4 },
               grid: { color: "rgba(255,255,255,.05)" }
             },
             y: {
+              ticks: {
+                color: "rgba(242,244,248,.62)",
+                callback: v => "$" + Number(v).toLocaleString()
+              },
+              ticks: {
+                color: "rgba(242,244,248,.62)",
+                callback: v => "$" + Number(v).toLocaleString()
+              },
               ticks: { color: "rgba(242,244,248,.62)" },
               grid: { color: "rgba(255,255,255,.05)" }
             }
