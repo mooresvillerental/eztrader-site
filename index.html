@@ -500,7 +500,7 @@ async function loadSignal() {
       const money = v => "$" + Number(v).toLocaleString(undefined, {maximumFractionDigits: 2});
       document.getElementById("pf_value").textContent = money(p.portfolio_value);
       document.getElementById("pf_cash").textContent = money(p.cash_usd);
-      document.getElementById("pf_qty").textContent = Number(p.qty).toFixed(6);
+      document.getElementById("pf_qty").textContent = Number(p.btc_qty ?? p.qty ?? 0).toFixed(6);
       document.getElementById("pf_avg").textContent = money(p.avg_price);
       document.getElementById("pf_price").textContent = money(p.current_price);
 
