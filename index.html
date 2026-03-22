@@ -484,24 +484,21 @@ async function loadSignal() {
       const data = await r.json();
 
       document.getElementById("symbol").textContent = data.symbol || "--";
-      setText("action", (
-        (data.final_action || data.action) === "NONE" ? "No Trade" :
-        (data.final_action || data.action || "--")
-      ), clsForAction(data.final_action || data.action));
-      document.getElementById("price").textContent = money(data.price);
+      const rawAction = (data.final_action || data.action || "NONE");
       const confVal = Number(data.confidence ?? 0);
       let strength = "LIGHT";
       if (confVal >= 80) strength = "STRONG";
       else if (confVal >= 65) strength = "MODERATE";
 
-      
-const confVal = Number(data.confidence ?? 0);
-let strength = "LIGHT";
-if (confVal >= 80) strength = "STRONG";
-else if (confVal >= 65) strength = "MODERATE";
+      setText(
+        "action",
+        rawAction === "NONE" ? "No Trade" : (strength + " " + rawAction),
+        clsForAction(rawAction === "NONE" ? "NONE" : rawAction)
+      );
 
-document.getElementById("confidence").textContent =
-  (data.confidence ?? "--") + "% (" + strength + ")";
+      document.getElementById("price").textContent = money(data.price);
+      document.getElementById("confidence").textContent =
+        (data.confidence ?? "--") + "% (" + strength + ")";
 
       document.getElementById("preferred").textContent = (
         data.preferred_strategy === "A_TREND_PULLBACK" ? "Trend Pullback" :
