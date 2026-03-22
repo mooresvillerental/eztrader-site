@@ -3,7 +3,7 @@
   "action": "HOLD",
   "confidence": 30,
   "status": "Engine Online",
-  "price": 68577.1,
+  "price": 68577.0,
   "strategy": "NO_SIGNAL",
   "regime": "RANGE",
   "trend": "Neutral"
