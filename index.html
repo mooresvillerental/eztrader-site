@@ -705,6 +705,33 @@ async function loadProofChart(){
   } catch(e){}
 }
 
+
+async function loadTradeMarkers(){
+  try{
+    const r = await fetch("trades.json", { cache: "no-store" });
+    const trades = await r.json();
+    if (!Array.isArray(trades) || !btcSeries) return;
+
+    const markers = trades
+      .filter(t => t && t.timestamp && t.action)
+      .map(t => {
+        const side = String(t.action || "").toUpperCase();
+        const isBuy = side === "BUY";
+        return {
+          time: Number(t.timestamp),
+          position: isBuy ? "belowBar" : "aboveBar",
+          color: isBuy ? "#1EB980" : "#E55353",
+          shape: isBuy ? "arrowUp" : "arrowDown",
+          text: isBuy ? "BUY" : "SELL"
+        };
+      });
+
+    if (typeof btcSeries.setMarkers === "function"){
+      btcSeries.setMarkers(markers);
+    }
+  } catch(e) {}
+}
+
 loadProofChart();
 setInterval(loadProofChart, 60000);
 
