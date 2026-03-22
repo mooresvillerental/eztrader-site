@@ -489,8 +489,13 @@ async function loadSignal() {
         (data.final_action || data.action || "--")
       ), clsForAction(data.final_action || data.action));
       document.getElementById("price").textContent = money(data.price);
-      document.getElementById("confidence").textContent = (data.confidence ?? "--") + "%";
-      document.getElementById("trade").textContent = money(data.suggested_trade_usd);
+      const confVal = Number(data.confidence ?? 0);
+      let strength = "LIGHT";
+      if (confVal >= 80) strength = "STRONG";
+      else if (confVal >= 65) strength = "MODERATE";
+
+      document.getElementById("confidence").textContent = (data.confidence ?? "--") + "% (" + strength + ")";
+      document.getElementById("trade").textContent = Number(data.suggested_trade_usd || 0) > 0 ? money(data.suggested_trade_usd) : "—";
       document.getElementById("strategy").textContent = (
         data.strategy === "NO_SIGNAL" ? "No Trade" :
         data.strategy === "A_TREND_PULLBACK" ? "Trend Pullback" :
@@ -519,12 +524,14 @@ async function loadSignal() {
       document.getElementById("ai_confidence").textContent = (data.confidence ?? "--") + "%";
       document.getElementById("ai_regime").textContent = data.regime || "--";
       document.getElementById("ai_trend").textContent = data.trend || "--";
+      const rawAction = (data.final_action || data.action || "NONE");
       document.getElementById("ai_decision").textContent =
-        (data.final_action || data.action) === "NONE" ? "No Trade" :
-        (data.final_action || data.action || "No Trade");
-      document.getElementById("ai_reason").textContent =
-        data.eligibility_reason === "no_trade_signal" ? "No valid setup detected." :
-        (data.eligibility_reason || data.quality_reason || "No valid trade setup detected.");
+        rawAction === "NONE" ? "No Trade" : (strength + " " + rawAction);
+
+      let reasonText = data.eligibility_reason || data.quality_reason || "";
+      if (reasonText === "no_trade_signal") reasonText = "No valid setup detected.";
+      if (!reasonText) reasonText = "No valid trade setup detected.";
+      document.getElementById("ai_reason").textContent = reasonText;
 
       const updatedEl = document.getElementById("updated");
       if (updatedEl) {
