@@ -671,13 +671,13 @@ function initChart(){
       secondsVisible: false,
       tickMarkFormatter: (time) => {
         const d = new Date(Number(time) * 1000);
-        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: false });
+        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).replace(/\s?[AP]M/i, '');
       }
     },
     localization: {
       timeFormatter: (time) => {
         const d = new Date(Number(time) * 1000);
-        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: false });
+        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).replace(/\s?[AP]M/i, '');
       }
     }
   });
