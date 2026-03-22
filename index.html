@@ -665,7 +665,15 @@ function initChart(){
     },
     crosshair: { mode: 1 },
     rightPriceScale: { borderColor: "rgba(255,255,255,.1)" },
-    timeScale: { borderColor: "rgba(255,255,255,.1)", timeVisible: true, secondsVisible: false },
+    timeScale: {
+      borderColor: "rgba(255,255,255,.1)",
+      timeVisible: true,
+      secondsVisible: false,
+      tickMarkFormatter: (time) => {
+        const d = new Date(Number(time) * 1000);
+        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      }
+    },
     localization: {
       timeFormatter: (time) => {
         const d = new Date(Number(time) * 1000);
