@@ -525,7 +525,6 @@ document.getElementById("confidence").textContent =
       document.getElementById("ai_confidence").textContent = (data.confidence ?? "--") + "%";
       document.getElementById("ai_regime").textContent = data.regime || "--";
       document.getElementById("ai_trend").textContent = data.trend || "--";
-      const rawAction = (data.final_action || data.action || "NONE");
       document.getElementById("ai_decision").textContent =
         rawAction === "NONE" ? "No Trade" : (strength + " " + rawAction);
 
