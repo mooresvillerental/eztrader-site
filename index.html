@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>EZTrader AI — Live Trading Engine</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
   <style>
     html, body { max-width:100%; overflow-x:hidden; }
     :root {
@@ -211,7 +211,7 @@
         <div class="kicker">Latest Signal
     <div class="panel">
       <div class="kicker">Live Chart</div>
-      <div style="height:220px;margin-top:12px;"><canvas id="btc_chart"></canvas></div>
+      <div style="height:220px;margin-top:12px;"><div id="btc_chart" style="width:100%;height:220px;"></div></div>
     </div>
 </div>
         <div id="symbol" class="main-value">--</div>
@@ -650,72 +650,50 @@ let btcProofChart = null;
 let btcProofLabels = [];
 let btcProofData = [];
 
+
+let btcChart, btcSeries;
+
+function initChart(){
+  const el = document.getElementById("btc_chart");
+  if (!el) return;
+
+  btcChart = LightweightCharts.createChart(el, {
+    layout: { background: { color: "#0E1117" }, textColor: "#F2F4F8" },
+    grid: {
+      vertLines: { color: "rgba(255,255,255,.05)" },
+      horzLines: { color: "rgba(255,255,255,.05)" }
+    },
+    crosshair: { mode: 1 },
+    rightPriceScale: { borderColor: "rgba(255,255,255,.1)" },
+    timeScale: { borderColor: "rgba(255,255,255,.1)", timeVisible: true },
+  });
+
+  btcSeries = btcChart.addLineSeries({
+    color: "#D4A017",
+    lineWidth: 2,
+  });
+}
+
 async function loadProofChart(){
   try{
     const r = await fetch("price_history.json", { cache: "no-store" });
     const rows = await r.json();
     if (!Array.isArray(rows) || !rows.length) return;
 
-    btcProofLabels = rows.map(x => {
-      const d = new Date(x.t);
-      return isFinite(d.getTime())
-        ? d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})
-        : "";
-    });
+    const data = rows.map(x => ({
+      time: new Date(x.t).getTime() / 1000,
+      value: Number(x.p)
+    })).filter(x => x.value > 0);
 
-    btcProofData = rows.map(x => Number(x.p || 0)).filter(x => Number.isFinite(x) && x > 0);
-    if (!btcProofData.length) return;
+    if (!btcChart) initChart();
+    btcSeries.setData(data);
 
-    const btcChartCtx = document.getElementById("btc_chart");
-    if (!btcChartCtx) return;
-
-    if (!btcProofChart){
-      btcProofChart = new Chart(btcChartCtx, {
-        type: "line",
-        data: {
-          labels: btcProofLabels,
-          datasets: [{
-            data: btcProofData,
-            borderColor: "#D4A017",
-            borderWidth: 2,
-            tension: 0.25,
-            pointRadius: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: {
-              ticks: { color: "rgba(242,244,248,.62)", maxTicksLimit: 4 },
-              grid: { color: "rgba(255,255,255,.05)" }
-            },
-            y: {
-              ticks: {
-                color: "rgba(242,244,248,.62)",
-                callback: v => "$" + Number(v).toLocaleString()
-              },
-              ticks: {
-                color: "rgba(242,244,248,.62)",
-                callback: v => "$" + Number(v).toLocaleString()
-              },
-              ticks: { color: "rgba(242,244,248,.62)" },
-              grid: { color: "rgba(255,255,255,.05)" }
-            }
-          }
-        }
-      });
-    } else {
-      btcProofChart.data.labels = btcProofLabels;
-      btcProofChart.data.datasets[0].data = btcProofData;
-      btcProofChart.update();
-    }
-  } catch (e) {}
+  } catch(e){}
 }
 
 loadProofChart();
 setInterval(loadProofChart, 60000);
+
 </script>
 
 </body>
