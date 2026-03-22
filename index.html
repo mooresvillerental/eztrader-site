@@ -24,7 +24,7 @@
       margin:0; background:var(--bg); color:var(--text);
       font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
     }
-    .wrap { max-width:1100px; margin:0 auto; padding:28px 18px 56px; }
+    .wrap { max-width:1100px; width:100%; margin:0 auto; padding:28px 18px 56px; }
     .top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:28px; }
     .brand { display:flex; align-items:center; gap:14px; }
     
@@ -255,16 +255,20 @@
       
 <div class="mini-grid" style="margin-bottom:14px;">
   <div class="card">
-    <div class="label">Shadow Final Equity</div>
+    <div class="label">Shadow Account Value</div>
     <div class="value" id="perf_final_equity">--</div>
   </div>
   <div class="card">
-    <div class="label">Shadow Total P&L</div>
+    <div class="label">Net Shadow P&L</div>
     <div class="value" id="perf_pnl_pct">--</div>
   </div>
   <div class="card">
-    <div class="label">Shadow Win Rate</div>
+    <div class="label">Closed Win Rate</div>
     <div class="value" id="perf_win_rate">--</div>
+  </div>
+  <div class="card">
+    <div class="label">Open Position P&L</div>
+    <div class="value" id="perf_open_pnl">--</div>
   </div>
   <div class="card">
     <div class="label">Shadow Trade Count</div>
@@ -642,6 +646,7 @@ async function loadSignal() {
         document.getElementById("perf_pnl_pct").textContent = Number(perf.combined_pnl_pct || 0).toFixed(2) + "%";
         document.getElementById("perf_win_rate").textContent = Number(perf.win_rate || 0).toFixed(2) + "%";
         document.getElementById("perf_trade_count").textContent = String((perf.closed_trades || 0) + (perf.open_trades || 0));
+        document.getElementById("perf_open_pnl").textContent = Number(perf.open_pnl_pct || 0).toFixed(2) + "%";
 
         const labels = Array.isArray(perf.history)
           ? perf.history.map(x => {
