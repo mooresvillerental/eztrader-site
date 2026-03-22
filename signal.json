@@ -1,9 +1,9 @@
 {
   "symbol": "BTC-USD",
   "action": "BUY",
-  "confidence": 55,
+  "confidence": 45,
   "status": "Engine Online",
-  "price": 68833.1,
+  "price": 68819.1,
   "strategy": "A_ONLY",
   "regime": "RANGE",
   "trend": "Bullish"
