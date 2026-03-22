@@ -3,7 +3,7 @@
   "action": "BUY",
   "confidence": 45,
   "status": "Engine Online",
-  "price": 68787.0,
+  "price": 68787.1,
   "strategy": "A_ONLY",
   "regime": "RANGE",
   "trend": "Bullish"
