@@ -7,6 +7,7 @@
   <title>EZTrader AI — Live Trading Engine</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    html, body { max-width:100%; overflow-x:hidden; }
     :root {
       --bg:#0E1117;
       --panel:#161B22;
@@ -142,11 +143,16 @@
     }
     @media (max-width: 900px) {
       .grid { grid-template-columns:1fr; }
+      .signal-row { grid-template-columns:1fr; }
+      .mini-grid { grid-template-columns:1fr; }
       .hero h1 { font-size:34px; }
       .main-value { font-size:36px; }
       .top { align-items:flex-start; flex-direction:column; }
-      input { width:100%; }
-      button { margin-left:0; margin-top:10px; width:100%; }
+      .hero, .panel, .card { max-width:100%; overflow-x:hidden; }
+      .wrap { padding:20px 12px 40px; }
+      input { width:100%; max-width:100%; }
+      button { margin-left:0; margin-top:10px; width:100%; max-width:100%; }
+      canvas { max-width:100% !important; }
     }
   </style>
 </head>
