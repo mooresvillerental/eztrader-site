@@ -508,12 +508,20 @@ async function loadSignal() {
       }
       document.getElementById("trade").textContent = tradeText;
 
-      document.getElementById("preferred").textContent = (
-        data.preferred_strategy === "A_TREND_PULLBACK" ? "Trend Pullback" :
-        data.preferred_strategy === "B_VOL_BREAKOUT" ? "Volatility Breakout" :
-        data.preferred_strategy === "NO_SIGNAL" ? "No Trade" :
-        data.preferred_strategy || "--"
-      );
+      // Strategy display
+      let strategyText = "Waiting for valid setup";
+      if (data.preferred_strategy === "A_TREND_PULLBACK") strategyText = "Trend Pullback";
+      else if (data.preferred_strategy === "B_VOL_BREAKOUT") strategyText = "Volatility Breakout";
+
+      document.getElementById("preferred").textContent = strategyText;
+
+      // Actual strategy (only when trade fires)
+      let actualStrategy = "Waiting";
+      if (data.strategy === "A_TREND_PULLBACK") actualStrategy = "Trend Pullback";
+      else if (data.strategy === "B_VOL_BREAKOUT") actualStrategy = "Volatility Breakout";
+
+      const stratEl = document.getElementById("strategy");
+      if (stratEl) stratEl.textContent = actualStrategy;
       document.getElementById("regime").textContent = data.regime || "--";
       document.getElementById("trend").textContent = data.trend || "--";
       document.getElementById("risk").textContent = data.risk_level || "--";
