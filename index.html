@@ -524,15 +524,15 @@ async function loadSignal() {
       if (stratEl) stratEl.textContent = actualStrategy;
       document.getElementById("regime").textContent = data.regime || "--";
       document.getElementById("trend").textContent = data.trend || "--";
-      document.getElementById("risk").textContent = data.risk_level || "--";
+      document.getElementById("risk").textContent = data.risk_level || "Monitoring";
       document.getElementById("eligible").textContent = data.trade_eligible ? "Yes" : "No";
       document.getElementById("eligibility_reason").textContent =
         data.eligibility_reason === "no_trade_signal" ? "No valid setup detected." :
-        (data.eligibility_reason || "--");
+        (data.eligibility_reason || "No valid setup detected.");
       document.getElementById("quality_blocked").textContent = data.quality_blocked ? "Yes" : "No";
-      document.getElementById("quality_reason").textContent = data.quality_reason || "--";
+      document.getElementById("quality_reason").textContent = data.quality_reason || "No quality issues";
       document.getElementById("rsi").textContent =
-        typeof data.rsi === "number" ? data.rsi.toFixed(2) : "--";
+        typeof data.rsi === "number" ? data.rsi.toFixed(2) : "Monitoring";
 
       document.getElementById("ai_symbol").textContent = data.symbol || "--";
       document.getElementById("ai_confidence").textContent = (data.confidence ?? "--") + "%";
