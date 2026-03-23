@@ -499,6 +499,7 @@ async function loadSignal() {
 
       document.getElementById("price").textContent = money(data.price);
       document.getElementById("confidence").textContent =
+        (data.confidence ?? "--") + "% (" + strength + ")";
 
       // Suggested Trade display
       let tradeText = "Waiting for valid setup";
@@ -506,7 +507,6 @@ async function loadSignal() {
         tradeText = "$" + Number(data.suggested_trade_usd).toLocaleString(undefined, {maximumFractionDigits: 2});
       }
       document.getElementById("trade").textContent = tradeText;
-        (data.confidence ?? "--") + "% (" + strength + ")";
 
       document.getElementById("preferred").textContent = (
         data.preferred_strategy === "A_TREND_PULLBACK" ? "Trend Pullback" :
