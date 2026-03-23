@@ -499,6 +499,13 @@ async function loadSignal() {
 
       document.getElementById("price").textContent = money(data.price);
       document.getElementById("confidence").textContent =
+
+      // Suggested Trade display
+      let tradeText = "Waiting for valid setup";
+      if (data.suggested_trade_usd && data.suggested_trade_usd > 0 && data.trade_eligible) {
+        tradeText = "$" + Number(data.suggested_trade_usd).toLocaleString(undefined, {maximumFractionDigits: 2});
+      }
+      document.getElementById("trade").textContent = tradeText;
         (data.confidence ?? "--") + "% (" + strength + ")";
 
       document.getElementById("preferred").textContent = (
