@@ -246,7 +246,7 @@
         <div class="row"><span class="muted">Trade Eligible</span><strong id="eligible">--</strong></div>
         <div class="row"><span class="muted">Status Detail</span><strong id="eligibility_reason">--</strong></div>
         <div class="row"><span class="muted">Quality Blocked</span><strong id="quality_blocked">--</strong></div>
-        <div class="row"><span class="muted">Quality Reason</span><strong id="quality_reason">--</strong></div>
+        <div class="row"><span class="muted">Quality Status</span><strong id="quality_reason">--</strong></div>
         <div class="row"><span class="muted">RSI</span><strong id="rsi">--</strong></div>
       </section>
     </div>
@@ -279,6 +279,7 @@
   <div class="card">
     <div class="label">Shadow Trade Count</div>
     <div class="value" id="perf_trade_count">--</div>
+    <div class="muted" id="perf_trade_count_note" style="margin-top:6px;font-size:12px;">Total shadow trades tracked</div>
   </div>
 </div>
 <canvas id="performance_chart" height="220"></canvas>
@@ -534,7 +535,9 @@ async function loadSignal() {
       if (!statusDetail) statusDetail = "No valid setup detected.";
       document.getElementById("eligibility_reason").textContent = statusDetail;
       document.getElementById("quality_blocked").textContent = data.quality_blocked ? "Yes" : "No";
-      document.getElementById("quality_reason").textContent = data.quality_reason || "No quality issues";
+      let qualityText = data.quality_reason || "";
+      if (!qualityText || qualityText === "OK") qualityText = "No blocking quality issues";
+      document.getElementById("quality_reason").textContent = qualityText;
       document.getElementById("rsi").textContent =
         typeof data.rsi === "number" ? data.rsi.toFixed(2) : "Monitoring";
 
@@ -687,8 +690,14 @@ pnlEl.textContent = pnlVal.toFixed(2) + "%";
 pnlEl.className = "value " + (pnlVal > 0 ? "pos" : pnlVal < 0 ? "neg" : "neutral");
 
         document.getElementById("perf_win_rate").textContent = Number(perf.win_rate || 0).toFixed(2) + "%";
+        const closedTrades = Number(perf.closed_trades || 0);
+        const totalTrades = Number((perf.closed_trades || 0) + (perf.open_trades || 0));
+
         const wrNote = document.getElementById("perf_win_rate_note");
-        if (wrNote) wrNote.textContent = "Based on " + Number(perf.closed_trades || 0) + " closed shadow trades";
+        if (wrNote) wrNote.textContent = "Based on " + closedTrades + " closed shadow trade" + (closedTrades === 1 ? "" : "s");
+
+        const tcNote = document.getElementById("perf_trade_count_note");
+        if (tcNote) tcNote.textContent = totalTrades + " total shadow trades tracked";
         document.getElementById("perf_trade_count").textContent = String((perf.closed_trades || 0) + (perf.open_trades || 0));
         
 
