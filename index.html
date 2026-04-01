@@ -204,7 +204,7 @@
     </div>
 
     <section class="hero">
-      <div class="kicker">Real-Time AI Trading Signals — No Guessing. No Hype.</div>
+      <div class="kicker">Real-Time AI Trading Signals</div>
       <h1>Real-Time AI Trading Signals — No Guessing. No Hype.</h1>
       <p>
         Live market analysis, transparent signal output, and disciplined trade logic before launch.
@@ -232,9 +232,9 @@
         </div>
         <div class="mini-grid">
           <div class="card"><div class="label">Confidence</div><div id="confidence" class="value">--</div></div>
-          <div class="card"><div class="label">Suggested Trade</div><div id="trade" class="value">--</div></div>
+          <div class="card"><div class="label">Trade Setup</div><div id="trade" class="value">--</div></div>
           <div class="card"><div class="label">Strategy</div><div id="strategy" class="value">--</div></div>
-          <div class="card"><div class="label">Preferred Strategy</div><div id="preferred" class="value">--</div></div>
+          <div class="card"><div class="label">Setup Status</div><div id="preferred" class="value">--</div></div>
         </div>
       </section>
 
@@ -244,7 +244,7 @@
         <div class="row"><span class="muted">Trend</span><strong id="trend">--</strong></div>
         <div class="row"><span class="muted">Risk Level</span><strong id="risk">--</strong></div>
         <div class="row"><span class="muted">Trade Eligible</span><strong id="eligible">--</strong></div>
-        <div class="row"><span class="muted">Eligibility Reason</span><strong id="eligibility_reason">--</strong></div>
+        <div class="row"><span class="muted">Status Detail</span><strong id="eligibility_reason">--</strong></div>
         <div class="row"><span class="muted">Quality Blocked</span><strong id="quality_blocked">--</strong></div>
         <div class="row"><span class="muted">Quality Reason</span><strong id="quality_reason">--</strong></div>
         <div class="row"><span class="muted">RSI</span><strong id="rsi">--</strong></div>
@@ -270,6 +270,7 @@
   <div class="card">
     <div class="label">Closed Win Rate</div>
     <div class="value" id="perf_win_rate">--</div>
+    <div class="muted" id="perf_win_rate_note" style="margin-top:6px;font-size:12px;">Based on closed shadow trades</div>
   </div>
   <div class="card">
     <div class="label">Open Position P&L</div>
@@ -501,21 +502,22 @@ async function loadSignal() {
       document.getElementById("confidence").textContent =
         (data.confidence ?? "--") + "% (" + strength + ")";
 
-      // Suggested Trade display
+      // Trade setup display
       let tradeText = "Waiting for valid setup";
       if (data.suggested_trade_usd && data.suggested_trade_usd > 0 && data.trade_eligible) {
         tradeText = "$" + Number(data.suggested_trade_usd).toLocaleString(undefined, {maximumFractionDigits: 2});
       }
       document.getElementById("trade").textContent = tradeText;
 
-      // Strategy display
-      let strategyText = "Waiting for valid setup";
-      if (data.preferred_strategy === "A_TREND_PULLBACK") strategyText = "Trend Pullback";
-      else if (data.preferred_strategy === "B_VOL_BREAKOUT") strategyText = "Volatility Breakout";
+      // Setup status display
+      let strategyText = "Waiting";
+      if (data.preferred_strategy === "A_TREND_PULLBACK") strategyText = "Trend Pullback ready";
+      else if (data.preferred_strategy === "B_VOL_BREAKOUT") strategyText = "Volatility Breakout ready";
+      else if (!data.trade_eligible) strategyText = "Waiting for confirmation";
 
       document.getElementById("preferred").textContent = strategyText;
 
-      // Actual strategy (only when trade fires)
+      // Actual strategy
       let actualStrategy = "Waiting";
       if (data.strategy === "A_TREND_PULLBACK") actualStrategy = "Trend Pullback";
       else if (data.strategy === "B_VOL_BREAKOUT") actualStrategy = "Volatility Breakout";
@@ -526,9 +528,11 @@ async function loadSignal() {
       document.getElementById("trend").textContent = data.trend || "--";
       document.getElementById("risk").textContent = data.risk_level || "Monitoring";
       document.getElementById("eligible").textContent = data.trade_eligible ? "Yes" : "No";
-      document.getElementById("eligibility_reason").textContent =
-        data.eligibility_reason === "no_trade_signal" ? "No valid setup detected." :
-        (data.eligibility_reason || "No valid setup detected.");
+      let statusDetail = data.eligibility_reason || "";
+      if (statusDetail === "no_trade_signal") statusDetail = "No valid setup detected.";
+      if (!data.trade_eligible && (!statusDetail || statusDetail === "OK")) statusDetail = "Waiting for a valid setup.";
+      if (!statusDetail) statusDetail = "No valid setup detected.";
+      document.getElementById("eligibility_reason").textContent = statusDetail;
       document.getElementById("quality_blocked").textContent = data.quality_blocked ? "Yes" : "No";
       document.getElementById("quality_reason").textContent = data.quality_reason || "No quality issues";
       document.getElementById("rsi").textContent =
@@ -543,6 +547,7 @@ async function loadSignal() {
 
       let reasonText = data.eligibility_reason || data.quality_reason || "";
       if (reasonText === "no_trade_signal") reasonText = "No valid setup detected.";
+      if (!data.trade_eligible && (!reasonText || reasonText === "OK")) reasonText = "Waiting for a valid setup.";
       if (!reasonText) reasonText = "No valid trade setup detected.";
       document.getElementById("ai_reason").textContent = reasonText;
 
@@ -682,6 +687,8 @@ pnlEl.textContent = pnlVal.toFixed(2) + "%";
 pnlEl.className = "value " + (pnlVal > 0 ? "pos" : pnlVal < 0 ? "neg" : "neutral");
 
         document.getElementById("perf_win_rate").textContent = Number(perf.win_rate || 0).toFixed(2) + "%";
+        const wrNote = document.getElementById("perf_win_rate_note");
+        if (wrNote) wrNote.textContent = "Based on " + Number(perf.closed_trades || 0) + " closed shadow trades";
         document.getElementById("perf_trade_count").textContent = String((perf.closed_trades || 0) + (perf.open_trades || 0));
         
 
