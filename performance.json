@@ -6,9 +6,9 @@
   "losses": 0,
   "win_rate": 100.0,
   "closed_pnl_pct": 3.1663,
-  "open_pnl_pct": -0.8648,
-  "combined_pnl_pct": 2.2742,
-  "final_equity": 1022.74,
+  "open_pnl_pct": -998.6347,
+  "combined_pnl_pct": -1027.0882,
+  "final_equity": -9270.88,
   "history": [
     {
       "t": 1773386463,
