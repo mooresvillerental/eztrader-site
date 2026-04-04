@@ -562,14 +562,20 @@ async function loadSignal() {
 
     
     async function loadPortfolio() {
-      const r = await fetch("/api/assistant-portfolio", { cache: "no-store" });
-      const p = await r.json();
+      const [pr, sr] = await Promise.all([
+        fetch("/api/assistant-portfolio", { cache: "no-store" }),
+        fetch("/api/latest-signal", { cache: "no-store" })
+      ]);
+
+      const p = await pr.json();
+      const sig = await sr.json();
 
       const money = v => "$" + Number(v || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
       const holdings = p.holdings || {};
       const symbols = Object.keys(holdings);
-      const activeSymbol = symbols[0] || "BTC-USD";
+      const activeSymbol = String(sig.symbol || symbols[0] || "BTC-USD");
       const activeHolding = holdings[activeSymbol] || { qty: 0, avg_price: 0 };
+      const livePrice = Number(sig.price || sig.live_price || 0);
 
       let totalValue = Number(p.cash_usd || 0);
       let unrealized = 0;
@@ -577,19 +583,20 @@ async function loadSignal() {
       for (const [symbol, pos] of Object.entries(holdings)) {
         const qty = Number((pos && pos.qty) || 0);
         const avg = Number((pos && pos.avg_price) || 0);
-        totalValue += qty * avg;
-        unrealized += qty * (avg - avg);
+        const px = symbol === activeSymbol && livePrice > 0 ? livePrice : avg;
+        totalValue += qty * px;
+        unrealized += qty * (px - avg);
       }
 
       document.getElementById("pf_value").textContent = money(totalValue);
       document.getElementById("pf_cash").textContent = money(p.cash_usd || 0);
       document.getElementById("pf_qty").textContent = Number(activeHolding.qty || 0).toFixed(6);
       document.getElementById("pf_avg").textContent = money(activeHolding.avg_price || 0);
-      document.getElementById("pf_price").textContent = "—";
+      document.getElementById("pf_price").textContent = livePrice > 0 ? money(livePrice) : "—";
 
       const uplEl = document.getElementById("pf_upl");
-      uplEl.textContent = money(0);
-      uplEl.style.color = "";
+      uplEl.textContent = (unrealized >= 0 ? "+" : "-") + money(Math.abs(unrealized));
+      uplEl.style.color = unrealized > 0 ? "var(--green)" : unrealized < 0 ? "var(--red)" : "";
 
       const symEl = document.getElementById("ai_symbol");
       if (symEl) symEl.textContent = activeSymbol;
