@@ -562,26 +562,39 @@ async function loadSignal() {
 
     
     async function loadPortfolio() {
-      const r = await fetch("portfolio.json");
+      const r = await fetch("/api/assistant-portfolio", { cache: "no-store" });
       const p = await r.json();
 
-      const money = v => "$" + Number(v).toLocaleString(undefined, {maximumFractionDigits: 2});
-      const btcQty = Number((p.holdings_qty && p.holdings_qty["BTC-USD"]) || 0);
-      const btcPrice = Number((p.prices && p.prices["BTC-USD"]) || 0);
+      const money = v => "$" + Number(v || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+      const holdings = p.holdings || {};
+      const symbols = Object.keys(holdings);
+      const activeSymbol = symbols[0] || "BTC-USD";
+      const activeHolding = holdings[activeSymbol] || { qty: 0, avg_price: 0 };
 
-      document.getElementById("pf_value").textContent = money(p.total_usd);
-      document.getElementById("pf_cash").textContent = money(p.cash_usd);
-      document.getElementById("pf_qty").textContent = btcQty.toFixed(6);
-      document.getElementById("pf_avg").textContent = money(p.avg_price); // live avg sync
-      document.getElementById("pf_price").textContent = btcPrice > 0 ? money(btcPrice) : "—";
+      let totalValue = Number(p.cash_usd || 0);
+      let unrealized = 0;
+
+      for (const [symbol, pos] of Object.entries(holdings)) {
+        const qty = Number((pos && pos.qty) || 0);
+        const avg = Number((pos && pos.avg_price) || 0);
+        totalValue += qty * avg;
+        unrealized += qty * (avg - avg);
+      }
+
+      document.getElementById("pf_value").textContent = money(totalValue);
+      document.getElementById("pf_cash").textContent = money(p.cash_usd || 0);
+      document.getElementById("pf_qty").textContent = Number(activeHolding.qty || 0).toFixed(6);
+      document.getElementById("pf_avg").textContent = money(activeHolding.avg_price || 0);
+      document.getElementById("pf_price").textContent = "—";
 
       const uplEl = document.getElementById("pf_upl");
-      const upl = Number(p.unrealized_pl || 0);
-      uplEl.textContent = (upl >= 0 ? "+" : "-") + money(Math.abs(upl));
-      uplEl.style.color = upl >= 0 ? "var(--green)" : "var(--red)";
+      uplEl.textContent = money(0);
+      uplEl.style.color = "";
+
+      const symEl = document.getElementById("ai_symbol");
+      if (symEl) symEl.textContent = activeSymbol;
     }
 
-    
     async function loadLearning() {
       return;
       const data = await r.json();
@@ -617,7 +630,7 @@ async function loadSignal() {
     }
 
     async function loadTrades() {
-      const r = await fetch("trades.json");
+      const r = await fetch("/api/assistant-trade-history", { cache: "no-store" });
       const trades = await r.json();
       const container = document.getElementById("trade_history");
       container.innerHTML = "";
@@ -629,16 +642,25 @@ async function loadSignal() {
         const d = document.createElement("div");
         d.className = "card";
         d.style.marginBottom = "12px";
-        const time = new Date(t.timestamp * 1000).toLocaleString();
+        const time = t.timestamp ? new Date(t.timestamp * 1000).toLocaleString() : "—";
+        const filledQty = Number(t.filled_qty || 0);
+        const sizeUsd = Number(t.size_usd || t.proceeds_usd || 0);
         d.innerHTML = `
-          <div class="label">${t.symbol}</div>
-          <div class="value">${t.action === "NONE" ? "No Trade" : t.action} @ $${Number(t.price).toLocaleString()}</div>
-          <div class="muted">Size: $${t.size_usd}</div>
-          <div class="muted">Filled Qty: ${Number(t.filled_qty).toFixed(6)} BTC</div>
+          <div class="label">${t.symbol || "--"}</div>
+          <div class="value">${t.action === "NONE" ? "No Trade" : (t.action || "--")} @ $${Number(t.price || 0).toLocaleString(undefined, {maximumFractionDigits: 4})}</div>
+          <div class="muted">Size: $${sizeUsd.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>
+          <div class="muted">Filled Qty: ${filledQty.toFixed(6)}</div>
           <div class="muted">${time}</div>
         `;
         container.appendChild(d);
       });
+
+      if (!Array.isArray(trades) || !trades.length) {
+        const d = document.createElement("div");
+        d.className = "card";
+        d.innerHTML = `<div class="muted">No recent executed trades yet.</div>`;
+        container.appendChild(d);
+      }
     }
 
     let strategyChart = null;
@@ -675,90 +697,67 @@ async function loadSignal() {
 
     async function loadPerformance() {
       try {
-        const r = await fetch("performance.json", { cache: "no-store" });
+        const r = await fetch("/api/shadow-stats", { cache: "no-store" });
         const perf = await r.json();
 
-        document.getElementById("perf_final_equity").textContent = money(perf.final_equity);
-        
+        const finalEquity = Number(perf.final_equity || 0);
+        const avgPnlPct = Number(perf.avg_pnl_pct || 0);
+        const closedCount = Number(perf.closed_count || 0);
+        const openCount = Number(perf.open_count || 0);
+        const totalTrades = closedCount + openCount;
+        const winRate = Number(perf.win_rate_pct || 0);
+        const wins = Number(perf.wins || 0);
+        const losses = Number(perf.losses || 0);
 
-const pnlEl = document.getElementById("perf_pnl_pct");
-const pnlVal = Number(perf.combined_pnl_pct || 0);
-pnlEl.textContent = pnlVal.toFixed(2) + "%";
-pnlEl.className = "value " + (pnlVal > 0 ? "pos" : pnlVal < 0 ? "neg" : "neutral");
+        document.getElementById("perf_final_equity").textContent =
+          finalEquity > 0 ? money(finalEquity) : "—";
 
-pnlEl.textContent = pnlVal.toFixed(2) + "%";
-pnlEl.className = "value " + (pnlVal > 0 ? "pos" : pnlVal < 0 ? "neg" : "neutral");
+        const pnlEl = document.getElementById("perf_pnl_pct");
+        pnlEl.textContent = avgPnlPct.toFixed(2) + "%";
+        pnlEl.className = "value " + (avgPnlPct > 0 ? "pos" : avgPnlPct < 0 ? "neg" : "neutral");
 
-        document.getElementById("perf_win_rate").textContent = Number(perf.win_rate || 0).toFixed(2) + "%";
-        const closedTrades = Number(perf.closed_trades || 0);
-        const totalTrades = Number((perf.closed_trades || 0) + (perf.open_trades || 0));
+        document.getElementById("perf_win_rate").textContent = winRate.toFixed(2) + "%";
 
         const wrNote = document.getElementById("perf_win_rate_note");
-        if (wrNote) wrNote.textContent = "Based on " + closedTrades + " closed shadow trade" + (closedTrades === 1 ? "" : "s");
+        if (wrNote) wrNote.textContent = "Based on " + closedCount + " closed shadow trade" + (closedCount === 1 ? "" : "s");
 
         const tcNote = document.getElementById("perf_trade_count_note");
         if (tcNote) tcNote.textContent = totalTrades + " total shadow trades tracked";
-        document.getElementById("perf_trade_count").textContent = String((perf.closed_trades || 0) + (perf.open_trades || 0));
-        
 
-const openEl = document.getElementById("perf_open_pnl");
-const openVal = Number(perf.open_pnl_pct || 0);
-openEl.textContent = openVal.toFixed(2) + "%";
-openEl.className = "value " + (openVal > 0 ? "pos" : openVal < 0 ? "neg" : "neutral");
+        document.getElementById("perf_trade_count").textContent = String(totalTrades);
 
-openEl.textContent = openVal.toFixed(2) + "%";
-openEl.className = "value " + (openVal > 0 ? "pos" : openVal < 0 ? "neg" : "neutral");
+        const openEl = document.getElementById("perf_open_pnl");
+        openEl.textContent = "—";
+        openEl.className = "value neutral";
 
+        const winsEl = document.getElementById("trk_wins");
+        if (winsEl) winsEl.textContent = wins.toLocaleString();
 
-        const labels = Array.isArray(perf.history)
-          ? perf.history.map(x => {
-              const t = Number(x.t || 0);
-              if (!t) return "";
-              const d = new Date(t * 1000);
-              return d.toLocaleDateString([], { month: "short", day: "numeric" });
-            })
-          : [];
-
-        const data = Array.isArray(perf.history)
-          ? perf.history.map(x => Number(x.equity || 0))
-          : [];
+        const table = document.getElementById("strategy_table");
+        if (table && perf.last_closed) {
+          const lc = perf.last_closed;
+          table.innerHTML = `
+            <div class="card" style="margin-bottom:10px;">
+              <div class="label">Last Closed Trade</div>
+              <div class="muted">Symbol: ${lc.symbol || "--"}</div>
+              <div class="muted">Outcome: ${lc.outcome || "--"}</div>
+              <div class="muted">P&L: ${Number(lc.pnl_pct || 0).toFixed(2)}%</div>
+              <div class="muted">Strategy: ${lc.winning_strategy || lc.strategy || "--"}</div>
+            </div>
+            <div class="card">
+              <div class="label">Summary</div>
+              <div class="muted">Wins: ${wins}</div>
+              <div class="muted">Losses: ${losses}</div>
+              <div class="muted">Blocked: ${Number(perf.blocked_count || 0)}</div>
+            </div>
+          `;
+        }
 
         const ctx = document.getElementById("performance_chart");
-        if (!ctx) return;
-
-        if (strategyChart) strategyChart.destroy();
-        strategyChart = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels,
-            datasets: [{
-              label: "Shadow Equity",
-              data,
-              borderColor: "#D4A017",
-              borderWidth: 2,
-              tension: 0.25,
-              pointRadius: 2
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              x: {
-                ticks: { color: "rgba(242,244,248,.62)" },
-                grid: { color: "rgba(255,255,255,.05)" }
-              },
-              y: {
-                ticks: {
-                  color: "rgba(242,244,248,.62)",
-                  callback: v => "$" + Number(v).toLocaleString()
-                },
-                grid: { color: "rgba(255,255,255,.05)" }
-              }
-            }
-          }
-        });
+        if (ctx && strategyChart) {
+          strategyChart.destroy();
+          strategyChart = null;
+        }
       } catch (e) {
         console.log("Performance load error:", e);
       }
