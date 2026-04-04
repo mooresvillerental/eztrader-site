@@ -311,7 +311,7 @@
           <div id="pf_cash" class="value">--</div>
         </div>
         <div class="card">
-          <div class="label">BTC Holdings</div>
+          <div class="label" id="pf_qty_label">Active Holdings</div>
           <div id="pf_qty" class="value">--</div>
         </div>
         <div class="card">
@@ -319,7 +319,7 @@
           <div id="pf_avg" class="value">--</div>
         </div>
         <div class="card">
-          <div class="label">Current BTC Price</div>
+          <div class="label" id="pf_price_label">Current Price</div>
           <div id="pf_price" class="value">--</div>
         </div>
         <div class="card">
@@ -600,6 +600,12 @@ async function loadSignal() {
 
       const symEl = document.getElementById("ai_symbol");
       if (symEl) symEl.textContent = activeSymbol;
+
+      const qtyLabelEl = document.getElementById("pf_qty_label");
+      if (qtyLabelEl) qtyLabelEl.textContent = activeSymbol + " Holdings";
+
+      const priceLabelEl = document.getElementById("pf_price_label");
+      if (priceLabelEl) priceLabelEl.textContent = "Current " + activeSymbol + " Price";
     }
 
     async function loadLearning() {
