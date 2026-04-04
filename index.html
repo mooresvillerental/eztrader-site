@@ -482,7 +482,7 @@ async function loadEngineStats() {
 }
 
 async function loadSignal() {
-      const r = await fetch("/signal.json");
+      const r = await fetch("/api/latest-signal", { cache: "no-store" });
       const data = await r.json();
 
       document.getElementById("symbol").textContent = data.symbol || "--";
