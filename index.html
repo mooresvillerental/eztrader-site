@@ -485,7 +485,7 @@ async function loadSignal() {
       const r = await fetch("/api/latest-signal", { cache: "no-store" });
       const data = await r.json();
 
-      document.getElementById("symbol").textContent = data.symbol || "--";
+      document.getElementById("symbol").textContent = "BTC-USD";
       const rawAction = (data.final_action || data.action || "NONE");
       const noTrade = (rawAction === "NONE" || rawAction === "HOLD");
       const confVal = Number(data.confidence ?? 0);
