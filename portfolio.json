@@ -1,8 +1,45 @@
 {
-  "cash_usd": 1002.0,
-  "btc_qty": 0.0,
-  "avg_price": 0.0,
-  "current_price": 3.58,
-  "portfolio_value": 1002.0,
-  "unrealized_pl": 0.0
+  "cash_usd": 500.0,
+  "holdings": {
+    "BTC-USD": {
+      "qty": 0.0007496,
+      "avg_price": 66700.0
+    },
+    "ETH-USD": {
+      "qty": 0.0243902,
+      "avg_price": 2050.0
+    },
+    "SOL-USD": {
+      "qty": 0.630517,
+      "avg_price": 79.3
+    },
+    "XRP-USD": {
+      "qty": 37.8787879,
+      "avg_price": 1.32
+    },
+    "DOGE-USD": {
+      "qty": 555.5555556,
+      "avg_price": 0.09
+    },
+    "ADA-USD": {
+      "qty": 203.583062,
+      "avg_price": 0.2456
+    },
+    "LINK-USD": {
+      "qty": 5.7537399,
+      "avg_price": 8.69
+    },
+    "AVAX-USD": {
+      "qty": 5.5803571,
+      "avg_price": 8.96
+    },
+    "LTC-USD": {
+      "qty": 0.9433962,
+      "avg_price": 53.0
+    },
+    "AAVE-USD": {
+      "qty": 0.5274262,
+      "avg_price": 94.8
+    }
+  }
 }
