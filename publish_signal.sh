@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -e
 
-SRC="$HOME/v71_clean/signal.json"
+SRC="$HOME/v71_clean/signals/latest_signal.json"
 DST="$HOME/eztrader-site/signal.json"
 HIST="$HOME/eztrader-site/price_history.json"
 
@@ -10,7 +10,7 @@ cd "$HOME/eztrader-site"
 cp "$SRC" "$DST"
 python "$HOME/eztrader-site/sync_trades.py"
 python "$HOME/eztrader-site/build_performance.py"
-curl -s http://127.0.0.1:18093/portfolio > "$HOME/eztrader-site/portfolio.json"
+cp "$HOME/v71_clean/portfolio.json" "$HOME/eztrader-site/portfolio.json"
 
 changed=0
 
