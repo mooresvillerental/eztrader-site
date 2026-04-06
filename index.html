@@ -896,8 +896,22 @@ async function loadProofChart(){
 
     if (!btcChart) initChart();
     btcLineSeries.setData(data);
+
     const trueCandles = await fetchTrueOhlc();
-    btcCandleSeries.setData(trueCandles.length ? trueCandles : []);
+    const candleData = trueCandles.length ? trueCandles : [];
+    btcCandleSeries.setData(candleData);
+
+    let unifiedPrice = null;
+    if (candleData.length) {
+      unifiedPrice = Number(candleData[candleData.length - 1].close);
+    } else if (data.length) {
+      unifiedPrice = Number(data[data.length - 1].value);
+    }
+
+    if (Number.isFinite(unifiedPrice)) {
+      const priceEl = document.getElementById("price");
+      if (priceEl) priceEl.textContent = money(unifiedPrice);
+    }
 
   } catch(e){}
 }
