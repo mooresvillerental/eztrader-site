@@ -808,19 +808,29 @@ function applyWebsiteChartType(v){
   try{ localStorage.setItem("ez_site_chart_type", mode); }catch(e){}
   setWebsiteChartTypeUI(mode);
 }
-function buildSimpleCandles(lineData){
-  if (!Array.isArray(lineData) || !lineData.length) return [];
-  const out = [];
-  for (let i = 0; i < lineData.length; i++) {
-    const cur = lineData[i];
-    const prevClose = i > 0 ? Number(lineData[i-1].value) : Number(cur.value);
-    const close = Number(cur.value);
-    const open = prevClose;
-    const high = Math.max(open, close);
-    const low = Math.min(open, close);
-    out.push({ time: Number(cur.time), open, high, low, close });
+async function fetchTrueOhlc(){
+  try{
+    const r = await fetch("/api/ohlc?symbol=BTC-USD&interval=5", { cache: "no-store" });
+    const j = await r.json();
+    const candles = (j && Array.isArray(j.candles)) ? j.candles : [];
+    return candles
+      .map(c => ({
+        time: Number(c.time),
+        open: Number(c.open),
+        high: Number(c.high),
+        low: Number(c.low),
+        close: Number(c.close),
+      }))
+      .filter(c =>
+        Number.isFinite(c.time) &&
+        Number.isFinite(c.open) &&
+        Number.isFinite(c.high) &&
+        Number.isFinite(c.low) &&
+        Number.isFinite(c.close)
+      );
+  } catch(e){
+    return [];
   }
-  return out;
 }
 
 function initChart(){
@@ -886,7 +896,8 @@ async function loadProofChart(){
 
     if (!btcChart) initChart();
     btcLineSeries.setData(data);
-    btcCandleSeries.setData(buildSimpleCandles(data));
+    const trueCandles = await fetchTrueOhlc();
+    btcCandleSeries.setData(trueCandles.length ? trueCandles : []);
 
   } catch(e){}
 }
