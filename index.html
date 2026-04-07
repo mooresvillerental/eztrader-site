@@ -490,7 +490,9 @@ async function loadSignal() {
       const r = await fetch("/api/latest-signal", { cache: "no-store" });
       const data = await r.json();
 
-      document.getElementById("symbol").textContent = "BTC-USD";
+      const sym = String(data.symbol || "BTC-USD");
+      currentChartSymbol = sym;
+      document.getElementById("symbol").textContent = sym;
 
       let btcPrice = "--";
       try {
@@ -502,47 +504,68 @@ async function loadSignal() {
         }
       } catch (e) {}
 
-      setText("action", "BTC Chart Only", "NONE");
-      document.getElementById("price").textContent = btcPrice;
-      document.getElementById("confidence").textContent = "--";
+      const rawAction = String(data.final_action || data.action || "NONE").toUpperCase();
+      const noTrade = (rawAction === "NONE" || rawAction === "HOLD");
+      const confVal = Number(data.confidence ?? 0);
+      let strength = "LIGHT";
+      if (confVal >= 80) strength = "STRONG";
+      else if (confVal >= 65) strength = "MODERATE";
+      setText("action", noTrade ? "No Trade" : (strength + " " + rawAction), noTrade ? "NONE" : rawAction);
+      document.getElementById("price").textContent = money(data.price);
+      document.getElementById("confidence").textContent = (data.confidence ?? "--") + "%";
 
       // Trade setup display
-      let tradeText = "Public BTC chart view";
+      let tradeText = "Waiting for valid setup";
+      if (data.suggested_trade_usd && data.suggested_trade_usd > 0 && data.trade_eligible && !noTrade) {
+        tradeText = "$" + Number(data.suggested_trade_usd).toLocaleString(undefined, {maximumFractionDigits: 2});
+      }
       
       document.getElementById("trade").textContent = tradeText;
 
       // Setup status display
-      let strategyText = "BTC public chart";
+      let strategyText = "Waiting";
+      if (data.preferred_strategy === "A_TREND_PULLBACK") strategyText = "Trend Pullback";
+      else if (data.preferred_strategy === "B_VOL_BREAKOUT") strategyText = "Volatility Breakout";
       
 
       document.getElementById("preferred").textContent = strategyText;
 
       // Actual strategy
-      let actualStrategy = "BTC public chart";
+      let actualStrategy = "Waiting";
+      if (data.strategy === "A_ONLY" || data.strategy === "A_TREND_PULLBACK") actualStrategy = "Trend Pullback";
+      else if (data.strategy === "B_ONLY" || data.strategy === "B_VOL_BREAKOUT") actualStrategy = "Volatility Breakout";
+      else if (data.strategy === "NO_SIGNAL") actualStrategy = "No Signal";
       
 
       const stratEl = document.getElementById("strategy");
       if (stratEl) stratEl.textContent = actualStrategy;
-      document.getElementById("regime").textContent = "--";
-      document.getElementById("trend").textContent = "--";
-      document.getElementById("risk").textContent = "Monitoring";
-      document.getElementById("eligible").textContent = "--";
-      let statusDetail = "BTC chart shown for public proof.";
+      document.getElementById("regime").textContent = data.regime || "--";
+      document.getElementById("trend").textContent = data.trend || "--";
+      document.getElementById("risk").textContent = data.risk_level || "Monitoring";
+      document.getElementById("eligible").textContent = data.trade_eligible ? "Yes" : "No";
+      let statusDetail = data.eligibility_reason || "";
+      if (statusDetail === "no_trade_signal") statusDetail = "No valid setup detected.";
+      if (!data.trade_eligible && (!statusDetail || statusDetail === "OK")) statusDetail = "Waiting for a valid setup.";
+      if (!statusDetail) statusDetail = "No valid setup detected.";
       
       document.getElementById("eligibility_reason").textContent = statusDetail;
-      document.getElementById("quality_blocked").textContent = "--";
-      let qualityText = "Public BTC chart only";
+      document.getElementById("quality_blocked").textContent = data.quality_blocked ? "Yes" : "No";
+      let qualityText = data.quality_reason || "";
+      if (!qualityText || qualityText === "OK") qualityText = "No blocking quality issues";
       
       document.getElementById("quality_reason").textContent = qualityText;
-      document.getElementById("rsi").textContent = "--";
+      document.getElementById("rsi").textContent = typeof data.rsi === "number" ? data.rsi.toFixed(2) : "--";
 
-      document.getElementById("ai_symbol").textContent = "BTC-USD";
-      document.getElementById("ai_confidence").textContent = "--";
-      document.getElementById("ai_regime").textContent = "--";
-      document.getElementById("ai_trend").textContent = "--";
-      document.getElementById("ai_decision").textContent = "BTC Chart Only";
+      document.getElementById("ai_symbol").textContent = sym;
+      document.getElementById("ai_confidence").textContent = (data.confidence ?? "--") + "%";
+      document.getElementById("ai_regime").textContent = data.regime || "--";
+      document.getElementById("ai_trend").textContent = data.trend || "--";
+      document.getElementById("ai_decision").textContent = noTrade ? "No Trade" : (strength + " " + rawAction);
 
-      let reasonText = "Public BTC chart shown for proof.";
+      let reasonText = data.eligibility_reason || data.quality_reason || "";
+      if (reasonText === "no_trade_signal") reasonText = "No valid setup detected.";
+      if (!data.trade_eligible && (!reasonText || reasonText === "OK")) reasonText = "Waiting for a valid setup.";
+      if (!reasonText) reasonText = "No valid setup detected.";
       
       document.getElementById("ai_reason").textContent = reasonText;
 
@@ -786,7 +809,7 @@ let btcProofLabels = [];
 let btcProofData = [];
 
 
-let btcChart, btcLineSeries, btcCandleSeries, btcChartTypeSel;
+let btcChart, btcLineSeries, btcCandleSeries, btcChartTypeSel, currentChartSymbol = "BTC-USD";
 
 function getWebsiteChartType(){
   try{
@@ -810,7 +833,7 @@ function applyWebsiteChartType(v){
 }
 async function fetchTrueOhlc(){
   try{
-    const r = await fetch("/api/ohlc?symbol=BTC-USD&interval=5", { cache: "no-store" });
+    const r = await fetch("/api/ohlc?symbol=" + encodeURIComponent(currentChartSymbol || "BTC-USD") + "&interval=5", { cache: "no-store" });
     const j = await r.json();
     const candles = (j && Array.isArray(j.candles)) ? j.candles : [];
     return candles
@@ -885,32 +908,21 @@ function initChart(){
 
 async function loadProofChart(){
   try{
-    const r = await fetch("price_history.json", { cache: "no-store" });
-    const rows = await r.json();
-    if (!Array.isArray(rows) || !rows.length) return;
-
-    const data = rows.map(x => ({
-      time: Math.floor(new Date(x.t).getTime() / 1000),
-      value: Number(x.p)
-    })).filter(x => Number.isFinite(x.time) && Number.isFinite(x.value) && x.value > 0);
-
     if (!btcChart) initChart();
-    btcLineSeries.setData(data);
 
-    const trueCandles = await fetchTrueOhlc();
-    const candleData = trueCandles.length ? trueCandles : [];
+    const candleData = await fetchTrueOhlc();
     btcCandleSeries.setData(candleData);
+    btcLineSeries.setData(candleData.map(c => ({
+      time: Number(c.time),
+      value: Number(c.close)
+    })));
 
-    let unifiedPrice = null;
     if (candleData.length) {
-      unifiedPrice = Number(candleData[candleData.length - 1].close);
-    } else if (data.length) {
-      unifiedPrice = Number(data[data.length - 1].value);
-    }
-
-    if (Number.isFinite(unifiedPrice)) {
-      const priceEl = document.getElementById("price");
-      if (priceEl) priceEl.textContent = money(unifiedPrice);
+      const unifiedPrice = Number(candleData[candleData.length - 1].close);
+      if (Number.isFinite(unifiedPrice)) {
+        const priceEl = document.getElementById("price");
+        if (priceEl) priceEl.textContent = money(unifiedPrice);
+      }
     }
 
   } catch(e){}
