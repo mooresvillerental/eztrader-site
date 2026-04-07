@@ -1,9 +1,9 @@
 {
-  "symbol": "XRP-USD",
+  "symbol": "AMD",
   "action": "NONE",
   "final_action": "NONE",
-  "price": 1.3186,
-  "rsi": 64.51612903224421,
+  "price": 220.17,
+  "rsi": 51.63511187607575,
   "confidence": 47.0,
   "strategy": "NO_SIGNAL",
   "winning_strategy": "",
@@ -23,5 +23,5 @@
   "seconds_since_last_trade": null,
   "price_move_since_last_trade_pct": null,
   "suggested_trade_usd": 0,
-  "timestamp": 1775261314
+  "timestamp": 1775568583
 }
