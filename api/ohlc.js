@@ -48,12 +48,12 @@ module.exports = async (req, res) => {
     const symbol = String(url.searchParams.get("symbol") || "BTC-USD").toUpperCase();
     const interval = Number(url.searchParams.get("interval") || 5);
 
-    // 1) Prefer live per-symbol OHLC copied into this repo
-    const livePath = path.join(process.cwd(), "signals", "ohlc", `${symbol}.json`);
-    if (fs.existsSync(livePath)) {
-      const raw = JSON.parse(fs.readFileSync(livePath, "utf8"));
-      const candles = normalizeLiveOhlc(raw, symbol);
-      return send(res, 200, { ok: true, symbol, interval, candles, source: "signals/ohlc" });
+    // 1) Prefer live multi-symbol OHLC snapshot published into this repo
+    const liveSnap = path.join(process.cwd(), "live_ohlc.json");
+    if (fs.existsSync(liveSnap)) {
+      const raw = JSON.parse(fs.readFileSync(liveSnap, "utf8"));
+      const candles = Array.isArray(raw?.[symbol]) ? raw[symbol] : [];
+      return send(res, 200, { ok: true, symbol, interval, candles, source: "live_ohlc.json" });
     }
 
     // 2) Fallback to old static ohlc.json
