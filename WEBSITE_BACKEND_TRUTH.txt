@@ -1,0 +1,15 @@
+EZTRADER WEBSITE / BACKEND TRUTH
+
+1. geteztrader.com on Vercel is the website repo: mooresvillerental/eztrader-site
+2. Current Vercel API routes are snapshot-based, not truly live
+3. Snapshot files confirmed:
+   - live_signal.json
+   - live_portfolio.json
+   - live_shadow_stats.json
+4. v71_clean is the local engine/dev repo, not the Vercel website repo
+5. Future production architecture must use one always-on backend source of truth
+6. App, website, and Telegram must all use the same backend contract:
+   - /latest-signal
+   - /assistant-portfolio
+   - /shadow-stats
+7. Do not treat static Vercel JSON snapshots as live trading truth
