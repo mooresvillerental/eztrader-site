@@ -1,15 +1,15 @@
 {
-  "symbol": "AMD",
+  "symbol": "BTC-USD",
   "action": "NONE",
   "final_action": "NONE",
-  "price": 220.17,
+  "price": 74300.0,
   "rsi": 51.63511187607575,
   "confidence": 47.0,
   "strategy": "NO_SIGNAL",
   "winning_strategy": "",
   "strategy_a_action": "NONE",
   "strategy_b_action": "NONE",
-  "preferred_strategy": "B_VOL_BREAKOUT",
+  "preferred_strategy": "BTC_ONLY",
   "conflict": false,
   "conflict_reason": "",
   "resolver_mode": "AGREE_OR_BLOCK",
@@ -23,5 +23,6 @@
   "seconds_since_last_trade": null,
   "price_move_since_last_trade_pct": null,
   "suggested_trade_usd": 0,
-  "timestamp": 1775568583
+  "timestamp": 1776207760,
+  "live_price": 74300.0
 }
