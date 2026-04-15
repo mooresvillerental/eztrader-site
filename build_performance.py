@@ -1,12 +1,24 @@
+#!/usr/bin/env python3
 import json
 from pathlib import Path
 
-CLOSED = Path("/data/data/com.termux/files/home/v71_clean/signals/shadow_trades_closed.jsonl")
-OPEN = Path("/data/data/com.termux/files/home/v71_clean/signals/shadow_trades_open.jsonl")
-SIGNAL = Path("/data/data/com.termux/files/home/eztrader-site/signal.json")
-OUT = Path("/data/data/com.termux/files/home/eztrader-site/performance.json")
 
-START_EQUITY = 1000.0
+ROOT = Path("/data/data/com.termux/files/home")
+SITE_DIR = ROOT / "eztrader-site"
+SIGNALS_DIR = ROOT / "v71_clean" / "signals"
+
+ENGINE_STATE = SITE_DIR / "engine_state.json"
+CLOSED = SIGNALS_DIR / "shadow_trades_closed.jsonl"
+OPEN = SIGNALS_DIR / "shadow_trades_open.jsonl"
+OUT = SITE_DIR / "performance.json"
+
+
+def load_json(path, default=None):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return default
+
 
 def load_jsonl(path):
     rows = []
@@ -23,73 +35,118 @@ def load_jsonl(path):
                 pass
     return rows
 
-def load_json(path, default=None):
+
+def to_float(value, default=0.0):
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        if value is None or value == "":
+            return default
+        return float(value)
     except Exception:
         return default
 
-closed_rows = load_jsonl(CLOSED)
-open_rows = load_jsonl(OPEN)
-sig = load_json(SIGNAL, {}) or {}
-current_price = float(sig.get("price", 0) or 0)
 
-wins = 0
-losses = 0
-closed_pnl_pct = 0.0
-history = []
-equity = START_EQUITY
+def to_int(value, default=0):
+    try:
+        if value is None or value == "":
+            return default
+        return int(value)
+    except Exception:
+        return default
 
-for r in closed_rows:
-    pnl_pct = float(r.get("pnl_pct", 0) or 0)
-    outcome = str(r.get("outcome", "")).upper()
-    ts = r.get("exit_timestamp") or r.get("opened_timestamp")
 
-    closed_pnl_pct += pnl_pct
-    equity *= (1 + pnl_pct / 100.0)
+def pick_count(shadow_value, rows_len):
+    shadow_int = to_int(shadow_value, 0)
+    if shadow_int == 0 and rows_len > 0:
+        return rows_len
+    return shadow_int
 
-    if outcome == "WIN":
-        wins += 1
+
+def main():
+    state = load_json(ENGINE_STATE, {}) or {}
+    assistant = state.get("assistant_portfolio", {}) or {}
+    latest_signal = state.get("latest_signal", {}) or {}
+    shadow_stats = state.get("shadow_stats", {}) or {}
+
+    closed_rows = load_jsonl(CLOSED)
+    open_rows = load_jsonl(OPEN)
+
+    start_equity = to_float(assistant.get("assistant_starting_value"), 500.0)
+    final_equity = to_float(
+        assistant.get("assistant_portfolio_value"),
+        start_equity,
+    )
+    live_price = to_float(
+        assistant.get("live_price", latest_signal.get("price")),
+        0.0,
+    )
+
+    wins = 0
+    losses = 0
+    history = []
+    equity = start_equity
+
+    for r in closed_rows:
+        pnl_pct = to_float(r.get("pnl_pct"), 0.0)
+        outcome = str(r.get("outcome", "")).upper()
+        ts = r.get("exit_timestamp") or r.get("opened_timestamp")
+
+        equity *= (1 + pnl_pct / 100.0)
+
+        if outcome == "WIN":
+            wins += 1
+        else:
+            losses += 1
+
+        history.append({
+            "t": ts,
+            "equity": round(equity, 2),
+        })
+
+    closed_trades = pick_count(shadow_stats.get("closed_trades"), len(closed_rows))
+    open_trades = pick_count(shadow_stats.get("open_positions_count"), len(open_rows))
+    wins_final = pick_count(shadow_stats.get("wins"), wins)
+    losses_final = pick_count(shadow_stats.get("losses"), losses)
+
+    if len(closed_rows) > 0:
+        closed_pnl_pct = ((equity / start_equity) - 1) * 100.0 if start_equity else 0.0
     else:
-        losses += 1
+        closed_pnl_pct = 0.0
 
-    history.append({
-        "t": ts,
-        "equity": round(equity, 2)
-    })
+    combined_pnl_pct = ((final_equity / start_equity) - 1) * 100.0 if start_equity else 0.0
+    open_pnl_pct = combined_pnl_pct - closed_pnl_pct
 
-open_pnl_pct = 0.0
-for r in open_rows:
-    entry = float(r.get("entry_price", 0) or 0)
-    action = str(r.get("action", "BUY")).upper()
-    if entry <= 0 or current_price <= 0:
-        continue
-
-    if action == "BUY":
-        pnl_pct = ((current_price - entry) / entry) * 100.0
-    elif action == "SELL":
-        pnl_pct = ((entry - current_price) / entry) * 100.0
+    if closed_trades > 0:
+        derived_win_rate = (wins_final / closed_trades) * 100.0
     else:
-        pnl_pct = 0.0
+        derived_win_rate = 0.0
 
-    open_pnl_pct += pnl_pct
+    result = {
+        "start_equity": round(start_equity, 2),
+        "closed_trades": closed_trades,
+        "open_trades": open_trades,
+        "wins": wins_final,
+        "losses": losses_final,
+        "win_rate": round(
+            (
+                derived_win_rate
+                if to_float(shadow_stats.get("win_rate"), 0.0) == 0.0 and closed_trades > 0
+                else to_float(shadow_stats.get("win_rate"), derived_win_rate)
+            ),
+            2,
+        ),
+        "closed_pnl_pct": round(closed_pnl_pct, 4),
+        "open_pnl_pct": round(open_pnl_pct, 4),
+        "combined_pnl_pct": round(combined_pnl_pct, 4),
+        "final_equity": round(final_equity, 2),
+        "live_price": round(live_price, 8),
+        "history": history,
+        "source": "engine_state",
+    }
 
-combined_equity = equity * (1 + open_pnl_pct / 100.0)
+    OUT.write_text(json.dumps(result, indent=2), encoding="utf-8")
+    print("wrote", OUT)
+    print(json.dumps(result, indent=2))
 
-result = {
-    "start_equity": START_EQUITY,
-    "closed_trades": len(closed_rows),
-    "open_trades": len(open_rows),
-    "wins": wins,
-    "losses": losses,
-    "win_rate": round((wins / len(closed_rows) * 100.0), 2) if closed_rows else 0.0,
-    "closed_pnl_pct": round(closed_pnl_pct, 4),
-    "open_pnl_pct": round(open_pnl_pct, 4),
-    "combined_pnl_pct": round((((combined_equity / START_EQUITY) - 1) * 100.0), 4),
-    "final_equity": round(combined_equity, 2),
-    "history": history
-}
 
-OUT.write_text(json.dumps(result, indent=2), encoding="utf-8")
-print("wrote", OUT)
-print(json.dumps(result, indent=2))
+if __name__ == "__main__":
+    main()

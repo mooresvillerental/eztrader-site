@@ -1,13 +1,36 @@
 {
-  "start_equity": 1000.0,
-  "closed_trades": 0,
+  "start_equity": 500.0,
+  "closed_trades": 5,
   "open_trades": 0,
-  "wins": 0,
-  "losses": 0,
-  "win_rate": 0.0,
-  "closed_pnl_pct": 0.0,
-  "open_pnl_pct": 0.0,
-  "combined_pnl_pct": 0.0,
-  "final_equity": 1000.0,
-  "history": []
+  "wins": 2,
+  "losses": 3,
+  "win_rate": 40.0,
+  "closed_pnl_pct": 1.7825,
+  "open_pnl_pct": 9.303,
+  "combined_pnl_pct": 11.0855,
+  "final_equity": 555.43,
+  "live_price": 73942.63153805,
+  "history": [
+    {
+      "t": 1775492301,
+      "equity": 498.41
+    },
+    {
+      "t": 1775492301,
+      "equity": 509.22
+    },
+    {
+      "t": 1775492301,
+      "equity": 512.0
+    },
+    {
+      "t": 1775492301,
+      "equity": 509.95
+    },
+    {
+      "t": 1775492301,
+      "equity": 508.91
+    }
+  ],
+  "source": "engine_state"
 }
