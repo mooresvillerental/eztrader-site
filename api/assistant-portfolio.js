@@ -7,14 +7,11 @@ module.exports = async function handler(req, res) {
     const portfolio = state.assistant_portfolio || {};
 
     const activeSymbol = portfolio.active_symbol || signal.symbol || "BTC-USD";
-    const holdings = portfolio.assistant_holdings || { [activeSymbol]: 0 };
-    const avgEntry = portfolio.assistant_avg_entry || { [activeSymbol]: 0 };
+    const holdings = portfolio.assistant_holdings || {};
+    const avgEntry = portfolio.assistant_avg_entry || {};
     const livePrice = Number(portfolio.live_price ?? signal.price ?? 0);
-    const qty = Number(holdings[activeSymbol] || 0);
     const cash = Number(portfolio.assistant_cash_usd || 0);
-    const portfolioValue = Number(
-      portfolio.assistant_portfolio_value || cash + qty * livePrice
-    );
+    const portfolioValue = Number(portfolio.assistant_portfolio_value || cash);
 
     const payload = {
       active_symbol: activeSymbol,
