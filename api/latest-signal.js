@@ -18,7 +18,16 @@ module.exports = async function handler(req, res) {
       trend: signal.trend || "neutral",
       regime: signal.regime || "range",
       strategy: signal.strategy || "NO_SIGNAL",
-      status_detail: signal.status_detail || "Waiting for valid setup",
+      status_detail:
+        signal.status_detail ||
+        (
+          signal.trade_eligible === true &&
+          signal.quality_blocked !== true &&
+          Number(signal.setup_price || signal.price || 0) > 0 &&
+          ["BUY", "SELL", "EXIT"].includes(String(signal.action || "").toUpperCase())
+            ? "Valid setup detected"
+            : "Waiting for valid setup"
+        ),
       setup_price: Number(signal.setup_price || 0),
       engine_source: signal.engine_source || "engine_state",
       best_symbol: scannerState.best_symbol || signal.symbol || "BTC-USD",
