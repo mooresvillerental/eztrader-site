@@ -54,6 +54,28 @@ def to_int(value, default=0):
         return default
 
 
+def normalize_timestamp(value):
+    from datetime import datetime, timezone
+
+    if value is None:
+        return ""
+    s = str(value).strip()
+    if not s:
+        return ""
+    if s.isdigit():
+        try:
+            return datetime.fromtimestamp(int(s), tz=timezone.utc).replace(microsecond=0).isoformat()
+        except Exception:
+            return s
+    try:
+        dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc).replace(microsecond=0).isoformat()
+    except Exception:
+        return s
+
+
 def pick_count(shadow_value, rows_len):
     shadow_int = to_int(shadow_value, 0)
     if shadow_int == 0 and rows_len > 0:
@@ -98,7 +120,7 @@ def main():
             losses += 1
 
         history.append({
-            "t": ts,
+            "t": normalize_timestamp(ts),
             "equity": round(equity, 2),
         })
 
