@@ -1,17 +1,45 @@
-const fs = require("fs");
-const path = require("path");
+const { readEngineState } = require("./_state");
 
-module.exports = async (_req, res) => {
+module.exports = async function handler(req, res) {
   try {
-    const data = JSON.parse(
-      fs.readFileSync(path.join(process.cwd(), "live_portfolio.json"), "utf8")
+    const state = readEngineState();
+    const signal = state.latest_signal || {};
+    const portfolio = state.assistant_portfolio || {};
+
+    const activeSymbol = portfolio.active_symbol || signal.symbol || "BTC-USD";
+    const holdings = portfolio.assistant_holdings || { [activeSymbol]: 0 };
+    const avgEntry = portfolio.assistant_avg_entry || { [activeSymbol]: 0 };
+    const livePrice = Number(portfolio.live_price ?? signal.price ?? 0);
+    const qty = Number(holdings[activeSymbol] || 0);
+    const cash = Number(portfolio.assistant_cash_usd || 0);
+    const portfolioValue = Number(
+      portfolio.assistant_portfolio_value || cash + qty * livePrice
     );
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(data));
-  } catch (err) {
-    res.statusCode = 500;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: "live_portfolio_unavailable", detail: String(err.message || err) }));
+
+    const payload = {
+      active_symbol: activeSymbol,
+      live_price: livePrice,
+      cash_usd: cash,
+      holdings: holdings,
+      avg_entry: avgEntry,
+      portfolio_value: portfolioValue,
+      assistant_cash_usd: cash,
+      assistant_holdings: holdings,
+      assistant_avg_entry: avgEntry,
+      assistant_portfolio_value: portfolioValue,
+      assistant_unrealized_pl: Number(portfolio.assistant_unrealized_pl || 0),
+      assistant_realized_pl: Number(portfolio.assistant_realized_pl || 0),
+      assistant_starting_value: Number(portfolio.assistant_starting_value || 0),
+      assistant_return_pct: Number(portfolio.assistant_return_pct || 0),
+      last_updated: portfolio.last_updated || signal.timestamp || "",
+    };
+
+    res.setHeader("Cache-Control", "no-store");
+    return res.status(200).json(payload);
+  } catch (error) {
+    return res.status(500).json({
+      error: "failed_to_read_assistant_portfolio",
+      details: error.message,
+    });
   }
 };
