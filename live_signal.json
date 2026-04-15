@@ -1,8 +1,8 @@
 {
   "symbol": "BTC-USD",
   "action": "HOLD",
-  "price": 73942.63153805,
-  "timestamp": "1776207760",
+  "price": 73942.97514145,
+  "timestamp": "2026-04-14T23:02:40+00:00",
   "confidence": 47.0,
   "trade_eligible": false,
   "quality_blocked": true,

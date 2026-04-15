@@ -2,8 +2,8 @@
   "latest_signal": {
     "symbol": "BTC-USD",
     "action": "HOLD",
-    "price": 73942.63153805,
-    "timestamp": "1776207760",
+    "price": 73942.97514145,
+    "timestamp": "2026-04-14T23:02:40+00:00",
     "confidence": 47.0,
     "trade_eligible": false,
     "quality_blocked": true,
@@ -26,14 +26,14 @@
     "assistant_avg_entry": {
       "BTC-USD": 66700.0
     },
-    "assistant_portfolio_value": 555.4273966009223,
-    "assistant_unrealized_pl": 5.429076600922281,
+    "assistant_portfolio_value": 555.427654166031,
+    "assistant_unrealized_pl": 5.429334166030925,
     "assistant_realized_pl": 0.0,
     "assistant_starting_value": 500.0,
-    "assistant_return_pct": 11.08547932018446,
+    "assistant_return_pct": 11.085530833206189,
     "active_symbol": "BTC-USD",
-    "live_price": 73942.63153805,
-    "last_updated": "1776207760"
+    "live_price": 73942.97514145,
+    "last_updated": "2026-04-14T23:02:40+00:00"
   },
   "shadow_stats": {
     "closed_trades": 0,
@@ -41,13 +41,13 @@
     "losses": 0,
     "win_rate": 0,
     "starting_portfolio_value": 500.0,
-    "current_portfolio_value": 555.4273966009223,
-    "net_pl": 55.42739660092229,
-    "net_return_pct": 11.08547932018446,
+    "current_portfolio_value": 555.427654166031,
+    "net_pl": 55.42765416603095,
+    "net_return_pct": 11.085530833206189,
     "open_positions_count": 0,
     "blocked_trades_count": 0,
     "last_closed_trade": null,
-    "last_updated": "1776207760"
+    "last_updated": "2026-04-14T23:02:40+00:00"
   },
   "broker_portfolio": {
     "broker_cash_usd": 0,
@@ -63,7 +63,7 @@
     "symbols_scanned": [
       "BTC-USD"
     ],
-    "scan_timestamp": "1776207760",
+    "scan_timestamp": "2026-04-14T23:02:40+00:00",
     "best_symbol": "BTC-USD",
     "best_confidence": 47.0,
     "eligible_count": 0,
@@ -71,8 +71,8 @@
     "symbol_states": [
       {
         "symbol": "BTC-USD",
-        "price": 73942.63153805,
-        "price_ts": "1776207760",
+        "price": 73942.97514145,
+        "price_ts": "2026-04-14T23:02:40+00:00",
         "feed_status": "live",
         "trend": "Neutral",
         "regime": "RANGE",
