@@ -1,12 +1,12 @@
 {
   "latest_signal": {
     "symbol": "BTC-USD",
-    "action": "NONE",
-    "price": 73974.75816683,
-    "timestamp": 1776207760,
+    "action": "HOLD",
+    "price": 73942.63153805,
+    "timestamp": "1776207760",
     "confidence": 47.0,
-    "trade_eligible": true,
-    "quality_blocked": false,
+    "trade_eligible": false,
+    "quality_blocked": true,
     "block_reason": "waiting_for_valid_setup",
     "trend": "Neutral",
     "regime": "RANGE",
@@ -21,55 +21,19 @@
       "BTC-USD": {
         "qty": 0.0007496,
         "avg_price": 66700.0
-      },
-      "ETH-USD": {
-        "qty": 0.0243902,
-        "avg_price": 2050.0
-      },
-      "SOL-USD": {
-        "qty": 0.630517,
-        "avg_price": 79.3
-      },
-      "XRP-USD": {
-        "qty": 37.8787879,
-        "avg_price": 1.32
-      },
-      "DOGE-USD": {
-        "qty": 555.5555556,
-        "avg_price": 0.09
-      },
-      "ADA-USD": {
-        "qty": 203.583062,
-        "avg_price": 0.2456
-      },
-      "LINK-USD": {
-        "qty": 5.7537399,
-        "avg_price": 8.69
-      },
-      "AVAX-USD": {
-        "qty": 5.5803571,
-        "avg_price": 8.96
-      },
-      "LTC-USD": {
-        "qty": 0.9433962,
-        "avg_price": 53.0
-      },
-      "AAVE-USD": {
-        "qty": 0.5274262,
-        "avg_price": 94.8
       }
     },
     "assistant_avg_entry": {
-      "BTC-USD": 0.0
+      "BTC-USD": 66700.0
     },
-    "assistant_portfolio_value": 500.0,
-    "assistant_unrealized_pl": 0.0,
+    "assistant_portfolio_value": 555.4273966009223,
+    "assistant_unrealized_pl": 5.429076600922281,
     "assistant_realized_pl": 0.0,
     "assistant_starting_value": 500.0,
-    "assistant_return_pct": 0.0,
+    "assistant_return_pct": 11.08547932018446,
     "active_symbol": "BTC-USD",
-    "live_price": 73974.75816683,
-    "last_updated": 1776207760
+    "live_price": 73942.63153805,
+    "last_updated": "1776207760"
   },
   "shadow_stats": {
     "closed_trades": 0,
@@ -77,13 +41,13 @@
     "losses": 0,
     "win_rate": 0,
     "starting_portfolio_value": 500.0,
-    "current_portfolio_value": 500.0,
-    "net_pl": 0.0,
-    "net_return_pct": 0.0,
+    "current_portfolio_value": 555.4273966009223,
+    "net_pl": 55.42739660092229,
+    "net_return_pct": 11.08547932018446,
     "open_positions_count": 0,
     "blocked_trades_count": 0,
     "last_closed_trade": null,
-    "last_updated": 1776207760
+    "last_updated": "1776207760"
   },
   "broker_portfolio": {
     "broker_cash_usd": 0,
@@ -99,23 +63,23 @@
     "symbols_scanned": [
       "BTC-USD"
     ],
-    "scan_timestamp": 1776207760,
+    "scan_timestamp": "1776207760",
     "best_symbol": "BTC-USD",
     "best_confidence": 47.0,
-    "eligible_count": 1,
+    "eligible_count": 0,
     "feed_status": "live",
     "symbol_states": [
       {
         "symbol": "BTC-USD",
-        "price": 73974.75816683,
-        "price_ts": 1776207760,
+        "price": 73942.63153805,
+        "price_ts": "1776207760",
         "feed_status": "live",
         "trend": "Neutral",
         "regime": "RANGE",
         "strategy": "NO_SIGNAL",
         "confidence": 47.0,
-        "trade_eligible": true,
-        "quality_blocked": false,
+        "trade_eligible": false,
+        "quality_blocked": true,
         "block_reason": "waiting_for_valid_setup",
         "status_detail": "Waiting for valid setup"
       }

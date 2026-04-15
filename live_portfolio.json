@@ -1,103 +1,31 @@
 {
   "active_symbol": "BTC-USD",
-  "live_price": 73974.75816683,
+  "live_price": 73942.63153805,
   "cash_usd": 500.0,
   "holdings": {
     "BTC-USD": {
       "qty": 0.0007496,
       "avg_price": 66700.0
-    },
-    "ETH-USD": {
-      "qty": 0.0243902,
-      "avg_price": 2050.0
-    },
-    "SOL-USD": {
-      "qty": 0.630517,
-      "avg_price": 79.3
-    },
-    "XRP-USD": {
-      "qty": 37.8787879,
-      "avg_price": 1.32
-    },
-    "DOGE-USD": {
-      "qty": 555.5555556,
-      "avg_price": 0.09
-    },
-    "ADA-USD": {
-      "qty": 203.583062,
-      "avg_price": 0.2456
-    },
-    "LINK-USD": {
-      "qty": 5.7537399,
-      "avg_price": 8.69
-    },
-    "AVAX-USD": {
-      "qty": 5.5803571,
-      "avg_price": 8.96
-    },
-    "LTC-USD": {
-      "qty": 0.9433962,
-      "avg_price": 53.0
-    },
-    "AAVE-USD": {
-      "qty": 0.5274262,
-      "avg_price": 94.8
     }
   },
   "avg_entry": {
-    "BTC-USD": 0.0
+    "BTC-USD": 66700.0
   },
-  "portfolio_value": 500.0,
+  "portfolio_value": 555.4273966009223,
   "assistant_cash_usd": 500.0,
   "assistant_holdings": {
     "BTC-USD": {
       "qty": 0.0007496,
       "avg_price": 66700.0
-    },
-    "ETH-USD": {
-      "qty": 0.0243902,
-      "avg_price": 2050.0
-    },
-    "SOL-USD": {
-      "qty": 0.630517,
-      "avg_price": 79.3
-    },
-    "XRP-USD": {
-      "qty": 37.8787879,
-      "avg_price": 1.32
-    },
-    "DOGE-USD": {
-      "qty": 555.5555556,
-      "avg_price": 0.09
-    },
-    "ADA-USD": {
-      "qty": 203.583062,
-      "avg_price": 0.2456
-    },
-    "LINK-USD": {
-      "qty": 5.7537399,
-      "avg_price": 8.69
-    },
-    "AVAX-USD": {
-      "qty": 5.5803571,
-      "avg_price": 8.96
-    },
-    "LTC-USD": {
-      "qty": 0.9433962,
-      "avg_price": 53.0
-    },
-    "AAVE-USD": {
-      "qty": 0.5274262,
-      "avg_price": 94.8
     }
   },
   "assistant_avg_entry": {
-    "BTC-USD": 0.0
+    "BTC-USD": 66700.0
   },
-  "assistant_portfolio_value": 500.0,
-  "assistant_unrealized_pl": 0.0,
+  "assistant_portfolio_value": 555.4273966009223,
+  "assistant_unrealized_pl": 5.429076600922281,
   "assistant_realized_pl": 0.0,
   "assistant_starting_value": 500.0,
-  "assistant_return_pct": 0.0,
-  "last_updated": 1776207760
+  "assistant_return_pct": 11.08547932018446,
+  "last_updated": "1776207760"
 }
