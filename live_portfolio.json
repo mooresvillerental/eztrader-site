@@ -1,6 +1,6 @@
 {
   "active_symbol": "BTC-USD",
-  "live_price": 73942.97514145,
+  "live_price": 73769.07812763,
   "cash_usd": 500.0,
   "holdings": {
     "BTC-USD": {
@@ -11,7 +11,7 @@
   "avg_entry": {
     "BTC-USD": 66700.0
   },
-  "portfolio_value": 555.427654166031,
+  "portfolio_value": 555.2973009644714,
   "assistant_cash_usd": 500.0,
   "assistant_holdings": {
     "BTC-USD": {
@@ -22,10 +22,10 @@
   "assistant_avg_entry": {
     "BTC-USD": 66700.0
   },
-  "assistant_portfolio_value": 555.427654166031,
-  "assistant_unrealized_pl": 5.429334166030925,
+  "assistant_portfolio_value": 555.2973009644714,
+  "assistant_unrealized_pl": 5.298980964471445,
   "assistant_realized_pl": 0.0,
   "assistant_starting_value": 500.0,
-  "assistant_return_pct": 11.085530833206189,
-  "last_updated": "2026-04-14T23:02:40+00:00"
+  "assistant_return_pct": 11.05946019289429,
+  "last_updated": "2026-04-15T07:55:58+00:00"
 }
