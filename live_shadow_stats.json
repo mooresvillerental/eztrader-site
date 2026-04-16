@@ -1,29 +1,11 @@
 {
   "open_count": 0,
-  "closed_count": 5,
-  "blocked_count": 4,
-  "wins": 4,
+  "closed_count": 0,
+  "blocked_count": 0,
+  "wins": 0,
   "losses": 0,
-  "flats": 1,
-  "win_rate_pct": 100.0,
-  "avg_pnl_pct": 2.09192,
-  "last_closed": {
-    "opened_timestamp": 1776287396,
-    "symbol": "AVGO",
-    "action": "BUY",
-    "entry_price": 393.89,
-    "confidence": 65.0,
-    "strategy": "A_ONLY",
-    "winning_strategy": "A_TREND_PULLBACK",
-    "preferred_strategy": "A_TREND_PULLBACK",
-    "regime": "TREND",
-    "trend": "Bullish",
-    "rsi": 45.45454545454554,
-    "status": "CLOSED",
-    "source": "signal_history",
-    "exit_timestamp": 1776290996,
-    "exit_price": 393.89,
-    "pnl_pct": 0.0,
-    "outcome": "LOSS"
-  }
+  "flats": 0,
+  "win_rate_pct": 0.0,
+  "avg_pnl_pct": 0.0,
+  "last_closed": null
 }
