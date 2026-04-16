@@ -1,7 +1,7 @@
 {
   "active_symbol": "XRP-USD",
   "live_price": 1.36405,
-  "cash_usd": 850.0,
+  "cash_usd": 8600.0,
   "holdings": {
     "BTC-USD": {
       "qty": 0.03947178,
@@ -56,8 +56,8 @@
     "LTC-USD": 53.79,
     "AAVE-USD": 90.73
   },
-  "portfolio_value": 8709.14223035012,
-  "assistant_cash_usd": 850.0,
+  "portfolio_value": 16459.14223035012,
+  "assistant_cash_usd": 8600.0,
   "assistant_holdings": {
     "BTC-USD": {
       "qty": 0.03947178,
@@ -112,10 +112,10 @@
     "LTC-USD": 53.79,
     "AAVE-USD": 90.73
   },
-  "assistant_portfolio_value": 8709.14223035012,
+  "assistant_portfolio_value": 16459.14223035012,
   "assistant_unrealized_pl": -52.46380631834947,
   "assistant_realized_pl": 0.0,
-  "assistant_starting_value": 8709.14223035012,
-  "assistant_return_pct": 0.0,
-  "last_updated": "2026-04-16T06:07:39+00:00"
+  "assistant_starting_value": 8600.0,
+  "assistant_return_pct": 91.38537477151303,
+  "last_updated": "2026-04-16T07:03:47+00:00"
 }
