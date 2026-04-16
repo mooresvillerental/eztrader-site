@@ -3,7 +3,7 @@
     "symbol": "XRP-USD",
     "action": "BUY",
     "price": 1.36405,
-    "timestamp": "2026-04-16T07:09:48+00:00",
+    "timestamp": "2026-04-16T07:19:50+00:00",
     "confidence": 58.0,
     "trade_eligible": false,
     "quality_blocked": true,
@@ -26,21 +26,18 @@
     "assistant_return_pct": 0.0,
     "active_symbol": "XRP-USD",
     "live_price": 1.36405,
-    "last_updated": "2026-04-16T07:09:48+00:00"
+    "last_updated": "2026-04-16T07:19:50+00:00"
   },
   "shadow_stats": {
-    "closed_trades": 0,
+    "open_count": 0,
+    "closed_count": 0,
+    "blocked_count": 0,
     "wins": 0,
     "losses": 0,
-    "win_rate": 0,
-    "starting_portfolio_value": 8600.0,
-    "current_portfolio_value": 8600.0,
-    "net_pl": 0.0,
-    "net_return_pct": 0.0,
-    "open_positions_count": 0,
-    "blocked_trades_count": 0,
-    "last_closed_trade": null,
-    "last_updated": "2026-04-16T07:09:48+00:00"
+    "flats": 0,
+    "win_rate_pct": 0.0,
+    "avg_pnl_pct": 0.0,
+    "last_closed": null
   },
   "broker_portfolio": {
     "broker_cash_usd": 0,
@@ -56,7 +53,7 @@
     "symbols_scanned": [
       "XRP-USD"
     ],
-    "scan_timestamp": "2026-04-16T07:09:48+00:00",
+    "scan_timestamp": "2026-04-16T07:19:50+00:00",
     "best_symbol": "XRP-USD",
     "best_confidence": 58.0,
     "eligible_count": 0,
@@ -65,7 +62,7 @@
       {
         "symbol": "XRP-USD",
         "price": 1.36405,
-        "price_ts": "2026-04-16T07:09:48+00:00",
+        "price_ts": "2026-04-16T07:19:50+00:00",
         "feed_status": "live",
         "trend": "Bullish",
         "regime": "RANGE",
