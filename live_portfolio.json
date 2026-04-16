@@ -1,6 +1,6 @@
 {
-  "active_symbol": "AVGO",
-  "live_price": 393.89,
+  "active_symbol": "XRP-USD",
+  "live_price": 1.36405,
   "cash_usd": 850.0,
   "holdings": {
     "BTC-USD": {
@@ -56,7 +56,7 @@
     "LTC-USD": 53.79,
     "AAVE-USD": 90.73
   },
-  "portfolio_value": 8712.144696717234,
+  "portfolio_value": 8709.14223035012,
   "assistant_cash_usd": 850.0,
   "assistant_holdings": {
     "BTC-USD": {
@@ -112,10 +112,10 @@
     "LTC-USD": 53.79,
     "AAVE-USD": 90.73
   },
-  "assistant_portfolio_value": 8712.144696717234,
-  "assistant_unrealized_pl": -49.46133995123786,
+  "assistant_portfolio_value": 8709.14223035012,
+  "assistant_unrealized_pl": -52.46380631834947,
   "assistant_realized_pl": 0.0,
   "assistant_starting_value": 500.0,
-  "assistant_return_pct": 1642.4289393434467,
-  "last_updated": "2026-04-15T18:35:22+00:00"
+  "assistant_return_pct": 1641.8284460700243,
+  "last_updated": "2026-04-16T05:27:32+00:00"
 }
