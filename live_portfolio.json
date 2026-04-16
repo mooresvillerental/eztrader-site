@@ -2,120 +2,16 @@
   "active_symbol": "XRP-USD",
   "live_price": 1.36405,
   "cash_usd": 8600.0,
-  "holdings": {
-    "BTC-USD": {
-      "qty": 0.03947178,
-      "avg_price": 73075.25
-    },
-    "ETH-USD": {
-      "qty": 0.227398,
-      "avg_price": 2202.04
-    },
-    "SOL-USD": {
-      "qty": 7.923396860778077,
-      "avg_price": 82.12419822375286
-    },
-    "XRP-USD": {
-      "qty": 322.343,
-      "avg_price": 1.301
-    },
-    "DOGE-USD": {
-      "qty": 2092.9,
-      "avg_price": 0.2392518
-    },
-    "ADA-USD": {
-      "qty": 3966.99460489,
-      "avg_price": 0.25208
-    },
-    "LINK-USD": {
-      "qty": 57.027,
-      "avg_price": 8.78
-    },
-    "AVAX-USD": {
-      "qty": 54.9672,
-      "avg_price": 9.11
-    },
-    "LTC-USD": {
-      "qty": 9.30750332,
-      "avg_price": 53.79
-    },
-    "AAVE-USD": {
-      "qty": 4.99897,
-      "avg_price": 90.73
-    }
-  },
-  "avg_entry": {
-    "BTC-USD": 73075.25,
-    "ETH-USD": 2202.04,
-    "SOL-USD": 82.12419822375286,
-    "XRP-USD": 1.301,
-    "DOGE-USD": 0.2392518,
-    "ADA-USD": 0.25208,
-    "LINK-USD": 8.78,
-    "AVAX-USD": 9.11,
-    "LTC-USD": 53.79,
-    "AAVE-USD": 90.73
-  },
-  "portfolio_value": 16459.14223035012,
+  "holdings": {},
+  "avg_entry": {},
+  "portfolio_value": 8600.0,
   "assistant_cash_usd": 8600.0,
-  "assistant_holdings": {
-    "BTC-USD": {
-      "qty": 0.03947178,
-      "avg_price": 73075.25
-    },
-    "ETH-USD": {
-      "qty": 0.227398,
-      "avg_price": 2202.04
-    },
-    "SOL-USD": {
-      "qty": 7.923396860778077,
-      "avg_price": 82.12419822375286
-    },
-    "XRP-USD": {
-      "qty": 322.343,
-      "avg_price": 1.301
-    },
-    "DOGE-USD": {
-      "qty": 2092.9,
-      "avg_price": 0.2392518
-    },
-    "ADA-USD": {
-      "qty": 3966.99460489,
-      "avg_price": 0.25208
-    },
-    "LINK-USD": {
-      "qty": 57.027,
-      "avg_price": 8.78
-    },
-    "AVAX-USD": {
-      "qty": 54.9672,
-      "avg_price": 9.11
-    },
-    "LTC-USD": {
-      "qty": 9.30750332,
-      "avg_price": 53.79
-    },
-    "AAVE-USD": {
-      "qty": 4.99897,
-      "avg_price": 90.73
-    }
-  },
-  "assistant_avg_entry": {
-    "BTC-USD": 73075.25,
-    "ETH-USD": 2202.04,
-    "SOL-USD": 82.12419822375286,
-    "XRP-USD": 1.301,
-    "DOGE-USD": 0.2392518,
-    "ADA-USD": 0.25208,
-    "LINK-USD": 8.78,
-    "AVAX-USD": 9.11,
-    "LTC-USD": 53.79,
-    "AAVE-USD": 90.73
-  },
-  "assistant_portfolio_value": 16459.14223035012,
-  "assistant_unrealized_pl": -52.46380631834947,
+  "assistant_holdings": {},
+  "assistant_avg_entry": {},
+  "assistant_portfolio_value": 8600.0,
+  "assistant_unrealized_pl": 0.0,
   "assistant_realized_pl": 0.0,
   "assistant_starting_value": 8600.0,
-  "assistant_return_pct": 91.38537477151303,
-  "last_updated": "2026-04-16T07:03:47+00:00"
+  "assistant_return_pct": 0.0,
+  "last_updated": "2026-04-16T07:09:48+00:00"
 }
