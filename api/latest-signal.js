@@ -1,4 +1,5 @@
 const { readEngineState } = require("./_state");
+const LATEST_SIGNAL_VERSION = "force-redeploy-2026-04-16-2";
 
 module.exports = async function handler(req, res) {
   try {
