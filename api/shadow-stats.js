@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const SHADOW_STATS_VERSION = "reset-baseline-2026-04-16-1";
 
 module.exports = async (_req, res) => {
   try {
