@@ -1,4 +1,4 @@
-const { proxyToExecutor } = require("./_executor");
+const { proxyToExecutor } = require("../lib/executor");
 
 module.exports = async function handler(req, res) {
   return proxyToExecutor(req, res, "/signal");
