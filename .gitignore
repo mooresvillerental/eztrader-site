@@ -1,0 +1,5 @@
+.vercel
+.env*.local
+archive_legacy/
+*.bak_*.html
+*.bak_*

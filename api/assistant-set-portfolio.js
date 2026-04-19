@@ -1,5 +1,5 @@
 const { proxyToExecutor } = require("./_executor");
 
 module.exports = async function handler(req, res) {
-  return proxyToExecutor(req, res, "/portfolio");
+  return proxyToExecutor(req, res, "/assistant-set-portfolio");
 };

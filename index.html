@@ -158,6 +158,95 @@
 .pos { color: #22c55e; }   /* green */
 .neg { color: #ef4444; }   /* red */
 .neutral { color: #9ca3af; } /* gray */
+
+.live-strip{
+  display:grid;
+  grid-template-columns:1.25fr .75fr .9fr;
+  gap:14px;
+  margin-bottom:18px;
+}
+.live-banner{
+  background:linear-gradient(180deg,rgba(58,141,255,.14),rgba(58,141,255,.05));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+}
+.live-banner-title{
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold);
+}
+.live-banner-main{
+  font-size:24px;
+  font-weight:700;
+  margin-top:6px;
+}
+.live-banner-sub{
+  color:var(--muted);
+  margin-top:6px;
+  font-size:14px;
+}
+.status-strip,.alert-feed{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+}
+.status-pill-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  font-size:12px;
+  color:var(--text);
+}
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--blue);
+}
+.dot.ok{ background:var(--green); }
+.dot.warn{ background:var(--gold); }
+.dot.bad{ background:var(--red); }
+
+.alert-feed-list{
+  margin-top:10px;
+  display:grid;
+  gap:10px;
+}
+.alert-item{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+}
+.alert-item-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-weight:700;
+}
+.alert-item-sub{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+}
+@media (max-width: 900px) {
+  .live-strip{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 
 </head>
@@ -209,6 +298,30 @@
       <p>
         Live market analysis, transparent signal output, and disciplined trade logic before launch.
       </p>
+    </section>
+
+    <section class="live-strip">
+      <div class="live-banner">
+        <div class="live-banner-title">Live Signal Banner</div>
+        <div id="live_banner_main" class="live-banner-main">Waiting for valid setup</div>
+        <div id="live_banner_sub" class="live-banner-sub">Engine connected. Watching for the next actionable trade.</div>
+      </div>
+
+      <div class="status-strip">
+        <div class="kicker">Engine Health</div>
+        <div class="status-pill-row">
+          <div class="status-pill"><span id="dot_api" class="dot warn"></span><span id="status_api">API --</span></div>
+          <div class="status-pill"><span id="dot_signal" class="dot warn"></span><span id="status_signal">Signal --</span></div>
+          <div class="status-pill"><span id="dot_portfolio" class="dot warn"></span><span id="status_portfolio">Portfolio --</span></div>
+        </div>
+      </div>
+
+      <div class="alert-feed">
+        <div class="kicker">Recent Alerts</div>
+        <div id="recent_alerts" class="alert-feed-list">
+          <div class="alert-item"><div class="alert-item-sub">Waiting for live alert data...</div></div>
+        </div>
+      </div>
     </section>
 
     <div class="grid">
@@ -437,6 +550,59 @@
       if (className) el.className = "value " + className;
     }
 
+    function setEngineStatus(idText, idDot, ok, text) {
+      const t = document.getElementById(idText);
+      const d = document.getElementById(idDot);
+      if (t) t.textContent = text;
+      if (d) d.className = "dot " + (ok ? "ok" : "warn");
+    }
+
+    function renderRecentAlerts(signal, trades) {
+      const box = document.getElementById("recent_alerts");
+      if (!box) return;
+
+      const items = [];
+
+      if (signal) {
+        const action = String(signal.final_action || signal.action || "NONE").toUpperCase();
+        const sym = String(signal.symbol || "--");
+        const conf = Number(signal.confidence || 0);
+        const suggested = Number(signal.suggested_trade_usd || 0);
+        const actionable = (action === "BUY" || action === "SELL") && !!signal.trade_eligible && !signal.quality_blocked;
+
+        items.push({
+          title: actionable ? `${action} ${sym}` : `Watching ${sym}`,
+          sub: actionable
+            ? `Confidence ${conf}% • Suggested $${suggested.toLocaleString(undefined, {maximumFractionDigits: 2})}`
+            : `No valid setup right now`,
+          cls: actionable ? action.toLowerCase() : "none"
+        });
+      }
+
+      (Array.isArray(trades) ? [...trades].reverse().slice(0, 2) : []).forEach((t) => {
+        const action = String(t.action || "NONE").toUpperCase();
+        const sym = String(t.symbol || "--");
+        const px = Number(t.price || 0);
+        items.push({
+          title: `${action} ${sym}`,
+          sub: `Executed at $${px.toLocaleString(undefined, {maximumFractionDigits: 2})}`,
+          cls: action.toLowerCase()
+        });
+      });
+
+      if (!items.length) {
+        box.innerHTML = '<div class="alert-item"><div class="alert-item-sub">No recent alert activity yet.</div></div>';
+        return;
+      }
+
+      box.innerHTML = items.slice(0, 3).map((item) => `
+        <div class="alert-item">
+          <div class="alert-item-top"><span class="${item.cls}">${item.title}</span></div>
+          <div class="alert-item-sub">${item.sub}</div>
+        </div>
+      `).join("");
+    }
+
     async function joinWaitlist() {
       const email = document.getElementById("email_box").value.trim();
       if (!email) {
@@ -569,6 +735,21 @@ async function loadSignal() {
       
       document.getElementById("ai_reason").textContent = reasonText;
 
+      const bannerMain = document.getElementById("live_banner_main");
+      const bannerSub = document.getElementById("live_banner_sub");
+      if (bannerMain && bannerSub) {
+        if (noTrade || !data.trade_eligible) {
+          bannerMain.textContent = "Waiting for valid setup";
+          bannerSub.textContent = reasonText || "Engine connected. Monitoring for the next actionable trade.";
+        } else {
+          bannerMain.textContent = `${strength} ${rawAction} setup on ${sym}`;
+          bannerSub.textContent = `Confidence ${confVal}% • Suggested ${tradeText} • ${actualStrategy}`;
+        }
+      }
+
+      setEngineStatus("status_api", "dot_api", true, "API Live");
+      setEngineStatus("status_signal", "dot_signal", true, noTrade ? "Signal Monitoring" : "Signal Actionable");
+
       const updatedEl = document.getElementById("updated");
       if (updatedEl) {
         updatedEl.textContent = "Updated " + new Date().toLocaleTimeString();
@@ -621,6 +802,8 @@ async function loadSignal() {
 
       const priceLabelEl = document.getElementById("pf_price_label");
       if (priceLabelEl) priceLabelEl.textContent = "Current " + activeSymbol + " Price";
+
+      setEngineStatus("status_portfolio", "dot_portfolio", true, "Portfolio Live");
     }
 
     async function loadLearning() {
@@ -688,6 +871,14 @@ async function loadSignal() {
         d.className = "card";
         d.innerHTML = `<div class="muted">No recent executed trades yet.</div>`;
         container.appendChild(d);
+      }
+
+      try {
+        const sr = await fetch("/api/latest-signal", { cache: "no-store" });
+        const sig = await sr.json();
+        renderRecentAlerts(sig, trades);
+      } catch (e) {
+        console.log("Recent alerts render error:", e);
       }
     }
 
@@ -800,6 +991,8 @@ async function loadSignal() {
 
     boot();
     setInterval(loadSignal, 5000);
+    setInterval(loadPortfolio, 7000);
+    setInterval(loadTrades, 10000);
   </script>
 
 
