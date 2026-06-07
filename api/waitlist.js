@@ -70,9 +70,9 @@ module.exports = async (req, res) => {
 
     if (resend) {
       await resend.emails.send({
-        from: "EZTrader Waitlist <support@geteztrader.com>",
-        to: "support@geteztrader.com",
-        subject: alreadyJoined ? "Duplicate waitlist signup attempt" : "New EZTrader waitlist signup",
+        from: "V73 Waitlist <support@v73technologies.com>",
+        to: "support@v73technologies.com",
+        subject: alreadyJoined ? "Duplicate waitlist signup attempt" : "New V73 waitlist signup",
         text:
           (alreadyJoined ? "Duplicate signup attempt:\n" : "New signup:\n") +
           email +
