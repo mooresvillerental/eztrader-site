@@ -6,14 +6,15 @@ Status: Draft only. Do not merge or deploy without Benjamin's explicit approval.
 
 - Replace pre-launch and early-access language now that V73 is available on Google Play.
 - Remove unlaunched subscription prices and the waitlist form.
-- Use beginner-friendly, safety-focused wording.
+- Use beginner-friendly, safety-focused V73 wording.
 - Preserve manual user review and confirmation.
 - Keep V73 informational: no automatic trade execution and no profit guarantee.
-- Align public support contact information with `support@geteztrader.com`.
-- Use `https://geteztrader.com` as the product and company website.
+- Standardize public support on `support@v73technologies.com`.
+- Remove prominent public wording that calls attention to the former product name.
+- Prepare a controlled future migration from the legacy `geteztrader.com` domain to `v73technologies.com` without breaking current links.
 - State that V73 is intended for users age 18 and older.
 - Explain the private installation identity used to keep app data separated without requiring login credentials.
-- Warn users never to send brokerage passwords, API keys, recovery codes, or login credentials.
+- Warn users never to send brokerage passwords, API keys, recovery codes, seed phrases, or login credentials.
 
 ## Proposed homepage headline
 
@@ -30,6 +31,12 @@ Proposed supporting text:
 Google Play target:
 
 `https://play.google.com/store/apps/details?id=com.ben.a.eztrader_app`
+
+## Brand transition boundary
+
+The legacy Android application ID, repository name, Vercel project name, and `geteztrader.com` domain may remain temporarily as technical or transition identifiers. They should not be presented as the V73 product name in normal user-facing content. The legacy domain must remain active until the V73 domain, legal pages, support links, and Google Play URLs are fully verified.
+
+See `V73_BRAND_MIGRATION_PLAN.md` for the controlled sequence.
 
 ## Safety boundary
 
