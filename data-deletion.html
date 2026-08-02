@@ -32,6 +32,13 @@
       border-radius: 16px;
       padding: 24px;
     }
+    .warning {
+      margin: 22px 0;
+      padding: 16px;
+      border: 1px solid rgba(245, 158, 11, .45);
+      border-radius: 12px;
+      background: rgba(245, 158, 11, .08);
+    }
     ul, ol { padding-left: 22px; }
   </style>
 </head>
@@ -41,29 +48,38 @@
 
     <div class="card">
       <h1>V73 Data Deletion</h1>
-      <p class="muted">How to request deletion of app-related data.</p>
+      <p class="muted">How to request deletion of installation-related app data.</p>
 
-      <p>You may request deletion of app-related data associated with V73 by emailing V73 Technologies LLC.</p>
+      <p>V73 currently uses a private installation identity instead of a username-and-password account. You may request deletion of app-related backend data associated with your V73 installation.</p>
+
+      <div class="warning">
+        <strong>Do not send sensitive trading credentials.</strong>
+        <p>Never include a brokerage password, exchange password, API key, recovery code, seed phrase, bank credential, or other trading-platform login information in a deletion request.</p>
+      </div>
 
       <h2>How to Request Deletion</h2>
       <ol>
-        <li>Email <a href="mailto:support@v73technologies.com">support@v73technologies.com</a>.</li>
+        <li>Email <a href="mailto:support@geteztrader.com">support@geteztrader.com</a>.</li>
         <li>Use the subject line: <strong>V73 Data Deletion Request</strong>.</li>
-        <li>Include the email address or identifier you used with V73, if applicable.</li>
-        <li>State that you want app-related V73 data deleted.</li>
+        <li>Include the private V73 installation identifier only when the app displays it for support or deletion purposes.</li>
+        <li>Include your device type and a brief description that helps identify the installation data.</li>
+        <li>State clearly that you want the installation-related V73 backend data deleted.</li>
       </ol>
 
+      <h2>Important Before Uninstalling or Clearing App Storage</h2>
+      <p>Uninstalling V73 or clearing app storage may remove the locally stored installation credential before the backend data can be identified. When practical, submit the deletion request before uninstalling the app or clearing its storage.</p>
+
       <h2>What May Be Deleted</h2>
-      <p>Depending on what data exists for your app usage, deletion may include app/session information, push notification identifiers, support request data, saved app state, or related backend records.</p>
+      <p>Depending on what exists for the installation, deletion may include installation-scoped portfolio/session information, push notification identifiers, settings, confirmation or skip history, alert state, diagnostics, and related backend records.</p>
 
       <h2>What May Be Retained</h2>
-      <p>Some limited records may be retained if required for security, legal, fraud prevention, dispute resolution, accounting, backup integrity, or other legitimate business purposes.</p>
+      <p>Limited records may be retained when reasonably required for security, legal obligations, fraud prevention, dispute resolution, accounting, backup integrity, system reliability, or other legitimate business purposes.</p>
 
-      <h2>Important App Functionality Note</h2>
-      <p>Deleting backend data may affect app functionality, alerts, saved settings, portfolio/session history, diagnostics, and support history.</p>
+      <h2>Effect on App Functionality</h2>
+      <p>Deleting installation-related backend data may remove alerts, saved settings, portfolio/session history, diagnostics, and other app state. A future app installation may be treated as a new installation.</p>
 
-      <h2>Privacy Policy</h2>
-      <p>For more information, review the <a href="/privacy">V73 Privacy Policy</a>.</p>
+      <h2>Privacy Policy and Support</h2>
+      <p>For more information, review the <a href="/privacy">V73 Privacy Policy</a> or the <a href="/support">V73 Support page</a>.</p>
     </div>
   </main>
 </body>
