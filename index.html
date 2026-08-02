@@ -1,1185 +1,603 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <link rel="icon" type="image/svg+xml" href="/assets/eztrader_favicon.svg">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="/assets/eztrader_favicon.svg" />
+
   <title>V73 — AI-Assisted Market Setup Alerts</title>
-  <meta name="description" content="V73 is an AI-assisted market setup companion that monitors market setups, highlights potential opportunities, and keeps users in control with manual confirmation.">
-  <meta name="keywords" content="V73, AI market setup alerts, trading alerts, market setup monitoring, manual confirmation trading app, crypto signals, stock signals">
-  <meta name="author" content="V73 Technologies LLC">
-  <meta property="og:title" content="V73 — AI-Assisted Market Setup Alerts">
-  <meta property="og:description" content="AI-assisted market setups, alerts, market setup monitoring, and manual-confirmation decision support.">
-  <meta property="og:site_name" content="V73">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://geteztrader.com/">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="V73 — AI-Assisted Market Setup Alerts">
-  <meta name="twitter:description" content="AI-assisted market setups, alerts, market setup monitoring, and manual-confirmation decision support.">
-  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <meta name="description" content="V73 is a beginner-friendly, AI-assisted market setup companion for stocks and crypto. It provides informational alerts and manual-review tools while keeping users in control." />
+  <meta name="keywords" content="V73, AI market setup alerts, stock alerts, crypto alerts, manual confirmation, trading education, market monitoring" />
+  <meta name="author" content="V73 Technologies LLC" />
+
+  <meta property="og:title" content="V73 — AI-Assisted Market Setup Alerts" />
+  <meta property="og:description" content="Clear market setup information, beginner-friendly guidance, and manual user control." />
+  <meta property="og:site_name" content="V73" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://geteztrader.com/" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="V73 — AI-Assisted Market Setup Alerts" />
+  <meta name="twitter:description" content="Clear market setup information, beginner-friendly guidance, and manual user control." />
+
   <style>
-    html, body { max-width:100%; overflow-x:hidden; }
     :root {
-      --bg:#0E1117;
-      --panel:#161B22;
-      --text:#F2F4F8;
-      --muted:rgba(242,244,248,.62);
-      --gold:#D4A017;
-      --green:#1EB980;
-      --red:#E55353;
-      --blue:#3A8DFF;
-      --border:rgba(255,255,255,.08);
+      --bg: #0e1117;
+      --panel: #161b22;
+      --panel-2: #111722;
+      --text: #f2f4f8;
+      --muted: rgba(242, 244, 248, 0.68);
+      --gold: #d4a017;
+      --green: #1eb980;
+      --red: #e55353;
+      --blue: #3a8dff;
+      --border: rgba(255, 255, 255, 0.09);
+      --shadow: 0 20px 55px rgba(0, 0, 0, 0.24);
     }
-    * { box-sizing:border-box; }
-    body { word-break:break-word; max-width:100vw; overflow-x:hidden;
-      margin:0; background:var(--bg); color:var(--text);
-      font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      max-width: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
     }
-    .wrap { max-width:1100px; width:100%; margin:0 auto; padding:28px 18px 56px; }
-    .top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:28px; }
-    .brand { display:flex; align-items:center; gap:14px; }
-    
-.logo {
-  width:52px;
-  height:52px;
-  border-radius:16px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
 
-.logo svg {
-  width:36px;
-  height:36px;
-  display:block;
-}
-.logo .zwrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
+    a { color: inherit; }
 
-.logo .arrow-shaft {
-  position: absolute;
-  left: 11px;
-  top: 13px;
-  width: 16px;
-  height: 2px;
-  background: var(--gold);
-  transform: rotate(-35deg);
-  transform-origin: left center;
-}
-
-.logo .arrow-head {
-  position: absolute;
-  left: 24px;
-  top: 6px;
-  width: 8px;
-  height: 8px;
-  border-top: 2px solid var(--gold);
-  border-right: 2px solid var(--gold);
-  transform: rotate(10deg);
-}
-
-    .logo span { position:relative; display:inline-block; }
-    .logo .zwrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-.logo .arrow-shaft {
-  position: absolute;
-  left: 11px;
-  top: 13px;
-  width: 16px;
-  height: 2px;
-  background: var(--gold);
-  transform: rotate(-35deg);
-  transform-origin: left center;
-}
-
-.logo .arrow-head {
-  position: absolute;
-  left: 24px;
-  top: 6px;
-  width: 8px;
-  height: 8px;
-  border-top: 2px solid var(--gold);
-  border-right: 2px solid var(--gold);
-  transform: rotate(10deg);
-}
-    .muted { color:var(--muted); }
-    .hero, .panel { max-width:100%; box-sizing:border-box;
-      background:var(--panel); border:1px solid var(--border);
-      border-radius:28px;
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 56px;
     }
-    .hero { padding:32px; margin-bottom:24px; }
-    .hero h1 { margin:0 0 10px; font-size:42px; line-height:1.05; }
-    .hero p { margin:0; max-width:720px; color:var(--muted); }
-    .grid { display:grid; grid-template-columns:1.15fr .85fr; gap:24px; margin-bottom:24px; }
-    .panel { max-width:100%; box-sizing:border-box; padding:24px; margin-top:24px; }
-    .kicker { font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
-    .main-value { font-size:44px; font-weight:700; line-height:1; margin:8px 0; }
-    .signal-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }
+
+    .notice {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .logo svg {
+      width: 36px;
+      height: 36px;
+      display: block;
+    }
+
+    .brand-name {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-sub {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 14px;
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+      gap: 24px;
+      padding: 34px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 85% 5%, rgba(58, 141, 255, 0.18), transparent 42%),
+        var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 10px 0 14px;
+      max-width: 760px;
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .button-primary {
+      border-color: var(--gold);
+      background: var(--gold);
+      color: #111;
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .hero-card {
+      align-self: stretch;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(14, 17, 23, 0.78);
+    }
+
+    .hero-card h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      position: relative;
+      padding-left: 25px;
+      color: var(--muted);
+    }
+
+    .check-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    .section {
+      margin-top: 24px;
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--panel);
+    }
+
+    .section h2 {
+      margin: 8px 0 8px;
+      font-size: clamp(26px, 4vw, 38px);
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro {
+      max-width: 800px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
     .card {
-      background:var(--bg); border:1px solid var(--border);
-      border-radius:20px; padding:16px;
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel-2);
     }
-    .label { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
-    .value { margin-top:8px; font-size:22px; font-weight:600; }
-    .mini-grid {
-      display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px;
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
     }
-    .row {
-      display:flex; justify-content:space-between; gap:12px;
-      padding:12px 0; border-bottom:1px solid var(--border);
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
     }
-    .row:last-child { border-bottom:none; }
-    .buy { color:var(--green); }
-    .sell { color:var(--red); }
-    .hold, .none { color:var(--blue); }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .status-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel-2);
+    }
+
+    .status-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .status-value {
+      margin-top: 8px;
+      font-size: 21px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .status-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 8px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .dot.ok { background: var(--green); }
+    .dot.bad { background: var(--red); }
+
+    .safety {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .download-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      margin-top: 24px;
+      padding: 24px;
+      border: 1px solid rgba(212, 160, 23, 0.45);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(212, 160, 23, 0.11), rgba(58, 141, 255, 0.08));
+    }
+
+    .download-card h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .download-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
     .footer {
-      margin-top:24px; text-align:center; color:var(--muted); font-size:14px;
+      margin-top: 26px;
+      padding: 22px 0 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
     }
-    input {
-      padding:12px; width:260px; border-radius:10px; border:none; outline:none;
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 12px;
     }
-    button {
-      padding:12px 18px; background:#ffd700; border:none; border-radius:10px;
-      margin-left:10px; cursor:pointer;
+
+    .footer a {
+      color: var(--muted);
     }
+
     @media (max-width: 900px) {
-      .grid { grid-template-columns:1fr; }
-      .signal-row { grid-template-columns:1fr; }
-      .mini-grid { grid-template-columns:1fr; }
-      .hero h1 { font-size:34px; }
-      .main-value { font-size:36px; }
-      .top { align-items:flex-start; flex-direction:column; }
-      .hero, .panel, .card { max-width:100%; overflow-x:hidden; }
-      .wrap { padding:20px 12px 40px; }
-      input { width:100%; max-width:100%; }
-      button { margin-left:0; margin-top:10px; width:100%; max-width:100%; }
-      canvas { max-width:100% !important; }
+      .hero,
+      .grid,
+      .status-grid,
+      .safety {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar,
+      .download-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding: 24px;
+      }
+
+      .section {
+        padding: 22px;
+      }
+
+      .download-card .button {
+        width: 100%;
+      }
     }
-  
-.pos { color: #22c55e; }   /* green */
-.neg { color: #ef4444; }   /* red */
-.neutral { color: #9ca3af; } /* gray */
-
-.live-strip{
-  display:grid;
-  grid-template-columns:1.25fr .75fr .9fr;
-  gap:14px;
-  margin-bottom:18px;
-}
-.live-banner{
-  background:linear-gradient(180deg,rgba(58,141,255,.14),rgba(58,141,255,.05));
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-}
-.live-banner-title{
-  font-size:12px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--gold);
-}
-.live-banner-main{
-  font-size:24px;
-  font-weight:700;
-  margin-top:6px;
-}
-.live-banner-sub{
-  color:var(--muted);
-  margin-top:6px;
-  font-size:14px;
-}
-.status-strip,.alert-feed{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-}
-.status-pill-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:10px;
-}
-.status-pill{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:8px 10px;
-  border-radius:999px;
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--border);
-  font-size:12px;
-  color:var(--text);
-}
-.dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--blue);
-}
-.dot.ok{ background:var(--green); }
-.dot.warn{ background:var(--gold); }
-.dot.bad{ background:var(--red); }
-
-.alert-feed-list{
-  margin-top:10px;
-  display:grid;
-  gap:10px;
-}
-.alert-item{
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:12px;
-}
-.alert-item-top{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  font-weight:700;
-}
-.alert-item-sub{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:4px;
-}
-@media (max-width: 900px) {
-  .live-strip{
-    grid-template-columns:1fr;
-  }
-}
-</style>
-
+  </style>
 </head>
 <body>
-  <div class="wrap"><div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Independent platform. Not affiliated with any previous company using similar naming.</div>
-    <div class="top">
+  <main class="wrap">
+    <div class="notice">Independent platform. Not affiliated with any previous company using similar naming.</div>
+
+    <header class="topbar">
       <div class="brand">
         <div class="logo" aria-label="V73 logo">
-  <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" role="img">
-    <!-- E -->
-    <rect x="7" y="11" width="4" height="22" fill="#F2F4F8"/>
-    <rect x="7" y="11" width="12" height="4" fill="#F2F4F8"/>
-    <rect x="7" y="20" width="10" height="4" fill="#F2F4F8"/>
-    <rect x="7" y="29" width="12" height="4" fill="#F2F4F8"/>
-
-    <!-- Z -->
-    <rect x="23" y="11" width="14" height="4" fill="#F2F4F8"/>
-    <rect x="23" y="29" width="14" height="4" fill="#F2F4F8"/>
-
-    <!-- Arrow aligned with Z and extended slightly past it -->
-    <line x1="24" y1="31" x2="46" y2="7"
-          stroke="#D4A017"
-          stroke-width="3"
-          stroke-linecap="round"/>
-
-    <!-- Arrow head -->
-    <line x1="46" y1="7" x2="41" y2="8"
-          stroke="#D4A017"
-          stroke-width="3"
-          stroke-linecap="round"/>
-
-    <line x1="46" y1="7" x2="45" y2="12"
-          stroke="#D4A017"
-          stroke-width="3"
-          stroke-linecap="round"/>
-  </svg>
-</div>
+          <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+            <rect x="7" y="11" width="4" height="22" fill="#F2F4F8" />
+            <rect x="7" y="11" width="12" height="4" fill="#F2F4F8" />
+            <rect x="7" y="20" width="10" height="4" fill="#F2F4F8" />
+            <rect x="7" y="29" width="12" height="4" fill="#F2F4F8" />
+            <rect x="23" y="11" width="14" height="4" fill="#F2F4F8" />
+            <rect x="23" y="29" width="14" height="4" fill="#F2F4F8" />
+            <line x1="24" y1="31" x2="46" y2="7" stroke="#D4A017" stroke-width="3" stroke-linecap="round" />
+            <line x1="46" y1="7" x2="41" y2="8" stroke="#D4A017" stroke-width="3" stroke-linecap="round" />
+            <line x1="46" y1="7" x2="45" y2="12" stroke="#D4A017" stroke-width="3" stroke-linecap="round" />
+          </svg>
+        </div>
         <div>
-          <div style="font-size:22px;font-weight:700;">V73</div>
-          <div class="muted">AI-Assisted Market Setup Alerts</div>
+          <div class="brand-name">V73</div>
+          <div class="brand-sub">AI-Assisted Market Setup Alerts</div>
         </div>
       </div>
-      <div class="muted" id="updated">Updated --</div>
-    </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#live-status">Live Status</a>
+        <a href="#safety">Safety</a>
+        <a href="/support">Support</a>
+      </nav>
+    </header>
 
     <section class="hero">
-      <div class="kicker">Real-Time AI Trading Signals</div>
-      <h1>Real-Time AI Trading Signals — No Guessing. No Hype.</h1>
-      <p>
-        Live market analysis, transparent signal output, and disciplined trade logic before launch.
-      </p>
-    </section>
+      <div>
+        <div class="eyebrow">Clear information. User control.</div>
+        <h1>AI-Assisted Market Setup Alerts</h1>
+        <p class="hero-copy">
+          V73 monitors stock and crypto market setups, explains current conditions, and presents information for manual user review. V73 does not place trades automatically, does not guarantee results, and does not replace independent financial judgment.
+        </p>
 
-    <section class="live-strip">
-      <div class="live-banner">
-        <div class="live-banner-title">Live Signal Banner</div>
-        <div id="live_banner_main" class="live-banner-main">Waiting for valid setup</div>
-        <div id="live_banner_sub" class="live-banner-sub">Engine connected. Watching for the next actionable trade.</div>
-      </div>
-
-      <div class="status-strip">
-        <div class="kicker">Engine Health</div>
-        <div class="status-pill-row">
-          <div class="status-pill"><span id="dot_api" class="dot warn"></span><span id="status_api">API --</span></div>
-          <div class="status-pill"><span id="dot_signal" class="dot warn"></span><span id="status_signal">Signal --</span></div>
-          <div class="status-pill"><span id="dot_portfolio" class="dot warn"></span><span id="status_portfolio">Portfolio --</span></div>
+        <div class="actions">
+          <a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.ben.a.eztrader_app" target="_blank" rel="noopener noreferrer">Get V73 on Google Play</a>
+          <a class="button button-secondary" href="/support">View Support</a>
         </div>
       </div>
 
-      <div class="alert-feed">
-        <div class="kicker">Recent Alerts</div>
-        <div id="recent_alerts" class="alert-feed-list">
-          <div class="alert-item"><div class="alert-item-sub">Waiting for live alert data...</div></div>
-        </div>
-      </div>
+      <aside class="hero-card">
+        <h2>Built for responsible review</h2>
+        <ul class="check-list">
+          <li>Manual user confirmation remains required</li>
+          <li>Beginner-friendly explanations and guidance</li>
+          <li>Stock and crypto setup monitoring</li>
+          <li>No brokerage password or API key required</li>
+          <li>Intended for users age 18 and older</li>
+        </ul>
+      </aside>
     </section>
 
-    <div class="grid">
-      <section class="panel" style="margin-top:0;">
-      <div class="kicker">Latest Signal</div>
-      <div class="panel">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-          <div class="kicker">Live Chart</div>
-          <select id="chart_type" style="background:#0f1626;color:#F2F4F8;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 10px;">
-            <option value="line" selected>Line</option>
-            <option value="candles">Candles</option>
-          </select>
-        </div>
-        <div style="height:220px;margin-top:12px;"><div id="btc_chart" style="width:100%;height:220px;"></div></div>
-      </div>
-      <div id="symbol" class="main-value">--</div>
-        <div class="signal-row">
-          <div class="card">
-            <div class="label">Action</div>
-            <div id="action" class="value">--</div>
-          </div>
-          <div class="card">
-            <div class="label">Live Price</div>
-            <div id="price" class="value">--</div>
-          </div>
-        </div>
-        <div class="mini-grid">
-          <div class="card"><div class="label">Confidence</div><div id="confidence" class="value">--</div></div>
-          <div class="card"><div class="label">Trade Setup</div><div id="trade" class="value">--</div></div>
-          <div class="card"><div class="label">Strategy</div><div id="strategy" class="value">--</div></div>
-          <div class="card"><div class="label">Setup Status</div><div id="preferred" class="value">--</div></div>
-        </div>
-      </section>
+    <section id="features" class="section">
+      <div class="eyebrow">What V73 does</div>
+      <h2>Designed to make market information easier to review</h2>
+      <p class="section-intro">V73 Technologies builds clear, beginner-friendly mobile tools focused on safety, simplicity, and user control.</p>
 
-      <section class="panel" style="margin-top:0;">
-        <div class="kicker">Engine Status</div>
-        <div class="row"><span class="muted">Regime</span><strong id="regime">--</strong></div>
-        <div class="row"><span class="muted">Trend</span><strong id="trend">--</strong></div>
-        <div class="row"><span class="muted">Risk Level</span><strong id="risk">--</strong></div>
-        <div class="row"><span class="muted">Trade Eligible</span><strong id="eligible">--</strong></div>
-        <div class="row"><span class="muted">Status Detail</span><strong id="eligibility_reason">--</strong></div>
-        <div class="row"><span class="muted">Quality Blocked</span><strong id="quality_blocked">--</strong></div>
-        <div class="row"><span class="muted">Quality Status</span><strong id="quality_reason">--</strong></div>
-        <div class="row"><span class="muted">RSI</span><strong id="rsi">--</strong></div>
-      </section>
-    </div>
-
-    <section class="panel">
-      <div class="kicker">Strategy Analytics</div>
-      <div style="margin-bottom:10px;font-weight:600;">
-      AI Strategy Performance (Live Learning Data)
-    </div>
-    <div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:12px;min-height:260px;">
-      
-<div class="mini-grid" style="margin-bottom:14px;">
-  <div class="card">
-    <div class="label">Shadow Account Value</div>
-    <div class="value" id="perf_final_equity">--</div>
-  </div>
-  <div class="card">
-    <div class="label">Net Shadow P&L</div>
-    <div class="value" id="perf_pnl_pct">--</div>
-  </div>
-  <div class="card">
-    <div class="label">Closed Win Rate</div>
-    <div class="value" id="perf_win_rate">--</div>
-    <div class="muted" id="perf_win_rate_note" style="margin-top:6px;font-size:12px;">Based on closed shadow trades</div>
-  </div>
-  <div class="card">
-    <div class="label">Open Position P&L</div>
-    <div class="value" id="perf_open_pnl">--</div>
-  </div>
-  <div class="card">
-    <div class="label">Shadow Trade Count</div>
-    <div class="value" id="perf_trade_count">--</div>
-    <div class="muted" id="perf_trade_count_note" style="margin-top:6px;font-size:12px;">Total shadow trades tracked</div>
-  </div>
-</div>
-<canvas id="performance_chart" height="220"></canvas>
-
-    </div>
-    <div class="muted" style="margin-top:8px;font-size:13px;">
-      Shows how V73 strategies are performing across different timeframes based on observed signal data.
-    </div>
-      <div id="strategy_table" style="margin-top:16px;"></div>
-    </section>
-
-    <section class="panel">
-      <div class="kicker">Recent Executed Trades</div>
-      <div id="trade_history" style="margin-top:16px;"></div>
-    </section>
-
-    
-    
-    
-    <section class="panel">
-      <div class="kicker">Live Portfolio</div>
-      <div class="mini-grid" style="margin-top:16px;">
-        <div class="card">
-          <div class="label">Current Portfolio Value</div>
-          <div id="pf_value" class="value">--</div>
-        </div>
-        <div class="card">
-          <div class="label">Cash Balance</div>
-          <div id="pf_cash" class="value">--</div>
-        </div>
-        <div class="card">
-          <div class="label" id="pf_qty_label">Active Holdings</div>
-          <div id="pf_qty" class="value">--</div>
-        </div>
-        <div class="card">
-          <div class="label">Average Entry Price</div>
-          <div id="pf_avg" class="value">--</div>
-        </div>
-        <div class="card">
-          <div class="label" id="pf_price_label">Current Price</div>
-          <div id="pf_price" class="value">--</div>
-        </div>
-        <div class="card">
-          <div class="label">Unrealized P/L</div>
-          <div id="pf_upl" class="value">--</div>
-        </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Setup monitoring</h3>
+          <p>V73 reviews supported stock and crypto markets and highlights setups that meet its current rules.</p>
+        </article>
+        <article class="card">
+          <h3>Plain-language context</h3>
+          <p>Confidence, market state, strategy, setup status, and protective information are presented in readable terms.</p>
+        </article>
+        <article class="card">
+          <h3>Manual control</h3>
+          <p>Users decide whether to act through their own trading platform. V73 does not place broker or exchange orders.</p>
+        </article>
       </div>
     </section>
 
-    <section class="panel">
-      <div class="kicker">AI Decision</div>
-      <div class="row"><span class="muted">Symbol</span><strong id="ai_symbol">--</strong></div>
-      <div class="row"><span class="muted">Confidence</span><strong id="ai_confidence">--</strong></div>
-      <div class="row"><span class="muted">Regime</span><strong id="ai_regime">--</strong></div>
-      <div class="row"><span class="muted">Trend</span><strong id="ai_trend">--</strong></div>
-      <div class="row"><span class="muted">Decision</span><strong id="ai_decision">--</strong></div>
-      <div class="row"><span class="muted">Reason</span><strong id="ai_reason">--</strong></div>
+    <section id="live-status" class="section">
+      <div class="eyebrow">Public system status</div>
+      <h2>Latest V73 market setup status</h2>
+      <p class="section-intro">This public view is informational and may be delayed. Installation-specific portfolio data remains inside each private app installation.</p>
+
+      <div class="pill"><span id="status-dot" class="dot"></span><span id="status-text">Checking V73 API…</span></div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <div class="status-label">Symbol</div>
+          <div id="status-symbol" class="status-value">—</div>
+        </div>
+        <div class="status-card">
+          <div class="status-label">Current status</div>
+          <div id="status-action" class="status-value">Monitoring</div>
+        </div>
+        <div class="status-card">
+          <div class="status-label">Setup strength</div>
+          <div id="status-confidence" class="status-value">—</div>
+        </div>
+        <div class="status-card">
+          <div class="status-label">Market state</div>
+          <div id="status-regime" class="status-value">—</div>
+        </div>
+      </div>
+
+      <div id="status-updated" class="status-note">Updated: —</div>
     </section>
 
-    <section class="panel">
-      <div class="kicker">Why This Matters</div>
-      <p class="muted" style="margin:10px 0 0;">
-        V73 does not force trades or guarantee outcomes. It continuously evaluates market conditions and highlights
-        potential setups for manual user review when a valid setup appears.
-      </p>
-    </section>
+    <section id="safety" class="section">
+      <div class="eyebrow">Safety and responsibility</div>
+      <h2>Information first. Decisions remain with the user.</h2>
 
-    <section class="panel">
-      <div class="kicker">V73 Access</div>
-      <div style="display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px;">
-        <div class="card">
-          <div class="label">Basic</div>
-          <div style="font-size:32px;font-weight:700;margin-top:6px;">$19</div>
-          <div class="muted" style="margin-top:8px;">per month</div>
-      <div class="muted" style="margin-top:8px;font-size:12px;">Pricing subject to change at launch.</div>
-      
-          <ul style="margin-top:14px;color:var(--muted);padding-left:18px;">
-            <li>BUY / SELL signals</li>
-            <li>Confidence rating</li>
-            <li>Market regime detection</li>
-            <li>Manual trading</li>
-          </ul>
-        </div>
-        <div class="card" style="border:1px solid var(--gold);">
-          <div class="label">Pro</div>
-          <div style="font-size:32px;font-weight:700;margin-top:6px;">$49</div>
-          <div class="muted" style="margin-top:8px;">per month</div>
-      <div class="muted" style="margin-top:8px;font-size:12px;">Pricing subject to change at launch.</div>
-      
-          <ul style="margin-top:14px;color:var(--muted);padding-left:18px;">
-            <li>Everything in Basic</li>
-            <li>Recommended trade sizes</li>
-            <li>Portfolio-aware signals</li>
-            <li>Advanced strategy insights</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="label">Elite</div>
-          <div style="font-size:32px;font-weight:700;margin-top:6px;">$149</div>
-          <div class="muted" style="margin-top:8px;">per month</div>
-      <div class="muted" style="margin-top:8px;font-size:12px;">Pricing subject to change at launch.</div>
-      
-          <ul style="margin-top:14px;color:var(--muted);padding-left:18px;">
-            <li>Everything in Pro</li>
-            <li>Advanced manual-confirmation workflow</li>
-            <li>Execution support features when available</li>
-            <li>Advanced risk monitoring tools</li>
-          </ul>
-        </div>
+      <div class="safety">
+        <article class="card">
+          <h3>V73 does not</h3>
+          <p>Guarantee profits, provide financial advice, hold funds, connect using brokerage passwords, or place trades automatically.</p>
+        </article>
+        <article class="card">
+          <h3>Users remain responsible</h3>
+          <p>Market information can be delayed, incomplete, or incorrect. Users should independently review every setup before making a financial decision.</p>
+        </article>
       </div>
     </section>
 
-    <section class="panel">
-      <div class="kicker">Get Early Access to V73</div>
-      <div class="muted" style="margin-top:8px;">
-        Be among the first to access V73 AI-assisted market setups, alerts, and watch-mode intelligence.
+    <section class="download-card">
+      <div>
+        <h2>V73 is available on Google Play</h2>
+        <p>The current release focuses on clear setup alerts, portfolio-aware review tools, education, and manual confirmation. Subscription billing is not currently active.</p>
       </div>
-      <div id="waitlist_count" class="muted" style="margin-top:8px;">Join the early access waitlist today.</div>
-      <div style="margin-top:16px">
-        <input id="email_box" placeholder="Enter email for early access">
-        <button onclick="joinWaitlist()">Join</button>
-        <div id="wait_msg" style="margin-top:10px;color:#aaa"></div>
-      </div>
-      <div class="muted" style="margin-top:10px;max-width:720px;">
-        We respect your privacy. Your email will only be used for V73 updates, early access, and product announcements. We will never sell your information.
-      </div>
+      <a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.ben.a.eztrader_app" target="_blank" rel="noopener noreferrer">Open Google Play</a>
     </section>
 
     <footer class="footer">
-      <a href="/privacy">Privacy Policy</a>
-      <span style="margin:0 8px;">•</span>
-      <a href="/terms">Terms</a>
-      <span style="margin:0 8px;">•</span>
-      <a href="/support">Support</a>
-      <span style="margin:0 8px;">•</span>
-      <a href="/data-deletion">Data Deletion</a>
-      <div style="margin-top:10px;">
-        V73 provides informational trade signal tools only. No financial advice. No profit guarantee. Manual review required.
+      <div class="footer-links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms</a>
+        <a href="/support">Support</a>
+        <a href="/data-deletion">Data Deletion</a>
       </div>
+      <div>Support: <a href="mailto:support@geteztrader.com">support@geteztrader.com</a></div>
+      <div style="margin-top:8px;">V73 provides informational market setup tools only. No financial advice. No profit guarantee. Manual review required.</div>
     </footer>
+  </main>
 
-  </div>
-
-  
   <script>
-    function clsForAction(action) {
-      const a = String(action || "").toLowerCase();
-      if (a === "buy") return "buy";
-      if (a === "sell") return "sell";
-      if (a === "hold") return "hold";
-      return "none";
+    function setStatus(ok, text) {
+      const dot = document.getElementById("status-dot");
+      const label = document.getElementById("status-text");
+      if (dot) dot.className = "dot " + (ok ? "ok" : "bad");
+      if (label) label.textContent = text;
     }
 
-    function money(v) {
-      const n = Number(v);
-      if (Number.isNaN(n)) return "--";
-      return "$" + n.toLocaleString(undefined, {maximumFractionDigits: 2});
+    function friendlyAction(signal) {
+      const raw = String(signal.final_action || signal.action || "NONE").toUpperCase();
+      const blocked = Boolean(signal.quality_blocked) || signal.trade_eligible === false;
+
+      if (raw === "NONE" || raw === "HOLD" || blocked) return "Monitoring";
+      if (raw === "BUY") return "BUY setup";
+      if (raw === "SELL") return "SELL setup";
+      if (raw === "EXIT" || raw === "EMERGENCY_EXIT") return "EXIT setup";
+      return raw.replaceAll("_", " ");
     }
 
-    function setText(id, value, className) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.textContent = value;
-      if (className) el.className = "value " + className;
-    }
-
-    function setEngineStatus(idText, idDot, ok, text) {
-      const t = document.getElementById(idText);
-      const d = document.getElementById(idDot);
-      if (t) t.textContent = text;
-      if (d) d.className = "dot " + (ok ? "ok" : "warn");
-    }
-
-    function renderRecentAlerts(signal, trades) {
-      const box = document.getElementById("recent_alerts");
-      if (!box) return;
-
-      const items = [];
-
-      if (signal) {
-        const action = String(signal.final_action || signal.action || "NONE").toUpperCase();
-        const sym = String(signal.symbol || "--");
-        const conf = Number(signal.confidence || 0);
-        const suggested = Number(signal.suggested_trade_usd || 0);
-        const actionable = (action === "BUY" || action === "SELL") && !!signal.trade_eligible && !signal.quality_blocked;
-
-        items.push({
-          title: actionable ? `${action} ${sym}` : `Watching ${sym}`,
-          sub: actionable
-            ? `Confidence ${conf}% • Suggested $${suggested.toLocaleString(undefined, {maximumFractionDigits: 2})}`
-            : `No valid setup right now`,
-          cls: actionable ? action.toLowerCase() : "none"
-        });
-      }
-
-      (Array.isArray(trades) ? [...trades].reverse().slice(0, 2) : []).forEach((t) => {
-        const action = String(t.action || "NONE").toUpperCase();
-        const sym = String(t.symbol || "--");
-        const px = Number(t.price || 0);
-        items.push({
-          title: `${action} ${sym}`,
-          sub: `Executed at $${px.toLocaleString(undefined, {maximumFractionDigits: 2})}`,
-          cls: action.toLowerCase()
-        });
-      });
-
-      if (!items.length) {
-        box.innerHTML = '<div class="alert-item"><div class="alert-item-sub">No recent alert activity yet.</div></div>';
-        return;
-      }
-
-      box.innerHTML = items.slice(0, 3).map((item) => `
-        <div class="alert-item">
-          <div class="alert-item-top"><span class="${item.cls}">${item.title}</span></div>
-          <div class="alert-item-sub">${item.sub}</div>
-        </div>
-      `).join("");
-    }
-
-    async function joinWaitlist() {
-      const email = document.getElementById("email_box").value.trim();
-      if (!email) {
-        document.getElementById("wait_msg").innerText = "Please enter an email.";
-        return;
-      }
+    async function loadPublicStatus() {
       try {
-        const r = await fetch("/api/waitlist", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({email: email})
-        });
-        const data = await r.json();
-        if (r.ok) {
-          document.getElementById("wait_msg").innerText = "You're on the list. Early access invites coming soon.";
-          if (typeof data.count === "number") {
-            const c = document.getElementById("waitlist_count");
-            if (c) c.innerText = "Join " + data.count.toLocaleString() + " early users on the waitlist.";
-          }
-          document.getElementById("email_box").value = "";
-        } else {
-          document.getElementById("wait_msg").innerText = "Signup failed: " + (data.error || "unknown error");
-        }
-      } catch (e) {
-        document.getElementById("wait_msg").innerText = "Signup failed. Check server.";
-      }
-    }
-    async function loadWaitlistCount() {
-      try {
-        const r = await fetch("/api/waitlist-count");
-        const data = await r.json();
-        const c = document.getElementById("waitlist_count");
-        if (c && typeof data.count === "number") {
-          c.innerText = "Join " + data.count.toLocaleString() + " early users on the waitlist.";
-        }
-      } catch (e) {
-        console.log("Waitlist count load error:", e);
+        const response = await fetch("/api/latest-signal", { cache: "no-store" });
+        if (!response.ok) throw new Error("HTTP " + response.status);
+
+        const signal = await response.json();
+        document.getElementById("status-symbol").textContent = signal.symbol || "—";
+        document.getElementById("status-action").textContent = friendlyAction(signal);
+        document.getElementById("status-confidence").textContent = Number.isFinite(Number(signal.confidence)) ? Number(signal.confidence).toFixed(0) + "%" : "—";
+        document.getElementById("status-regime").textContent = signal.regime || signal.market_state || "Monitoring";
+        document.getElementById("status-updated").textContent = "Updated: " + new Date().toLocaleString();
+        setStatus(true, "V73 API is responding");
+      } catch (error) {
+        setStatus(false, "Live status is temporarily unavailable");
+        document.getElementById("status-updated").textContent = "Updated: unable to retrieve current status";
       }
     }
 
-    
-async function loadEngineStats() {
-  const r = await fetch("/api/learning-stats");
-  const data = await r.json();
-
-  document.getElementById("signals_observed").textContent = data.signals_observed ?? "--";
-  document.getElementById("strategies_learned").textContent = data.strategies_learned ?? "--";
-}
-
-async function loadSignal() {
-      const r = await fetch("/api/latest-signal", { cache: "no-store" });
-      const data = await r.json();
-
-      const sym = String(data.symbol || "BTC-USD");
-      currentChartSymbol = sym;
-      document.getElementById("symbol").textContent = sym;
-
-      let btcPrice = "--";
-      try {
-        const pr = await fetch("price_history.json", { cache: "no-store" });
-        const rows = await pr.json();
-        if (Array.isArray(rows) && rows.length) {
-          const last = rows[rows.length - 1];
-          if (last && Number.isFinite(Number(last.p))) btcPrice = money(Number(last.p));
-        }
-      } catch (e) {}
-
-      const rawAction = String(data.final_action || data.action || "NONE").toUpperCase();
-      const noTrade = (rawAction === "NONE" || rawAction === "HOLD");
-      const confVal = Number(data.confidence ?? 0);
-      let strength = "LIGHT";
-      if (confVal >= 80) strength = "STRONG";
-      else if (confVal >= 65) strength = "MODERATE";
-      setText("action", noTrade ? "No Trade" : (strength + " " + rawAction), noTrade ? "NONE" : rawAction);
-      document.getElementById("price").textContent = money(data.price);
-      document.getElementById("confidence").textContent = (data.confidence ?? "--") + "%";
-
-      // Trade setup display
-      let tradeText = "Waiting for valid setup";
-      if (data.suggested_trade_usd && data.suggested_trade_usd > 0 && data.trade_eligible && !noTrade) {
-        tradeText = "$" + Number(data.suggested_trade_usd).toLocaleString(undefined, {maximumFractionDigits: 2});
-      }
-      
-      document.getElementById("trade").textContent = tradeText;
-
-      // Setup status display
-      let strategyText = "Waiting";
-      if (data.preferred_strategy === "A_TREND_PULLBACK") strategyText = "Trend Pullback";
-      else if (data.preferred_strategy === "B_VOL_BREAKOUT") strategyText = "Volatility Breakout";
-      
-
-      document.getElementById("preferred").textContent = strategyText;
-
-      // Actual strategy
-      let actualStrategy = "Waiting";
-      if (data.strategy === "A_ONLY" || data.strategy === "A_TREND_PULLBACK") actualStrategy = "Trend Pullback";
-      else if (data.strategy === "B_ONLY" || data.strategy === "B_VOL_BREAKOUT") actualStrategy = "Volatility Breakout";
-      else if (data.strategy === "NO_SIGNAL") actualStrategy = "No Signal";
-      
-
-      const stratEl = document.getElementById("strategy");
-      if (stratEl) stratEl.textContent = actualStrategy;
-      document.getElementById("regime").textContent = data.regime || "--";
-      document.getElementById("trend").textContent = data.trend || "--";
-      document.getElementById("risk").textContent = data.risk_level || "Monitoring";
-      document.getElementById("eligible").textContent = data.trade_eligible ? "Yes" : "No";
-      let statusDetail = data.eligibility_reason || "";
-      if (statusDetail === "no_trade_signal") statusDetail = "No valid setup detected.";
-      if (!data.trade_eligible && (!statusDetail || statusDetail === "OK")) statusDetail = "Waiting for a valid setup.";
-      if (!statusDetail) statusDetail = "No valid setup detected.";
-      
-      document.getElementById("eligibility_reason").textContent = statusDetail;
-      document.getElementById("quality_blocked").textContent = data.quality_blocked ? "Yes" : "No";
-      let qualityText = data.quality_reason || "";
-      if (!qualityText || qualityText === "OK") qualityText = "No blocking quality issues";
-      
-      document.getElementById("quality_reason").textContent = qualityText;
-      document.getElementById("rsi").textContent = typeof data.rsi === "number" ? data.rsi.toFixed(2) : "--";
-
-      document.getElementById("ai_symbol").textContent = sym;
-      document.getElementById("ai_confidence").textContent = (data.confidence ?? "--") + "%";
-      document.getElementById("ai_regime").textContent = data.regime || "--";
-      document.getElementById("ai_trend").textContent = data.trend || "--";
-      document.getElementById("ai_decision").textContent = noTrade ? "No Trade" : (strength + " " + rawAction);
-
-      let reasonText = data.eligibility_reason || data.quality_reason || "";
-      if (reasonText === "no_trade_signal") reasonText = "No valid setup detected.";
-      if (!data.trade_eligible && (!reasonText || reasonText === "OK")) reasonText = "Waiting for a valid setup.";
-      if (!reasonText) reasonText = "No valid setup detected.";
-      
-      document.getElementById("ai_reason").textContent = reasonText;
-
-      const bannerMain = document.getElementById("live_banner_main");
-      const bannerSub = document.getElementById("live_banner_sub");
-      if (bannerMain && bannerSub) {
-        if (noTrade || !data.trade_eligible) {
-          bannerMain.textContent = "Waiting for valid setup";
-          bannerSub.textContent = reasonText || "Engine connected. Monitoring for the next actionable trade.";
-        } else {
-          bannerMain.textContent = `${strength} ${rawAction} setup on ${sym}`;
-          bannerSub.textContent = `Confidence ${confVal}% • Suggested ${tradeText} • ${actualStrategy}`;
-        }
-      }
-
-      setEngineStatus("status_api", "dot_api", true, "API Live");
-      setEngineStatus("status_signal", "dot_signal", true, noTrade ? "Signal Monitoring" : "Signal Actionable");
-
-      const updatedEl = document.getElementById("updated");
-      if (updatedEl) {
-        updatedEl.textContent = "Updated " + new Date().toLocaleTimeString();
-      }
-    }
-
-    
-    async function loadPortfolio() {
-      const [pr, sr] = await Promise.all([
-        fetch("/api/assistant-portfolio", { cache: "no-store" }),
-        fetch("/api/latest-signal", { cache: "no-store" })
-      ]);
-
-      const p = await pr.json();
-      const sig = await sr.json();
-
-      const money = v => "$" + Number(v || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
-      const holdings = p.holdings || {};
-      const symbols = Object.keys(holdings);
-      const activeSymbol = String(sig.symbol || symbols[0] || "BTC-USD");
-      const activeHolding = holdings[activeSymbol] || { qty: 0, avg_price: 0 };
-      const livePrice = Number(sig.price || sig.live_price || 0);
-
-      let totalValue = Number(p.cash_usd || 0);
-      let unrealized = 0;
-
-      for (const [symbol, pos] of Object.entries(holdings)) {
-        const qty = Number((pos && pos.qty) || 0);
-        const avg = Number((pos && pos.avg_price) || 0);
-        const px = symbol === activeSymbol && livePrice > 0 ? livePrice : avg;
-        totalValue += qty * px;
-        unrealized += qty * (px - avg);
-      }
-
-      document.getElementById("pf_value").textContent = money(totalValue);
-      document.getElementById("pf_cash").textContent = money(p.cash_usd || 0);
-      document.getElementById("pf_qty").textContent = Number(activeHolding.qty || 0).toFixed(6);
-      document.getElementById("pf_avg").textContent = money(activeHolding.avg_price || 0);
-      document.getElementById("pf_price").textContent = livePrice > 0 ? money(livePrice) : "—";
-
-      const uplEl = document.getElementById("pf_upl");
-      uplEl.textContent = (unrealized >= 0 ? "+" : "-") + money(Math.abs(unrealized));
-      uplEl.style.color = unrealized > 0 ? "var(--green)" : unrealized < 0 ? "var(--red)" : "";
-
-      const symEl = document.getElementById("ai_symbol");
-      if (symEl) symEl.textContent = activeSymbol;
-
-      const qtyLabelEl = document.getElementById("pf_qty_label");
-      if (qtyLabelEl) qtyLabelEl.textContent = activeSymbol + " Holdings";
-
-      const priceLabelEl = document.getElementById("pf_price_label");
-      if (priceLabelEl) priceLabelEl.textContent = "Current " + activeSymbol + " Price";
-
-      setEngineStatus("status_portfolio", "dot_portfolio", true, "Portfolio Live");
-    }
-
-    async function loadLearning() {
-      return;
-      const data = await r.json();
-
-      const sig = typeof data.signals_observed === "number"
-        ? data.signals_observed.toLocaleString()
-        : "--";
-
-      const wins = typeof data.winning_signals === "number"
-        ? data.winning_signals.toLocaleString()
-        : "--";
-
-      const strat = typeof data.strategies_learned === "number"
-        ? data.strategies_learned.toLocaleString()
-        : "--";
-
-      // Update learning section (if present)
-      const s1 = document.getElementById("signals_observed");
-      if (s1) s1.textContent = sig;
-
-      const s2 = document.getElementById("winning_signals");
-      if (s2) s2.textContent = wins;
-
-      const s3 = document.getElementById("strategies_learned");
-      if (s3) s3.textContent = strat;
-
-      // Update Public Track Record
-      const p1 = document.getElementById("trk_wins");
-      if (p1) p1.textContent = wins;
-
-      const p2 = document.getElementById("trk_strategies");
-      if (p2) p2.textContent = strat;
-    }
-
-    async function loadTrades() {
-      const r = await fetch("/api/assistant-trade-history", { cache: "no-store" });
-      const trades = await r.json();
-      const container = document.getElementById("trade_history");
-      container.innerHTML = "";
-
-      document.getElementById("trk_trades").textContent =
-        Array.isArray(trades) ? trades.length.toLocaleString() : "--";
-
-      (Array.isArray(trades) ? [...trades].reverse() : []).forEach(t => {
-        const d = document.createElement("div");
-        d.className = "card";
-        d.style.marginBottom = "12px";
-        const time = t.timestamp ? new Date(t.timestamp * 1000).toLocaleString() : "—";
-        const filledQty = Number(t.filled_qty || 0);
-        const sizeUsd = Number(t.size_usd || t.proceeds_usd || 0);
-        d.innerHTML = `
-          <div class="label">${t.symbol || "--"}</div>
-          <div class="value">${t.action === "NONE" ? "No Trade" : (t.action || "--")} @ $${Number(t.price || 0).toLocaleString(undefined, {maximumFractionDigits: 4})}</div>
-          <div class="muted">Size: $${sizeUsd.toLocaleString(undefined, {maximumFractionDigits: 2})}</div>
-          <div class="muted">Filled Qty: ${filledQty.toFixed(6)}</div>
-          <div class="muted">${time}</div>
-        `;
-        container.appendChild(d);
-      });
-
-      if (!Array.isArray(trades) || !trades.length) {
-        const d = document.createElement("div");
-        d.className = "card";
-        d.innerHTML = `<div class="muted">No recent executed trades yet.</div>`;
-        container.appendChild(d);
-      }
-
-      try {
-        const sr = await fetch("/api/latest-signal", { cache: "no-store" });
-        const sig = await sr.json();
-        renderRecentAlerts(sig, trades);
-      } catch (e) {
-        console.log("Recent alerts render error:", e);
-      }
-    }
-
-    let strategyChart = null;
-    async function loadStrategies() {
-      const r = await fetch("/api/strategy-analytics");
-      const rows = await r.json();
-      const container = document.getElementById("strategy_table");
-      container.innerHTML = "";
-
-      const filtered = rows
-        .filter(r => r.strategy !== "UNKNOWN" && r.strategy !== "NONE")
-        .filter(r => r.samples >= 5)
-        .sort((a, b) => Number(b.win_pct) - Number(a.win_pct));
-
-      filtered.forEach(r => {
-        const d = document.createElement("div");
-        d.className = "card";
-        d.style.marginBottom = "10px";
-        d.innerHTML = `
-          <div class="label">${(
-            r.strategy === "A_TREND_PULLBACK" ? "Trend Pullback" :
-            r.strategy === "B_VOL_BREAKOUT" ? "Volatility Breakout" :
-            r.strategy === "NO_SIGNAL" ? "No Trade" :
-            r.strategy
-          )} (${r.timeframe})</div>
-          <div class="muted">Samples: ${r.samples}</div>
-          <div class="muted">Win Rate: ${Number(r.win_pct).toFixed(2)}%</div>
-          <div class="muted">Avg Move: ${Number(r.avg_move).toFixed(4)}%</div>
-        `;
-        container.appendChild(d);
-      });
-
-    }
-
-    async function loadPerformance() {
-      try {
-        const r = await fetch("/api/shadow-stats", { cache: "no-store" });
-        const perf = await r.json();
-
-        const finalEquity = Number(perf.final_equity || 0);
-        const avgPnlPct = Number(perf.avg_pnl_pct || 0);
-        const closedCount = Number(perf.closed_count || 0);
-        const openCount = Number(perf.open_count || 0);
-        const totalTrades = closedCount + openCount;
-        const winRate = Number(perf.win_rate_pct || 0);
-        const wins = Number(perf.wins || 0);
-        const losses = Number(perf.losses || 0);
-
-        document.getElementById("perf_final_equity").textContent =
-          finalEquity > 0 ? money(finalEquity) : "—";
-
-        const pnlEl = document.getElementById("perf_pnl_pct");
-        pnlEl.textContent = avgPnlPct.toFixed(2) + "%";
-        pnlEl.className = "value " + (avgPnlPct > 0 ? "pos" : avgPnlPct < 0 ? "neg" : "neutral");
-
-        document.getElementById("perf_win_rate").textContent = winRate.toFixed(2) + "%";
-
-        const wrNote = document.getElementById("perf_win_rate_note");
-        if (wrNote) wrNote.textContent = "Based on " + closedCount + " closed shadow trade" + (closedCount === 1 ? "" : "s");
-
-        const tcNote = document.getElementById("perf_trade_count_note");
-        if (tcNote) tcNote.textContent = totalTrades + " total shadow trades tracked";
-
-        document.getElementById("perf_trade_count").textContent = String(totalTrades);
-
-        const openEl = document.getElementById("perf_open_pnl");
-        openEl.textContent = "—";
-        openEl.className = "value neutral";
-
-        const winsEl = document.getElementById("trk_wins");
-        if (winsEl) winsEl.textContent = wins.toLocaleString();
-
-        const table = document.getElementById("strategy_table");
-        if (table && perf.last_closed) {
-          const lc = perf.last_closed;
-          table.innerHTML = `
-            <div class="card" style="margin-bottom:10px;">
-              <div class="label">Last Closed Trade</div>
-              <div class="muted">Symbol: ${lc.symbol || "--"}</div>
-              <div class="muted">Outcome: ${lc.outcome || "--"}</div>
-              <div class="muted">P&L: ${Number(lc.pnl_pct || 0).toFixed(2)}%</div>
-              <div class="muted">Strategy: ${lc.winning_strategy || lc.strategy || "--"}</div>
-            </div>
-            <div class="card">
-              <div class="label">Summary</div>
-              <div class="muted">Wins: ${wins}</div>
-              <div class="muted">Losses: ${losses}</div>
-              <div class="muted">Blocked: ${Number(perf.blocked_count || 0)}</div>
-            </div>
-          `;
-        }
-
-        const ctx = document.getElementById("performance_chart");
-        if (ctx && strategyChart) {
-          strategyChart.destroy();
-          strategyChart = null;
-        }
-      } catch (e) {
-        console.log("Performance load error:", e);
-      }
-    }
-
-    async function boot() {
-      try { await loadPortfolio(); } catch (e) { console.log("Portfolio load error:", e); }
-      try { await loadSignal(); } catch (e) { console.log("Signal load error:", e); }
-      try { await loadTrades(); } catch (e) { console.log("Trades load error:", e); }
-      try { await loadPerformance(); } catch (e) { console.log("Performance load error:", e); }
-    }
-
-    boot();
-    setInterval(loadSignal, 5000);
-    setInterval(loadPortfolio, 7000);
-    setInterval(loadTrades, 10000);
+    loadPublicStatus();
+    setInterval(loadPublicStatus, 15000);
   </script>
-
-
-<script>
-let btcProofChart = null;
-let btcProofLabels = [];
-let btcProofData = [];
-
-
-let btcChart, btcLineSeries, btcCandleSeries, btcChartTypeSel, currentChartSymbol = "BTC-USD";
-
-function getWebsiteChartType(){
-  try{
-    const v = (localStorage.getItem("ez_site_chart_type") || "").toLowerCase().trim();
-    if (v === "line" || v === "candles") return v;
-  }catch(e){}
-  return "line";
-}
-function setWebsiteChartTypeUI(v){
-  if (!btcChartTypeSel) btcChartTypeSel = document.getElementById("chart_type");
-  if (btcChartTypeSel) btcChartTypeSel.value = (v === "candles" ? "candles" : "line");
-}
-function applyWebsiteChartType(v){
-  const mode = (v === "candles" ? "candles" : "line");
-  try{
-    if (btcLineSeries) btcLineSeries.applyOptions({ visible: mode === "line" });
-    if (btcCandleSeries) btcCandleSeries.applyOptions({ visible: mode === "candles" });
-  }catch(e){}
-  try{ localStorage.setItem("ez_site_chart_type", mode); }catch(e){}
-  setWebsiteChartTypeUI(mode);
-}
-async function fetchTrueOhlc(){
-  try{
-    const r = await fetch("/api/ohlc?symbol=" + encodeURIComponent(currentChartSymbol || "BTC-USD") + "&interval=5", { cache: "no-store" });
-    const j = await r.json();
-    const candles = (j && Array.isArray(j.candles)) ? j.candles : [];
-    return candles
-      .map(c => ({
-        time: Number(c.time),
-        open: Number(c.open),
-        high: Number(c.high),
-        low: Number(c.low),
-        close: Number(c.close),
-      }))
-      .filter(c =>
-        Number.isFinite(c.time) &&
-        Number.isFinite(c.open) &&
-        Number.isFinite(c.high) &&
-        Number.isFinite(c.low) &&
-        Number.isFinite(c.close)
-      );
-  } catch(e){
-    return [];
-  }
-}
-
-function initChart(){
-  const el = document.getElementById("btc_chart");
-  if (!el) return;
-
-  btcChart = LightweightCharts.createChart(el, {
-    layout: { background: { color: "#0E1117" }, textColor: "#F2F4F8" },
-    grid: {
-      vertLines: { color: "rgba(255,255,255,.05)" },
-      horzLines: { color: "rgba(255,255,255,.05)" }
-    },
-    crosshair: { mode: 1 },
-    rightPriceScale: { borderColor: "rgba(255,255,255,.1)" },
-    timeScale: {
-      borderColor: "rgba(255,255,255,.1)",
-      timeVisible: true,
-      secondsVisible: false,
-      tickMarkFormatter: (time) => {
-        const d = new Date(Number(time) * 1000);
-        return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-      }
-    },
-    localization: {
-      timeFormatter: (time) => {
-        const d = new Date(Number(time) * 1000);
-        return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-      }
-    }
-  });
-
-  btcLineSeries = btcChart.addLineSeries({
-    color: "#D4A017",
-    lineWidth: 2,
-  });
-  btcCandleSeries = btcChart.addCandlestickSeries({
-    upColor: "#1EB980",
-    downColor: "#E55353",
-    borderUpColor: "#1EB980",
-    borderDownColor: "#E55353",
-    wickUpColor: "#1EB980",
-    wickDownColor: "#E55353",
-  });
-
-  btcChartTypeSel = document.getElementById("chart_type");
-  if (btcChartTypeSel) {
-    setWebsiteChartTypeUI(getWebsiteChartType());
-    btcChartTypeSel.addEventListener("change", () => applyWebsiteChartType(btcChartTypeSel.value));
-  }
-  applyWebsiteChartType(getWebsiteChartType());
-}
-
-async function loadProofChart(){
-  try{
-    if (!btcChart) initChart();
-
-    const candleData = await fetchTrueOhlc();
-    btcCandleSeries.setData(candleData);
-    btcLineSeries.setData(candleData.map(c => ({
-      time: Number(c.time),
-      value: Number(c.close)
-    })));
-
-    if (candleData.length) {
-      const unifiedPrice = Number(candleData[candleData.length - 1].close);
-      if (Number.isFinite(unifiedPrice)) {
-        const priceEl = document.getElementById("price");
-        if (priceEl) priceEl.textContent = money(unifiedPrice);
-      }
-    }
-
-  } catch(e){}
-}
-
-
-async function loadTradeMarkers(){
-  try{
-    const r = await fetch("trades.json", { cache: "no-store" });
-    const trades = await r.json();
-    if (!Array.isArray(trades) || (!btcLineSeries && !btcCandleSeries)) return;
-
-    const markers = trades
-      .filter(t => t && t.timestamp && t.action)
-      .map(t => {
-        const side = String(t.action || "").toUpperCase();
-        const isBuy = side === "BUY";
-        return {
-          time: Number(t.timestamp),
-          position: isBuy ? "belowBar" : "aboveBar",
-          color: isBuy ? "#1EB980" : "#E55353",
-          shape: isBuy ? "arrowUp" : "arrowDown",
-          text: isBuy ? "BUY" : "SELL"
-        };
-      });
-
-    if (btcLineSeries && typeof btcLineSeries.setMarkers === "function"){
-      btcLineSeries.setMarkers(markers);
-    }
-    if (btcCandleSeries && typeof btcCandleSeries.setMarkers === "function"){
-      btcCandleSeries.setMarkers(markers);
-    }
-  } catch(e) {}
-}
-
-loadProofChart();
-setInterval(loadProofChart, 60000);
-
-</script>
-
 </body>
 </html>
