@@ -38,6 +38,14 @@ The legacy Android application ID, repository name, Vercel project name, and `ge
 
 See `V73_BRAND_MIGRATION_PLAN.md` for the controlled sequence.
 
+## Current draft status
+
+- Former-name/non-affiliation sentence removed from the homepage.
+- Public support changed to `support@v73technologies.com`.
+- Legal and support pages changed to V73 Technologies branding.
+- Primary metadata and company links prepared for `v73technologies.com`.
+- Draft remains unmerged and must not be deployed to Production until the V73 domain is ready and all preview links pass.
+
 ## Safety boundary
 
 This maintenance draft changes website wording and legal/support disclosures only. It does not change the Android app, V73 backend, Google Play tracks, subscriptions, billing, trading logic, alerts, confidence, sizing, exits, portfolios, or any watch-only intelligence layer.
