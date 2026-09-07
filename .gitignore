@@ -3,3 +3,24 @@
 archive_legacy/
 *.bak_*.html
 *.bak_*
+*.log
+
+# Public marketing repo must not carry installation/account/runtime state.
+engine_state.json
+portfolio.json
+performance.json
+signal.json
+trades.json
+price_history.json
+ohlc.json
+live_*.json
+
+# Legacy local publisher outputs/scripts are not part of the public site.
+publish_signal.sh
+publish_live_feed.sh
+run_signal_publisher.sh
+sync_trades.py
+build_performance.py
+build_price_history.py
+build_ohlc.py
+build_live_ohlc.py
