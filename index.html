@@ -4,76 +4,405 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="icon" type="image/svg+xml" href="/assets/eztrader_favicon.svg" />
-  <title>V73 — AI-Assisted Market Setup Alerts</title>
-  <meta name="description" content="V73 is an AI-assisted market setup companion for stocks and crypto with informational alerts, portfolio review tools, and manual user control." />
+  <title>V73 — Market Setup Intelligence</title>
+  <meta name="description" content="V73 is an AI-assisted market setup companion for stocks and crypto with alerts, portfolio review tools, and manual user control." />
   <meta name="author" content="V73 Technologies LLC" />
-  <meta property="og:title" content="V73 — AI-Assisted Market Setup Alerts" />
-  <meta property="og:description" content="Clear market setup information, portfolio review tools, and manual user control." />
+  <meta property="og:title" content="V73 — Market Setup Intelligence" />
+  <meta property="og:description" content="Market setup intelligence, portfolio tools, and manual user control." />
   <meta property="og:site_name" content="V73" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://geteztrader.com/" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="V73 — AI-Assisted Market Setup Alerts" />
-  <meta name="twitter:description" content="Clear market setup information, portfolio review tools, and manual user control." />
+  <meta name="twitter:title" content="V73 — Market Setup Intelligence" />
+  <meta name="twitter:description" content="Market setup intelligence, portfolio tools, and manual user control." />
   <style>
-    :root{--bg:#0e1117;--panel:#161b22;--panel2:#111722;--text:#f2f4f8;--muted:rgba(242,244,248,.68);--gold:#d4a017;--green:#1eb980;--border:rgba(255,255,255,.09);--shadow:0 20px 55px rgba(0,0,0,.24)}
-    *{box-sizing:border-box} html,body{margin:0;max-width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif}
-    a{color:inherit}.wrap{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:22px 0 56px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:13px;min-width:0}.logo{width:52px;height:52px;flex:0 0 52px;display:grid;place-items:center;border:1px solid var(--border);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}.logo svg{width:36px;height:36px;display:block}.brand-name{font-size:22px;font-weight:800}.brand-sub{color:var(--muted);font-size:14px}.nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:14px}.nav a{color:var(--muted);text-decoration:none;font-size:14px}.nav a:hover,.nav a:focus-visible{text-decoration:underline;color:var(--text)}
-    .hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);gap:24px;padding:34px;border:1px solid var(--border);border-radius:28px;background:radial-gradient(circle at 85% 5%,rgba(58,141,255,.18),transparent 42%),var(--panel);box-shadow:var(--shadow)}.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}h1{margin:10px 0 14px;max-width:760px;font-size:clamp(38px,6vw,64px);line-height:1.02;letter-spacing:-.035em}.hero-copy{max-width:760px;margin:0;color:var(--muted);font-size:18px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border:1px solid var(--border);border-radius:12px;text-decoration:none;font-weight:800}.button-primary{border-color:var(--gold);background:var(--gold);color:#111}.button-secondary{background:rgba(255,255,255,.04)}.hero-card{padding:20px;border:1px solid var(--border);border-radius:20px;background:rgba(14,17,23,.78)}.hero-card h2{margin:0 0 12px;font-size:20px}.check-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}.check-list li{position:relative;padding-left:25px;color:var(--muted)}.check-list li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:900}
-    .section{margin-top:24px;padding:26px;border:1px solid var(--border);border-radius:24px;background:var(--panel)}.section h2{margin:8px 0;font-size:clamp(26px,4vw,38px);letter-spacing:-.02em}.section-intro{max-width:820px;margin:0;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}.card{min-width:0;padding:18px;border:1px solid var(--border);border-radius:18px;background:var(--panel2)}.card h3{margin:0 0 8px;font-size:18px}.card p{margin:0;color:var(--muted)}.safety{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}.download-card{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-top:24px;padding:24px;border:1px solid rgba(212,160,23,.45);border-radius:22px;background:linear-gradient(135deg,rgba(212,160,23,.11),rgba(58,141,255,.08))}.download-card h2{margin:0 0 8px;font-size:28px}.download-card p{margin:0;color:var(--muted)}.footer{margin-top:26px;padding-top:22px;text-align:center;color:var(--muted);font-size:14px}.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:12px}.footer a{color:var(--muted)}
-    @media(max-width:900px){.hero,.grid,.safety{grid-template-columns:1fr}.topbar,.download-card{align-items:flex-start;flex-direction:column}.nav{justify-content:flex-start}.hero{padding:24px}.section{padding:22px}.download-card .button{width:100%}}
-    @media(max-width:520px){.wrap{width:min(100% - 24px,1120px);padding-top:14px}h1{font-size:38px}.hero,.section{border-radius:20px}.hero{padding:20px}.brand-sub{font-size:13px}}
+    :root{
+      --bg:#05080d;
+      --bg-soft:#081019;
+      --panel:#0b141f;
+      --panel-2:#0e1a27;
+      --panel-3:#101e2d;
+      --text:#eef7fb;
+      --muted:#92a5b4;
+      --faint:#617381;
+      --cyan:#58d9ff;
+      --mint:#62f2b1;
+      --amber:#f3c969;
+      --red:#ff7c8a;
+      --line:rgba(133,218,255,.13);
+      --line-strong:rgba(98,242,177,.28);
+      --shadow:0 28px 80px rgba(0,0,0,.36);
+      --radius:22px;
+      --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+      --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      margin:0;
+      color:var(--text);
+      font:16px/1.55 var(--sans);
+      background:
+        radial-gradient(circle at 82% -8%,rgba(88,217,255,.12),transparent 28%),
+        radial-gradient(circle at 10% 18%,rgba(98,242,177,.07),transparent 25%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.34;
+      background-image:
+        linear-gradient(rgba(88,217,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(88,217,255,.035) 1px,transparent 1px);
+      background-size:42px 42px;
+      mask-image:linear-gradient(to bottom,black,transparent 86%);
+      z-index:-1;
+    }
+    a{color:inherit}
+    button,a{ -webkit-tap-highlight-color:transparent }
+    .shell{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    .topbar{
+      min-height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+      border-bottom:1px solid var(--line);
+    }
+    .brand{display:flex;align-items:center;gap:13px;text-decoration:none;min-width:0}
+    .brand-mark{
+      width:42px;height:42px;flex:0 0 42px;
+      display:grid;place-items:center;
+      border:1px solid rgba(98,242,177,.28);
+      border-radius:11px;
+      background:linear-gradient(145deg,rgba(98,242,177,.10),rgba(88,217,255,.05));
+      box-shadow:inset 0 0 26px rgba(98,242,177,.05);
+    }
+    .brand-mark svg{width:29px;height:29px;display:block}
+    .brand-copy{min-width:0}
+    .brand-name{font-size:17px;font-weight:900;letter-spacing:.08em}
+    .brand-sub{font:11px/1.3 var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+    .nav{display:flex;align-items:center;gap:24px}
+    .nav a{font:12px/1 var(--mono);color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:.08em}
+    .nav a:hover,.nav a:focus-visible{color:var(--mint)}
+
+    .hero{padding:76px 0 42px}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr);gap:54px;align-items:center}
+    .kicker{display:flex;align-items:center;gap:10px;margin:0 0 18px;font:12px/1.4 var(--mono);color:var(--mint);letter-spacing:.11em;text-transform:uppercase}
+    .kicker:before{content:"";width:28px;height:1px;background:var(--mint);box-shadow:0 0 12px rgba(98,242,177,.7)}
+    h1{margin:0;max-width:730px;font-size:clamp(48px,7.2vw,86px);line-height:.96;letter-spacing:-.052em;font-weight:780}
+    h1 span{display:block;color:var(--cyan)}
+    .hero-copy{max-width:700px;margin:24px 0 0;color:#b2c2cc;font-size:18px;line-height:1.7}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border-radius:10px;border:1px solid var(--line-strong);text-decoration:none;font-weight:800;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+    .button:hover,.button:focus-visible{transform:translateY(-2px)}
+    .button-primary{color:#04100b;background:var(--mint);border-color:var(--mint);box-shadow:0 0 32px rgba(98,242,177,.13)}
+    .button-secondary{background:rgba(255,255,255,.025);color:var(--text)}
+    .trust-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+    .chip{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(8,16,25,.72);font:11px/1 var(--mono);color:var(--muted);letter-spacing:.04em}
+
+    .terminal{position:relative;border:1px solid var(--line-strong);border-radius:24px;background:linear-gradient(180deg,rgba(14,26,39,.95),rgba(7,14,22,.98));box-shadow:var(--shadow);overflow:hidden}
+    .terminal:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 0%,rgba(98,242,177,.045) 50%,transparent 100%);height:34%;transform:translateY(-120%);animation:scan 6.5s linear infinite}
+    @keyframes scan{to{transform:translateY(420%)}}
+    .terminal-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 17px;border-bottom:1px solid var(--line);background:rgba(3,8,13,.42)}
+    .terminal-title{display:flex;align-items:center;gap:9px;font:11px/1 var(--mono);color:#bdccd5;text-transform:uppercase;letter-spacing:.08em}
+    .pulse{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(98,242,177,.08),0 0 16px rgba(98,242,177,.55);animation:pulse 2.2s ease-in-out infinite}
+    @keyframes pulse{50%{opacity:.45;transform:scale(.84)}}
+    .sample-tag{font:10px/1 var(--mono);color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+    .terminal-body{padding:18px}
+    .symbol-line{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}
+    .symbol-eyebrow{font:10px/1.3 var(--mono);color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+    .symbol-name{margin-top:5px;font:700 24px/1 var(--mono);letter-spacing:-.03em}
+    .state{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid rgba(243,201,105,.34);border-radius:999px;background:rgba(243,201,105,.07);font:11px/1 var(--mono);color:var(--amber);letter-spacing:.08em}
+    .state:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px rgba(243,201,105,.5)}
+    .chart{position:relative;height:228px;margin:8px 0 16px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,rgba(88,217,255,.025),rgba(98,242,177,.015));overflow:hidden}
+    .chart:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:100% 25%,12.5% 100%}
+    .chart svg{position:absolute;inset:0;width:100%;height:100%}
+    .chart-note{position:absolute;left:12px;bottom:10px;font:9px/1 var(--mono);color:var(--faint);letter-spacing:.05em;text-transform:uppercase}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .metric{min-width:0;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.018)}
+    .metric-label{font:9px/1.2 var(--mono);color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+    .metric-value{margin-top:7px;font-size:13px;font-weight:800;color:#dce7ed}
+    .terminal-foot{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 17px;border-top:1px solid var(--line);font:10px/1.4 var(--mono);color:var(--faint)}
+    .terminal-foot strong{color:var(--mint);font-weight:700}
+
+    .state-tape{margin-top:50px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:rgba(7,14,22,.68)}
+    .tape-track{display:flex;width:max-content;animation:tape 28s linear infinite}
+    .tape-group{display:flex;align-items:center;gap:28px;padding:13px 28px;white-space:nowrap;font:10px/1 var(--mono);text-transform:uppercase;letter-spacing:.11em;color:var(--muted)}
+    .tape-group span:before{content:"◆";margin-right:9px;color:var(--cyan)}
+    .tape-group .buy:before{color:var(--mint)}
+    .tape-group .trim:before{color:var(--amber)}
+    .tape-group .exit:before{color:var(--red)}
+    @keyframes tape{to{transform:translateX(-50%)}}
+
+    .section{padding:92px 0}
+    .section + .section{border-top:1px solid var(--line)}
+    .section-heading{display:grid;grid-template-columns:.62fr 1.38fr;gap:48px;align-items:start;margin-bottom:38px}
+    .eyebrow{font:11px/1.4 var(--mono);color:var(--cyan);text-transform:uppercase;letter-spacing:.11em}
+    h2{margin:0;font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-.04em}
+    .section-heading p{max-width:760px;margin:16px 0 0;color:var(--muted);font-size:17px}
+
+    .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--line)}
+    .flow-card{position:relative;min-height:235px;padding:22px;background:var(--panel)}
+    .flow-num{font:11px/1 var(--mono);color:var(--mint);letter-spacing:.08em}
+    .flow-card h3{margin:56px 0 10px;font-size:20px}
+    .flow-card p{margin:0;color:var(--muted)}
+    .flow-card:not(:last-child):after{content:"→";position:absolute;right:-13px;top:50%;z-index:2;width:26px;height:26px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--bg);color:var(--cyan);font:13px var(--mono)}
+
+    .feature-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .feature-panel{padding:26px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,var(--panel),rgba(8,16,25,.72))}
+    .feature-panel.large{min-height:420px}
+    .feature-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:30px}
+    .feature-tag{font:10px/1 var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--mint)}
+    .feature-panel h3{margin:0 0 10px;font-size:28px;letter-spacing:-.025em}
+    .feature-panel p{margin:0;color:var(--muted)}
+    .signal-stack{display:grid;gap:10px;margin-top:28px}
+    .signal-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:13px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.018)}
+    .signal-icon{width:9px;height:9px;border-radius:2px;background:var(--cyan);box-shadow:0 0 12px rgba(88,217,255,.35)}
+    .signal-icon.green{background:var(--mint);box-shadow:0 0 12px rgba(98,242,177,.35)}
+    .signal-icon.gold{background:var(--amber);box-shadow:0 0 12px rgba(243,201,105,.35)}
+    .signal-name{font:12px/1.3 var(--mono);color:#d7e2e8}
+    .signal-desc{font-size:12px;color:var(--faint);text-align:right}
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .mini-grid .feature-panel{min-height:201px}
+
+    .portfolio{display:grid;grid-template-columns:.86fr 1.14fr;gap:28px;align-items:center}
+    .portfolio-copy h2{margin-bottom:18px}
+    .portfolio-copy p{color:var(--muted);font-size:17px}
+    .checkpoints{display:grid;gap:12px;margin-top:24px}
+    .checkpoint{display:flex;gap:12px;align-items:flex-start}
+    .checkpoint b{font:10px/1.35 var(--mono);color:var(--mint);text-transform:uppercase;letter-spacing:.08em;min-width:90px;margin-top:3px}
+    .checkpoint span{color:#b8c7cf}
+    .portfolio-ui{border:1px solid var(--line-strong);border-radius:20px;background:var(--panel);overflow:hidden;box-shadow:var(--shadow)}
+    .portfolio-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 17px;border-bottom:1px solid var(--line);font:10px/1 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.09em}
+    .portfolio-table{padding:8px 16px}
+    .portfolio-row{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}
+    .portfolio-row:last-child{border-bottom:0}
+    .asset{font-weight:800}.asset small{display:block;margin-top:3px;font:9px/1 var(--mono);color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+    .status-label{justify-self:start;padding:6px 8px;border-radius:999px;background:rgba(98,242,177,.07);border:1px solid rgba(98,242,177,.18);font:9px/1 var(--mono);color:var(--mint);text-transform:uppercase;letter-spacing:.07em}
+    .row-action{justify-self:end;font:10px/1 var(--mono);color:var(--cyan);text-transform:uppercase;letter-spacing:.06em}
+    .portfolio-action{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;border-top:1px solid var(--line);background:rgba(255,255,255,.016)}
+    .portfolio-action p{margin:0;color:var(--muted);font-size:13px}.portfolio-action strong{display:block;color:#e6f1f5;margin-bottom:3px}
+    .record-button{flex:0 0 auto;padding:9px 12px;border:1px solid var(--line-strong);border-radius:9px;font:10px/1 var(--mono);color:var(--mint);text-transform:uppercase;letter-spacing:.07em}
+
+    .safety-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .safety-card{padding:22px;border:1px solid var(--line);border-radius:16px;background:rgba(11,20,31,.72)}
+    .safety-card .icon{font:18px/1 var(--mono);color:var(--mint)}
+    .safety-card h3{margin:28px 0 9px;font-size:18px}
+    .safety-card p{margin:0;color:var(--muted);font-size:14px}
+
+    .availability{padding:38px;border:1px solid rgba(88,217,255,.22);border-radius:24px;background:linear-gradient(115deg,rgba(88,217,255,.07),rgba(98,242,177,.04));display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+    .availability h2{font-size:clamp(32px,4.5vw,52px)}
+    .availability p{margin:14px 0 0;color:var(--muted);max-width:680px}
+    .availability-panel{padding:20px;border:1px solid var(--line);border-radius:15px;background:rgba(5,8,13,.56)}
+    .availability-line{display:flex;justify-content:space-between;gap:20px;padding:10px 0;border-bottom:1px solid var(--line);font:10px/1.4 var(--mono);text-transform:uppercase;letter-spacing:.06em}
+    .availability-line:last-child{border-bottom:0}.availability-line span{color:var(--faint)}.availability-line b{color:#cbd9e1;text-align:right}
+
+    .footer{padding:30px 0 48px;border-top:1px solid var(--line);color:var(--muted)}
+    .footer-grid{display:flex;align-items:flex-start;justify-content:space-between;gap:34px}
+    .footer-brand{max-width:520px}
+    .footer-brand strong{display:block;color:var(--text);font-size:16px;margin-bottom:7px}
+    .footer-brand p{margin:0;font-size:13px}
+    .footer-links{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:14px 20px}
+    .footer-links a{font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+    .footer-links a:hover,.footer-links a:focus-visible{color:var(--mint)}
+
+    @media(max-width:980px){
+      .hero-grid,.feature-grid,.portfolio,.availability{grid-template-columns:1fr}
+      .hero-grid{gap:38px}.terminal{max-width:720px}.flow{grid-template-columns:1fr 1fr}.flow-card:not(:last-child):after{display:none}.safety-grid{grid-template-columns:1fr 1fr}.section-heading{grid-template-columns:1fr;gap:14px}
+    }
+    @media(max-width:700px){
+      .shell{width:min(100% - 26px,1180px)}
+      .topbar{align-items:flex-start;padding:16px 0;min-height:0}.nav{gap:14px;flex-wrap:wrap;justify-content:flex-end}.nav a:nth-child(2){display:none}
+      .hero{padding-top:48px}.hero-grid{grid-template-columns:minmax(0,1fr)}h1{font-size:clamp(46px,15vw,70px)}.hero-copy{font-size:16px}
+      .metrics,.flow,.mini-grid,.safety-grid{grid-template-columns:1fr}.flow-card{min-height:auto}.flow-card h3{margin-top:34px}.section{padding:68px 0}.feature-panel.large{min-height:0}.portfolio-row{grid-template-columns:1fr auto}.portfolio-row .status-label{display:none}.availability{padding:24px}.footer-grid{flex-direction:column}.footer-links{justify-content:flex-start}.chart{height:190px}
+    }
+    @media(max-width:460px){
+      .brand-sub{display:none}.nav{gap:12px}.nav a{font-size:10px}.hero-actions .button{width:100%}.terminal-head{align-items:flex-start;flex-direction:column}.symbol-line{align-items:flex-start}.metrics{gap:8px}.portfolio-action{align-items:flex-start;flex-direction:column}.record-button{width:100%;text-align:center}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.terminal:after,.pulse,.tape-track{animation:none}.button{transition:none}}
   </style>
 </head>
 <body>
-<main class="wrap">
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo" aria-label="V73 logo"><svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect x="7" y="11" width="4" height="22" fill="#F2F4F8"/><rect x="7" y="11" width="12" height="4" fill="#F2F4F8"/><rect x="7" y="20" width="10" height="4" fill="#F2F4F8"/><rect x="7" y="29" width="12" height="4" fill="#F2F4F8"/><rect x="23" y="11" width="14" height="4" fill="#F2F4F8"/><rect x="23" y="29" width="14" height="4" fill="#F2F4F8"/><line x1="24" y1="31" x2="46" y2="7" stroke="#D4A017" stroke-width="3" stroke-linecap="round"/><line x1="46" y1="7" x2="41" y2="8" stroke="#D4A017" stroke-width="3" stroke-linecap="round"/><line x1="46" y1="7" x2="45" y2="12" stroke="#D4A017" stroke-width="3" stroke-linecap="round"/></svg></div>
-      <div><div class="brand-name">V73</div><div class="brand-sub">AI-Assisted Market Setup Alerts</div></div>
-    </div>
-    <nav class="nav" aria-label="Main navigation"><a href="#features">Features</a><a href="#safety">Safety</a><a href="/support">Support</a></nav>
+  <header class="shell topbar">
+    <a class="brand" href="/" aria-label="V73 home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="11" width="4" height="22" fill="#EEF7FB"/><rect x="7" y="11" width="12" height="4" fill="#EEF7FB"/><rect x="7" y="20" width="10" height="4" fill="#EEF7FB"/><rect x="7" y="29" width="12" height="4" fill="#EEF7FB"/><rect x="23" y="11" width="14" height="4" fill="#EEF7FB"/><rect x="23" y="29" width="14" height="4" fill="#EEF7FB"/><line x1="24" y1="31" x2="46" y2="7" stroke="#62F2B1" stroke-width="3" stroke-linecap="round"/><line x1="46" y1="7" x2="41" y2="8" stroke="#62F2B1" stroke-width="3" stroke-linecap="round"/><line x1="46" y1="7" x2="45" y2="12" stroke="#62F2B1" stroke-width="3" stroke-linecap="round"/></svg>
+      </span>
+      <span class="brand-copy"><span class="brand-name">V73</span><span class="brand-sub">Market intelligence · Manual control</span></span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#how">How it works</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#safety">Safety</a>
+      <a href="/support">Support</a>
+    </nav>
   </header>
 
-  <section class="hero">
-    <div>
-      <div class="eyebrow">Clear information. User control.</div>
-      <h1>Market setups without handing over your trading account</h1>
-      <p class="hero-copy">V73 monitors stock and crypto market setups, explains current conditions, and provides information for manual user review. V73 does not automatically place trades, does not guarantee results, and does not require brokerage passwords or trading API keys.</p>
-      <div class="actions"><a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.ben.a.eztrader_app" target="_blank" rel="noopener noreferrer">View V73 on Google Play</a><a class="button button-secondary" href="/support">Support</a></div>
-    </div>
-    <aside class="hero-card"><h2>Built around manual control</h2><ul class="check-list"><li>Manual review before any real-world trade</li><li>Stock and crypto setup monitoring</li><li>Portfolio tools and user-reported trade records</li><li>Alerts and beginner-friendly guidance</li><li>Intended for users age 18 and older</li></ul></aside>
-  </section>
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="kicker">AI-assisted stock + crypto setup monitoring</p>
+          <h1>See the setup.<span>Keep the decision yours.</span></h1>
+          <p class="hero-copy">V73 turns changing market conditions into clear, user-facing setup information. It monitors supported stocks and crypto, surfaces actionable states and context, and keeps every real trade in the user's hands.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#how">See how V73 works</a>
+            <a class="button button-secondary" href="/support">V73 Support</a>
+          </div>
+          <div class="trust-row" aria-label="Product characteristics">
+            <span class="chip">STOCKS + CRYPTO</span>
+            <span class="chip">MANUAL EXECUTION</span>
+            <span class="chip">INSTALLATION-SCOPED</span>
+            <span class="chip">NO BROKER PASSWORDS</span>
+          </div>
+        </div>
 
-  <section id="features" class="section">
-    <div class="eyebrow">What V73 does</div><h2>A trading companion, not a broker</h2>
-    <p class="section-intro">V73 is designed to help users review market information and keep a private, installation-scoped record of supported app activity while the user remains responsible for every brokerage or exchange action.</p>
-    <div class="grid">
-      <article class="card"><h3>Setup monitoring</h3><p>V73 watches supported stock and crypto setups and presents actionable user-facing states and context without publishing internal engine scores.</p></article>
-      <article class="card"><h3>Portfolio tools</h3><p>Users can review tracked holdings and record trades they completed on their own trading platform. A V73 record does not submit or verify a brokerage order.</p></article>
-      <article class="card"><h3>Alerts and guidance</h3><p>V73 can surface supported alerts and educational explanations while keeping the final decision with the user.</p></article>
-    </div>
-  </section>
+        <div class="terminal" aria-label="Illustrative V73 market setup interface">
+          <div class="terminal-head">
+            <div class="terminal-title"><span class="pulse"></span>V73 Decision View</div>
+            <div class="sample-tag">Illustrative interface · not live market data</div>
+          </div>
+          <div class="terminal-body">
+            <div class="symbol-line">
+              <div><div class="symbol-eyebrow">Sample monitored asset</div><div class="symbol-name">MARKET / USD</div></div>
+              <div class="state">WATCHING</div>
+            </div>
+            <div class="chart" aria-hidden="true">
+              <svg viewBox="0 0 640 250" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58d9ff" stop-opacity=".18"/><stop offset="1" stop-color="#58d9ff" stop-opacity="0"/></linearGradient>
+                </defs>
+                <path d="M0,191 C42,184 60,198 91,174 C123,149 143,159 176,145 C211,131 229,164 260,143 C293,120 318,134 351,101 C383,69 410,89 436,78 C470,63 491,91 526,65 C553,44 584,56 640,31 L640,250 L0,250 Z" fill="url(#area)"/>
+                <path d="M0,191 C42,184 60,198 91,174 C123,149 143,159 176,145 C211,131 229,164 260,143 C293,120 318,134 351,101 C383,69 410,89 436,78 C470,63 491,91 526,65 C553,44 584,56 640,31" fill="none" stroke="#58d9ff" stroke-width="3" vector-effect="non-scaling-stroke"/>
+                <path d="M0,209 C52,197 78,217 120,203 C161,189 193,194 232,180 C274,165 312,177 352,156 C397,132 433,148 474,126 C519,101 563,118 640,90" fill="none" stroke="#62f2b1" stroke-width="1.5" stroke-dasharray="6 7" opacity=".72" vector-effect="non-scaling-stroke"/>
+              </svg>
+              <div class="chart-note">Sample visualization only — V73 does not publish private portfolio or live engine data here</div>
+            </div>
+            <div class="metrics">
+              <div class="metric"><div class="metric-label">Setup state</div><div class="metric-value">Watching</div></div>
+              <div class="metric"><div class="metric-label">Market context</div><div class="metric-value">Strengthening</div></div>
+              <div class="metric"><div class="metric-label">Protection</div><div class="metric-value">Guardrails active</div></div>
+            </div>
+          </div>
+          <div class="terminal-foot"><span>User-facing states stay clear. Internal engine scores stay internal.</span><strong>NO AUTOMATIC TRADE</strong></div>
+        </div>
+      </div>
 
-  <section id="safety" class="section">
-    <div class="eyebrow">Safety first</div><h2>Important boundaries</h2>
-    <div class="safety">
-      <article class="card"><h3>No automatic real trades</h3><p>V73 is not a broker, exchange, custodian, bank, or investment adviser. Users make their own decisions and carry out any real trade through their own trading platform.</p></article>
-      <article class="card"><h3>Keep credentials private</h3><p>V73 support will never ask for a brokerage password, exchange password, API key, seed phrase, recovery code, raw V73 installation credential, or push-notification token.</p></article>
-    </div>
-  </section>
+      <div class="state-tape" aria-hidden="true">
+        <div class="tape-track">
+          <div class="tape-group"><span>Watching</span><span class="buy">Buy</span><span>Setup changed</span><span class="trim">Trim</span><span class="exit">Exit</span><span>Portfolio review</span><span>Record a trade</span></div>
+          <div class="tape-group"><span>Watching</span><span class="buy">Buy</span><span>Setup changed</span><span class="trim">Trim</span><span class="exit">Exit</span><span>Portfolio review</span><span>Record a trade</span></div>
+        </div>
+      </div>
+    </section>
 
-  <section class="section">
-    <div class="eyebrow">Availability</div><h2>V73 on Google Play</h2>
-    <p class="section-intro">Subscription billing is not currently active. Future pricing or paid plans will be disclosed before they are offered. Availability may vary by Google Play account, region, testing track, or release status.</p>
-    <div class="download-card"><div><h2>Review the current V73 listing</h2><p>Use Google Play for the current install or testing availability associated with your account.</p></div><a class="button button-primary" href="https://play.google.com/store/apps/details?id=com.ben.a.eztrader_app" target="_blank" rel="noopener noreferrer">Open Google Play</a></div>
-  </section>
+    <section id="how" class="section">
+      <div class="shell">
+        <div class="section-heading">
+          <div class="eyebrow">The V73 loop</div>
+          <div><h2>From market movement to a decision you control.</h2><p>V73 is designed to reduce interpretation friction without pretending that software can remove market risk. The app monitors, organizes, and communicates. The user decides and acts.</p></div>
+        </div>
+        <div class="flow">
+          <article class="flow-card"><div class="flow-num">01 / MONITOR</div><h3>Watch supported markets</h3><p>V73 monitors supported stock and crypto setups instead of requiring the user to constantly watch every price move.</p></article>
+          <article class="flow-card"><div class="flow-num">02 / CONTEXT</div><h3>Organize the setup</h3><p>Market conditions are translated into clear user-facing states and useful context rather than a raw internal engine score.</p></article>
+          <article class="flow-card"><div class="flow-num">03 / ALERT</div><h3>Surface what matters</h3><p>Supported alerts and setup changes can be presented with safeguards against stale, duplicate, or repeatedly handled information.</p></article>
+          <article class="flow-card"><div class="flow-num">04 / YOU DECIDE</div><h3>Keep execution manual</h3><p>V73 does not place brokerage orders. The user decides whether to act and executes any real trade on their own platform.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-heading">
+          <div class="eyebrow">Decision experience</div>
+          <div><h2>Built for changing setups, not static screenshots.</h2><p>Markets move after an alert. V73's user experience is designed around that reality—with current-state wording, stale-alert protection, platform-awareness, and clear separation between a recommendation and a trade the user actually completed.</p></div>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-panel large">
+            <div class="feature-top"><span class="feature-tag">SETUP STATES</span><span class="sample-tag">User-facing layer</span></div>
+            <h3>Clear action language</h3>
+            <p>V73 can present states such as WATCHING, BUY, SELL, TRIM, and EXIT while keeping internal confidence calculations out of the normal user experience.</p>
+            <div class="signal-stack">
+              <div class="signal-row"><span class="signal-icon"></span><span class="signal-name">WATCHING</span><span class="signal-desc">Conditions developing</span></div>
+              <div class="signal-row"><span class="signal-icon green"></span><span class="signal-name">SETUP CHANGED</span><span class="signal-desc">Old alert becomes reference only</span></div>
+              <div class="signal-row"><span class="signal-icon gold"></span><span class="signal-name">PROTECTIVE STATE</span><span class="signal-desc">Risk context stays visible</span></div>
+            </div>
+          </article>
+          <div class="mini-grid">
+            <article class="feature-panel"><div class="feature-tag">STALE ALERT SAFETY</div><h3>Old is not current.</h3><p>Previously opened alerts can be clearly separated from the latest V73 setup so a stale card is not mistaken for a current recommendation.</p></article>
+            <article class="feature-panel"><div class="feature-tag">PLATFORM AWARENESS</div><h3>Availability matters.</h3><p>Platform-specific restrictions or tradability changes can be surfaced separately from ordinary BUY/SELL strategy logic.</p></article>
+            <article class="feature-panel"><div class="feature-tag">ALERT CONTROL</div><h3>Less repeated noise.</h3><p>Handled setups, cooldowns, and duplicate protections are designed to reduce repetitive alerting without changing the user's brokerage account.</p></article>
+            <article class="feature-panel"><div class="feature-tag">MANUAL RECORDING</div><h3>Record what you did.</h3><p>V73 can record a trade the user reports completing elsewhere without claiming that V73 submitted or verified that brokerage order.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="section">
+      <div class="shell portfolio">
+        <div class="portfolio-copy">
+          <div class="eyebrow">Portfolio tools</div>
+          <h2>Your tracked state, without turning V73 into your broker.</h2>
+          <p>Portfolio tools help users review tracked holdings, inspect relevant position information, search supported assets, and record completed trades while preserving the distinction between V73 records and the user's real trading platform.</p>
+          <div class="checkpoints">
+            <div class="checkpoint"><b>Review</b><span>Tracked holdings, portfolio context, and supported history stay available for user review.</span></div>
+            <div class="checkpoint"><b>Record</b><span>Record a Trade captures user-reported activity completed on another platform.</span></div>
+            <div class="checkpoint"><b>Separate</b><span>Each supported installation can maintain its own private installation-scoped records.</span></div>
+          </div>
+        </div>
+        <div class="portfolio-ui" aria-label="Illustrative portfolio tools interface">
+          <div class="portfolio-head"><span>Tracked portfolio</span><span>Illustrative · no account data</span></div>
+          <div class="portfolio-table">
+            <div class="portfolio-row"><div class="asset">BTC <small>Crypto · tracked</small></div><span class="status-label">Review</span><span class="row-action">View details</span></div>
+            <div class="portfolio-row"><div class="asset">NVDA <small>Stock · tracked</small></div><span class="status-label">Review</span><span class="row-action">View details</span></div>
+            <div class="portfolio-row"><div class="asset">VTI <small>ETF · tracked</small></div><span class="status-label">Review</span><span class="row-action">View details</span></div>
+          </div>
+          <div class="portfolio-action"><p><strong>Completed a trade on your own platform?</strong>Record the user-reported result in V73 without giving V73 brokerage credentials.</p><span class="record-button">Record a Trade</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="safety" class="section">
+      <div class="shell">
+        <div class="section-heading">
+          <div class="eyebrow">Safety boundaries</div>
+          <div><h2>Useful assistance without custody or automatic execution.</h2><p>V73 is intentionally built around user control. It is an informational market setup tool—not a broker, bank, exchange, custodian, or investment adviser.</p></div>
+        </div>
+        <div class="safety-grid">
+          <article class="safety-card"><div class="icon">//</div><h3>No automatic real trades</h3><p>Any real brokerage or exchange action remains the user's responsibility.</p></article>
+          <article class="safety-card"><div class="icon">[]</div><h3>No broker passwords</h3><p>V73 does not require brokerage passwords, exchange passwords, seed phrases, or trading API keys.</p></article>
+          <article class="safety-card"><div class="icon">ID</div><h3>Private installation scope</h3><p>Supported records can be separated by private installation identity rather than a shared global account state.</p></article>
+          <article class="safety-card"><div class="icon">!</div><h3>No profit guarantee</h3><p>Market risk remains real. V73 does not guarantee performance or eliminate the possibility of loss.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell availability">
+        <div>
+          <div class="eyebrow">Availability</div>
+          <h2>V73 is built for Android distribution through Google Play.</h2>
+          <p>Subscription billing is not currently active. Public or testing availability can vary by Google Play account, region, testing track, and release status. The direct store link will be published once current listing accessibility is re-verified.</p>
+        </div>
+        <div class="availability-panel" aria-label="V73 availability summary">
+          <div class="availability-line"><span>Platform</span><b>Android</b></div>
+          <div class="availability-line"><span>Distribution</span><b>Google Play</b></div>
+          <div class="availability-line"><span>Billing</span><b>Not currently active</b></div>
+          <div class="availability-line"><span>Age</span><b>18+</b></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
-    <div class="footer-links"><a href="/privacy">Privacy Policy</a><a href="/terms">Terms</a><a href="/support">Support</a><a href="/data-deletion">Data Deletion</a></div>
-    <div>Support: <a href="mailto:support@geteztrader.com">support@geteztrader.com</a></div>
-    <div style="margin-top:8px;">V73 Technologies LLC · Informational market setup tools only · No profit guarantee · Manual user review required.</div>
+    <div class="shell footer-grid">
+      <div class="footer-brand"><strong>V73 · V73 Technologies LLC</strong><p>AI-assisted market setup tools, portfolio review, and user-controlled decision support. No profit guarantee. Manual user execution required.</p></div>
+      <div class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/support">Support</a><a href="/data-deletion">Data Deletion</a><a href="mailto:support@geteztrader.com">Email Support</a></div>
+    </div>
   </footer>
-</main>
 </body>
 </html>
