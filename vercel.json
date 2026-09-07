@@ -1,6 +1,5 @@
 {
   "framework": null,
-  "buildCommand": "npm install",
   "outputDirectory": ".",
   "routes": [
     { "src": "/privacy", "dest": "/privacy.html" },
