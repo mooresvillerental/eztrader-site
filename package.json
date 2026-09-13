@@ -1,8 +1,4 @@
 {
-  "name": "eztrader-site",
-  "private": true,
-  "dependencies": {
-    "resend": "^4.0.0",
-    "@upstash/redis": "^1.35.0"
-  }
+  "name": "v73-public-site",
+  "private": true
 }
